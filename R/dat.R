@@ -1,0 +1,23 @@
+#' dat
+#'
+#' Behavioural data (reaction time and error rate) from standard Eriksen
+#' Flanker Task with compatible (e.g., <<<) and incompatible (e.g., <><)
+#' trial types.
+#'
+#' @docType data
+#' @usage data(dat)
+#'
+#' @format A data frame with 128 rows with 6 columns:
+#' \describe{
+#'   \item{VP}{Participant}
+#'   \item{cc}{Trial N compatibility}
+#'   \item{pc}{Trial N-1 compatibility}
+#'   \item{ra}{Response repetition vs. response alternation}
+#'   \item{RT}{Dependent Variable: Reaction Time}
+#'   \item{errorPer}{Dependent Variable: Error Percentage}
+#'   }
+#'
+#' @keywords datasets
+#'
+#' data(dat)
+"dat"

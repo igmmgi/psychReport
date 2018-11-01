@@ -1,0 +1,10 @@
+.Rproj.user/
+.Rhistory
+.RData
+.Ruserdata
+.directory
+psychReport.Rproj/
+createCRANpackage.sh
+src/*.o
+src/*.so
+src/*.dll

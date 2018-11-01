@@ -1,0 +1,4 @@
+exportPattern("^[[:alpha:]]+")
+importFrom("dplyr", "%>%")
+importFrom("ez", "ezANOVA")
+importFrom("testthat", "context", "test_that", "expect_equal", "expect_error")

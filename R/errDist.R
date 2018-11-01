@@ -1,0 +1,23 @@
+#' @title errDist
+#'
+#' @description Returns a random vector of 0's (correct) and 1's (incorrect) with
+#' defined proportions (default = 10\% errors).
+#'
+#' @param n Number
+#' @param proportion Approximate proportion of errors in percentage
+#'
+#' @return double
+#'
+#' @examples
+#' # Example 1: approx 10% errors
+#' x <- errDist(1000)
+#' table(x)
+#'
+#' # Example 2: approx 20% errors
+#' x <- errDist(1000, 20)
+#' table(x)
+#'
+#' @export
+errDist <- function(n=10000, proportion = 10) {
+  return(ifelse(stats::runif(n) <= proportion/100, 1, 0))
+}
