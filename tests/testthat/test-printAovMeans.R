@@ -17,4 +17,9 @@ test_that("printAovMeans", {
                    return_aov = FALSE, detailed = TRUE)
   expect_error(printAovMeans(aovRT))
 
+  aovRT <- ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
+                   return_aov = TRUE, detailed = TRUE)
+  expect_error(printAovMeans(aovRT, digits = c(2, 2)))
+  expect_error(printAovMeans(aovRT, dv = c("ms1", "ms2")))
+
 })
