@@ -28,8 +28,7 @@
 #' @export
 aovDispMeans <- function(ezObj, value="value", name=sys.call()) {
 
-  hasMeans <- ezObj$means
-  if (is.null(hasMeans)) {
+  if (is.null(ezObj$means)) {
     stop("ezANOVA object does not contain marginal means!\nCall ezANOVA with \"return_aov = TRUE\"")
   } else {
     means = ezObj$means
@@ -40,15 +39,14 @@ aovDispMeans <- function(ezObj, value="value", name=sys.call()) {
     dat <- as.data.frame.table(means$tables[[i]], responseName = value)
 
     heading <- paste0(c(row.names(as.data.frame(means$n)))[i - 1])
-    width <- max(apply(dat, 1, function(x) sum(nchar(x))))
-    ncols <- length(names(dat))
+    width <- max(nchar(name), nchar(heading), apply(dat, 1, function(x) sum(nchar(x)))) + 8
     if (i == 2) {
         name = paste0("Means:", unlist(lapply(name[2], as.character)))
-        print(cli::rule(line = 2, center = crayon::black(name), width = width + ncols))
+        print(cli::rule(line = 2, center = crayon::black(name), width = width))
     }
-    print(cli::rule(center = crayon::black(heading), width = width + ncols))
+    print(cli::rule(center = crayon::black(heading), width = width))
     print(dat, row.names = FALSE)
     cat("\n")
   }
-  print(cli::rule(width = width + ncols))
+  print(cli::rule(width = width))
 }
