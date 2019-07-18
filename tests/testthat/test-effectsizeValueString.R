@@ -16,7 +16,7 @@ test_that("statStrT", {
   aovRT <- aovTable(aovRT, effectSize = "ges")
 
   effectString <- effectsizeValueString(aovRT, effect = "Comp", effectSize = "ges")
-  expect_equal(effectString, "$\\\\eta_{G}^2$ = 0.03")
+  expect_equal(effectString, "$\\eta_{G}^2$ = 0.03")
 
   # partial eta-squared
   aovRT <- ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
@@ -24,7 +24,7 @@ test_that("statStrT", {
   aovRT <- aovTable(aovRT, effectSize = "pes")
 
   effectString <- effectsizeValueString(aovRT, effect = "Comp", effectSize = "pes")
-  expect_equal(effectString, "$\\\\eta_{p}^2$ = 0.05")
+  expect_equal(effectString, "$\\eta_{p}^2$ = 0.05")
 
   # eta-squared
   aovRT <- ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
@@ -32,7 +32,7 @@ test_that("statStrT", {
   aovRT <- aovTable(aovRT, effectSize = "es")
 
   effectString <- effectsizeValueString(aovRT, effect = "Comp", effectSize = "es")
-  expect_equal(effectString, "$\\\\eta^2$ = 0.03")
+  expect_equal(effectString, "$\\eta^2$ = 0.03")
 
   # unknow effect size raises error
   expect_error(effectsizeValueString(aovRT, effect = "Comp", effectSize = "zzz"))

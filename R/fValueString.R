@@ -48,5 +48,5 @@ fValueString <- function(ezObj, effect){
   DFn    <- ezObj$ANOVA[, "DFn"][ezObj$ANOVA$Effect == effect]
   DFd    <- ezObj$ANOVA[, "DFd"][ezObj$ANOVA$Effect == effect]
   fValue <- ezObj$ANOVA[, "F"][ezObj$ANOVA$Effect == effect]
-  return(paste0("\\\\emph{F}", "(", DFn, ", ", DFd, ") = ", fValue))
+  return(paste0("\\emph{F}", "(", DFn, ", ", DFd, ") = ", fValue))
 }

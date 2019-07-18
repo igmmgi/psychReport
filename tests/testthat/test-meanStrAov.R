@@ -18,7 +18,7 @@ test_that("meanStrAov", {
   expect_equal(string, "523 ms")
 
   string <- meanStrAov(aovRT, "Comp", "comp", unit = "%")
-  expect_equal(string, "523 \\\\%")
+  expect_equal(string, "523 \\%")
 
   # simulated data for ANOVA
   dat <- createDF(nVP = 20, nTrl = 1, design = list("Comp" = c("comp", "incomp", "neutral"),

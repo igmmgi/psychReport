@@ -24,11 +24,11 @@ numValueString <- function(value, numDigits = 2, unit = "") {
 
   value <- format(round(value, numDigits), nsmall = numDigits)
   if (unit %in% c("mv", "mV")) {
-    return(paste0(value, " $\\\\mu$V"))
+    return(paste0(value, " $\\mu$V"))
   } else if (unit == "ms") {
     return(paste0(value, " ms"))
   } else if (unit == "%") {
-    return(paste0(value, " \\\\%"))
+    return(paste0(value, " \\%"))
   } else if (unit == "") {
     return(paste0(value))
   } else {

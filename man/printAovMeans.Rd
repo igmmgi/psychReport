@@ -37,7 +37,7 @@ dat <- addDataDF(dat, RT = list(list(c("Comp:comp"), vals = c(500, 150, 100)),
 
 aovRT <- ezANOVA(dat, dv=.(RT), wid = .(VP), within = .(Comp), return_aov = TRUE, detailed = TRUE)
 aovRT <- aovTable(aovRT)
-printAovMeans(aovRT, digits = 0, dv = "ms")  # latex formatted
+printAovMeans(aovRT, digits = 0, dv = "mV")  # latex formatted
 
 \dontrun{
 # Example use in *.Rnw Sweave file inside R chunk

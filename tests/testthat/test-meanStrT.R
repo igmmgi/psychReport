@@ -11,7 +11,7 @@ test_that("meanStrT", {
 
   expect_equal(meanStrT(tObj), "54")
   expect_equal(meanStrT(tObj, unit = "ms"), "54 ms")
-  expect_equal(meanStrT(tObj, unit = "%"), "54 \\\\%")
+  expect_equal(meanStrT(tObj, unit = "%"), "54 \\%")
 
   tObj   <- t.test(incomp, comp, paired = FALSE)
   expect_equal(meanStrT(tObj), "553 vs. 499")

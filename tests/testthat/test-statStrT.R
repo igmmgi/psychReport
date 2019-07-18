@@ -9,6 +9,6 @@ test_that("statStrT", {
   incomp <- rtDist(100, 550, 50, 200)
   tObj   <- t.test(incomp, comp, paired = TRUE)
 
-  expect_equal(statStrT(tObj), "\\\\emph{t}(99) = 1.70, \\\\emph{p} = .09")
+  expect_equal(statStrT(tObj), "\\emph{t}(99) = 1.70, \\emph{p} = .09")
 
 })

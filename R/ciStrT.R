@@ -37,6 +37,6 @@
 #'
 #' @export
 ciStrT <- function(tObj, numDigits = 0, unit = "") {
-  return(paste0("95\\\\% CI: ", numValueString(tObj$conf.int[1], numDigits, ""),
+  return(paste0("95\\% CI: ", numValueString(tObj$conf.int[1], numDigits, ""),
                 " to ",    numValueString(tObj$conf.int[2], numDigits, unit)))
 }

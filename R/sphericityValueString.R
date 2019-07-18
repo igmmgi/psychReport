@@ -44,7 +44,7 @@ sphericityValueString <- function(ezObj, effect){
 
   if ("eps" %in% names(ezObj$ANOVA)) {
     epsValue <- ezObj$ANOVA[, "eps"][ezObj$ANOVA$Effect == effect]
-    return(paste0("$\\\\epsilon$ = ", epsValue))
+    return(paste0("$\\epsilon$ = ", epsValue))
   } else {
     return(NULL)
   }

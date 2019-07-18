@@ -44,6 +44,6 @@ tValueString <- function(tObj) {
     DF <- format(round(DF, 2), nsmall = 2)
   }
 
-  return(paste0("\\\\emph{t}", "(", DF, ") = ", tVal, sep = ""))
+  return(paste0("\\emph{t}", "(", DF, ") = ", tVal, sep = ""))
 
 }

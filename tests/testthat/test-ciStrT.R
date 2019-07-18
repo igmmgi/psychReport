@@ -9,8 +9,8 @@ test_that("ciStrT", {
   incomp <- rtDist(100, 550, 50, 200)
   tObj   <- t.test(incomp, comp, paired = TRUE)
 
-  expect_equal(ciStrT(tObj), "95\\\\% CI: -9 to 117")
-  expect_equal(ciStrT(tObj, unit = "ms"), "95\\\\% CI: -9 to 117 ms")
-  expect_equal(ciStrT(tObj, unit = "%"), "95\\\\% CI: -9 to 117 \\\\%")
+  expect_equal(ciStrT(tObj), "95\\% CI: -9 to 117")
+  expect_equal(ciStrT(tObj, unit = "ms"), "95\\% CI: -9 to 117 ms")
+  expect_equal(ciStrT(tObj, unit = "%"), "95\\% CI: -9 to 117 \\%")
 
 })

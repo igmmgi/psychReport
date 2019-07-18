@@ -1,4 +1,4 @@
-#' @title mathString
+  #' @title mathString
 #'
 #' @description Returns formatted string following addition/subtraction.
 #'

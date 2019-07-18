@@ -5,7 +5,8 @@
 #' For more examples, see R package xtable
 #' @param obj Dataframe/ezANOVA object to print
 #' @param caption Title of the dataframe
-#' @param digits Number of digits to round to
+#' @param digits Number of digits to round to NB. length can be 1, or vector with 
+#'  length equal to the number of numeric columns
 #' @param onlyContents TRUE/FALSE
 #' @param formatStatsSymbols TRUE/FALSE
 #'
@@ -47,8 +48,24 @@ printTable <- function(obj, caption = "DF", digits=3, onlyContents=FALSE,
     names(obj) <- sub("\\<eps\\>", "$\\\\epsilon$",   names(obj))
   }
 
+    if (length(digits) != 1) {
+        if(length(digits) != ncol(obj)){
+            numeric_cols <- which(unlist(lapply(obj, is.numeric)))
+            if(length(digits) != length(numeric_cols)){
+                stop("Number of digits does not equal number of numeric columns!")
+            } else {
+                tmp = rep(0, ncol(obj))
+                tmp[numeric_cols] <- digits
+                digits <- tmp              
+            }
+        }
+    }
+ 
   tab <- xtable::xtable(obj, caption = caption)
   tab <- xtable::autoformat(tab)
+  if (length(digits) > 1){
+      digits <- c(0, digits)
+  }
   xtable::digits(tab) <- digits
 
   print(tab,

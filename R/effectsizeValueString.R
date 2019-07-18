@@ -53,13 +53,13 @@ effectsizeValueString <- function(ezObj, effect, effectSize = "pes"){
   }
   if (effectSize == "ges") {
     effectSizeValue <- ezObj$ANOVA[, "ges"][ezObj$ANOVA$Effect == effect]
-    return(paste0("$\\\\eta_{G}^2$ = ", effectSizeValue))
+    return(paste0("$\\eta_{G}^2$ = ", effectSizeValue))
   } else if (effectSize == "pes") {
     effectSizeValue  <- ezObj$ANOVA[, "pes"][ezObj$ANOVA$Effect == effect]
-    return(paste0("$\\\\eta_{p}^2$ = ", effectSizeValue))
+    return(paste0("$\\eta_{p}^2$ = ", effectSizeValue))
   } else if (effectSize == "es") {
     effectSizeValue  <- ezObj$ANOVA[, "es"][ezObj$ANOVA$Effect == effect]
-    return(paste0("$\\\\eta^2$ = ", effectSizeValue))
+    return(paste0("$\\eta^2$ = ", effectSizeValue))
   }
 
 }
