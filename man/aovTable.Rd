@@ -8,7 +8,7 @@ aovTable(ezObj, effectSize = "pes", sphericityCorrections = TRUE,
   sphericityCorrectionType = "GG", marginalMeans = TRUE,
   removeSumSquares = TRUE, removeIntercept = TRUE,
   roundDigits = TRUE, numDigits = 2, dispAovTable = TRUE,
-  dispAovMeans = FALSE)
+  dispAovMeans = FALSE, name = NULL)
 }
 \arguments{
 \item{ezObj}{Output from ezANOVA (NB. ezANOVA must be called with detailed = TRUE)}
@@ -34,6 +34,8 @@ be called with return_aov = TRUE)}
 \item{dispAovTable}{Display the ANOVA table in the command window}
 
 \item{dispAovMeans}{Display the marginal means in the command window}
+
+\item{name}{Table title}
 }
 \value{
 list

@@ -11,8 +11,7 @@ effectsizeValueString(ezObj, effect, effectSize = "pes")
 
 \item{effect}{The effect within the ANOVA table to return}
 
-\item{effectSize}{The effect size to report ("ges" default witin ezANOVA,
-"es" eta squared, "pes" partial eta squared)}
+\item{effectSize}{The effect size to report ("ges" default witin ezANOVA, "pes" partial eta squared)}
 }
 \value{
 character

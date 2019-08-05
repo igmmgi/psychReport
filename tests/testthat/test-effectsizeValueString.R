@@ -26,14 +26,6 @@ test_that("statStrT", {
   effectString <- effectsizeValueString(aovRT, effect = "Comp", effectSize = "pes")
   expect_equal(effectString, "$\\eta_{p}^2$ = 0.05")
 
-  # eta-squared
-  aovRT <- ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
-                   return_aov = TRUE, detailed = TRUE)
-  aovRT <- aovTable(aovRT, effectSize = "es")
-
-  effectString <- effectsizeValueString(aovRT, effect = "Comp", effectSize = "es")
-  expect_equal(effectString, "$\\eta^2$ = 0.03")
-
   # unknow effect size raises error
   expect_error(effectsizeValueString(aovRT, effect = "Comp", effectSize = "zzz"))
 

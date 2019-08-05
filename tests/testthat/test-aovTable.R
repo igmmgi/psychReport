@@ -17,7 +17,6 @@ test_that("aovTable", {
                    return_aov = TRUE, detailed = TRUE)
 
   expect_error(aovTable(aovRT), NA)
-  expect_error(aovTable(aovRT, effectSize = "es"), NA)
   expect_error(aovTable(aovRT, sphericityCorrections = FALSE), NA)
   expect_error(aovTable(aovRT, sphericityCorrectionType = "HF"), NA)
   expect_error(aovTable(aovRT, removeSumSquares = FALSE), NA)

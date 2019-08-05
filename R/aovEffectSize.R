@@ -4,7 +4,7 @@
 #' to ezANOVA table.
 #'
 #' @param ezObj Output from ezANOVA
-#' @param effectSize "ges" vs. pes" vs "es"
+#' @param effectSize "ges" vs. pes"
 #'
 #' @return list
 #'
@@ -35,7 +35,6 @@
 #'                  return_aov = TRUE, detailed = TRUE)
 #' aovRT <- aovEffectSize(aovRT, "ges")
 #' aovRT <- aovEffectSize(aovRT, "pes")
-#' aovRT <- aovEffectSize(aovRT, "es")
 #' aovDispTable(aovRT)
 #'
 #' @export
@@ -49,12 +48,6 @@ aovEffectSize <- function(ezObj, effectSize) {
     ezObj$ANOVA$ges <- NULL
     ezObj$ANOVA$es  <- NULL
     ezObj$ANOVA$pes <- ezObj$ANOVA$SSn / (ezObj$ANOVA$SSn + ezObj$ANOVA$SSd)
-  } else if (effectSize == "es") {
-    ezObj$ANOVA$ges <- NULL
-    ezObj$ANOVA$pes <- NULL
-    intercept       <- which(ezObj$ANOVA$Effect == "(Intercept)")
-    effects         <- which(ezObj$ANOVA$Effect != "(Intercept)")
-    ezObj$ANOVA$es  <- ezObj$ANOVA$SSn / (sum(ezObj$ANOVA$SSn[effects]) + sum(ezObj$ANOVA$SSd[effects]) + ezObj$ANOVA$SSd[intercept])
   } else {
     stop("effectSize not recognized!")
   }

@@ -9,7 +9,7 @@ aovEffectSize(ezObj, effectSize)
 \arguments{
 \item{ezObj}{Output from ezANOVA}
 
-\item{effectSize}{"ges" vs. pes" vs "es"}
+\item{effectSize}{"ges" vs. pes"}
 }
 \value{
 list
@@ -45,7 +45,6 @@ aovRT <- ezANOVA(datAggVP, dv=.(rt), wid = .(VP), within = .(Comp, Side),
                  return_aov = TRUE, detailed = TRUE)
 aovRT <- aovEffectSize(aovRT, "ges")
 aovRT <- aovEffectSize(aovRT, "pes")
-aovRT <- aovEffectSize(aovRT, "es")
 aovDispTable(aovRT)
 
 }

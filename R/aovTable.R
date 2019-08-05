@@ -17,6 +17,7 @@
 #' @param numDigits The number of digits to round to if roundDigits = TRUE
 #' @param dispAovTable Display the ANOVA table in the command window
 #' @param dispAovMeans Display the marginal means in the command window
+#' @param caption Table caption
 #'
 #' @return list
 #'
@@ -58,7 +59,8 @@ aovTable <- function(ezObj,
                      roundDigits = TRUE,
                      numDigits = 2,
                      dispAovTable = TRUE,
-                     dispAovMeans = FALSE) {
+                     dispAovMeans = FALSE,
+                     caption = NULL) {
 
   if (!"SSn" %in% names(ezObj$ANOVA)) {
     stop("Call ezANOVA with \"detailed = TRUE\"!")
@@ -97,11 +99,19 @@ aovTable <- function(ezObj,
   }
 
   if (dispAovTable) {
-    aovDispTable(ezObj, name = sys.call())
+      if (is.null(caption)) {
+          aovDispTable(ezObj, caption = sys.call())
+      } else {
+          aovDispTable(ezObj, caption = caption)
+      }
   }
 
   if (dispAovMeans) {
-     aovDispMeans(ezObj, name = sys.call())
+      if (is.null(caption)) {
+          aovDispMeans(ezObj, caption = sys.call())
+      } else {
+          aovDispMeans(ezObj, caption = caption)
+      }
   }
 
   ezObj$aovTable = TRUE

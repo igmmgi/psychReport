@@ -30,14 +30,7 @@ test_that("aovEffectSize", {
   expect_equal(aovRT$ANOVA$ges[2], NULL)
   expect_equal(aovRT$ANOVA$es[2], NULL)
 
-  # eta squared
-  aovRT <- aovEffectSize(aovRT, effectSize = "es")
-
-  expect_equal(aovRT$ANOVA$es[2], 0.03038679)
-  expect_equal(aovRT$ANOVA$ges[2], NULL)
-  expect_equal(aovRT$ANOVA$pes[2], NULL)
-
-  # non effect size
+   # non effect size
   expect_error(aovEffectSize(aovRT, effectSize = "abc"))
 
 })

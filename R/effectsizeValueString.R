@@ -6,8 +6,7 @@
 
 #' @param ezObj The returned object from a call to ezANOVA
 #' @param effect The effect within the ANOVA table to return
-#' @param effectSize The effect size to report ("ges" default witin ezANOVA,
-#' "es" eta squared, "pes" partial eta squared)
+#' @param effectSize The effect size to report ("ges" default witin ezANOVA, "pes" partial eta squared)
 #'
 #' @return character
 #'
@@ -57,9 +56,5 @@ effectsizeValueString <- function(ezObj, effect, effectSize = "pes"){
   } else if (effectSize == "pes") {
     effectSizeValue  <- ezObj$ANOVA[, "pes"][ezObj$ANOVA$Effect == effect]
     return(paste0("$\\eta_{p}^2$ = ", effectSizeValue))
-  } else if (effectSize == "es") {
-    effectSizeValue  <- ezObj$ANOVA[, "es"][ezObj$ANOVA$Effect == effect]
-    return(paste0("$\\eta^2$ = ", effectSizeValue))
   }
-
 }

@@ -12,7 +12,8 @@ printTable(obj, caption = "DF", digits = 3, onlyContents = FALSE,
 
 \item{caption}{Title of the dataframe}
 
-\item{digits}{Number of digits to round to}
+\item{digits}{Number of digits to round to NB. length can be 1, or vector with 
+length equal to the number of numeric columns}
 
 \item{onlyContents}{TRUE/FALSE}
 
