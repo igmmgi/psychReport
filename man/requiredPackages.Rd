@@ -4,7 +4,7 @@
 \alias{requiredPackages}
 \title{requiredPackages}
 \usage{
-requiredPackages(packages, installPackages = TRUE,
+requiredPackages(packages, installPackages = FALSE,
   lib = .libPaths()[1], repos = "http://cran.us.r-project.org")
 }
 \arguments{

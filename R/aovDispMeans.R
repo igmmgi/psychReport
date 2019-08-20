@@ -4,7 +4,7 @@
 #'
 #' @param ezObj Output from ezANOVA  (NB. ezANOVA must be called with \"return_aov = TRUE\"")
 #' @param value String for column name
-#' @param name Required for heading
+#' @param caption Required for heading
 #'
 #' @return NULL
 #'

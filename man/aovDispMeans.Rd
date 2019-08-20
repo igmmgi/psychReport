@@ -4,14 +4,14 @@
 \alias{aovDispMeans}
 \title{aovDispMeans}
 \usage{
-aovDispMeans(ezObj, value = "value", name = sys.call())
+aovDispMeans(ezObj, value = "value", caption = sys.call())
 }
 \arguments{
 \item{ezObj}{Output from ezANOVA  (NB. ezANOVA must be called with \"return_aov = TRUE\"")}
 
 \item{value}{String for column name}
 
-\item{name}{Required for heading}
+\item{caption}{Required for heading}
 }
 \description{
 Displays marginal means from model.tables in the command window.

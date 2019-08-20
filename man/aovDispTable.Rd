@@ -4,12 +4,12 @@
 \alias{aovDispTable}
 \title{aovDispTable}
 \usage{
-aovDispTable(ezObj, name = sys.call())
+aovDispTable(ezObj, caption = sys.call())
 }
 \arguments{
 \item{ezObj}{Output from ezANOVA}
 
-\item{name}{Required for heading}
+\item{caption}{Required for heading}
 }
 \description{
 Display formatted ANOVA table in command window.
