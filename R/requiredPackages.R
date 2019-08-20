@@ -18,7 +18,7 @@
 #'
 #' @export
 requiredPackages <- function(packages,
-                             installPackages=TRUE,
+                             installPackages=FALSE,
                              lib = .libPaths()[1],
                              repos = "http://cran.us.r-project.org"){
 
