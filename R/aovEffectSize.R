@@ -15,14 +15,16 @@
 #' # create dataframe with 2(Comp: comp vs. incomp) and 2(Side: left vs. right) factors/levels
 #' dat <- createDF(nVP = 20,
 #'                 nTrl = 50,
-#'                 design = list("Comp" = c("comp", "incomp"),
+#'                 design = list("Comp" = c("comp", "incomp", "neutral"),
 #'                               "Side" = c("left", "right")))
 #'
 #' dat <- addDataDF(dat,
 #'                  RT = list(list(c("Comp:comp", "Side:left"), vals = c(500, 150, 150)),
 #'                            list(c("Comp:comp", "Side:right"), vals = c(500, 150, 150)),
-#'                            list(c("Comp:incomp", "Side:left"), vals = c(500, 150, 150)),
-#'                            list(c("Comp:incomp", "Side:right"), vals = c(500, 150, 150))))
+#'                            list(c("Comp:incomp", "Side:left"), vals = c(550, 150, 150)),
+#'                            list(c("Comp:incomp", "Side:right"), vals = c(550, 150, 150)),
+#'                            list(c("Comp:neutral", "Side:left"), vals = c(525, 150, 150)),
+#'                            list(c("Comp:neutral", "Side:right"), vals = c(525, 150, 150))))
 #'
 #' # aggregate dat across trials
 #' datAggVP <- dat %>%
@@ -32,7 +34,7 @@
 #'
 #' # repeated measures ANOVA using ezANOVA
 #' aovRT <- ezANOVA(datAggVP, dv=.(rt), wid = .(VP), within = .(Comp, Side),
-#'                  return_aov = TRUE, detailed = TRUE)
+#'     return_aov = TRUE, detailed = TRUE)
 #' aovRT <- aovEffectSize(aovRT, "ges")
 #' aovRT <- aovEffectSize(aovRT, "pes")
 #' aovDispTable(aovRT)
@@ -41,7 +43,8 @@
 aovEffectSize <- function(ezObj, effectSize) {
 
   if (effectSize == "ges") {
-    ezObj$ANOVA$ges <- ezObj$ANOVA$SSn / (ezObj$ANOVA$SSn + sum(ezObj$ANOVA$SSd))
+    # NB assumes no observed variables within initial call to ezANOVA!
+    ezObj$ANOVA$ges <- ezObj$ANOVA$SSn / (ezObj$ANOVA$SSn + sum(unique(ezObj$ANOVA$SSd)))
     ezObj$ANOVA$es  <- NULL
     ezObj$ANOVA$pes <- NULL
   } else if (effectSize == "pes") {

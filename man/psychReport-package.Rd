@@ -6,5 +6,5 @@
 \alias{psychReport-package}
 \title{psychReport}
 \description{
-Helper functions for producing reports in Psychology (Reproducible Research). Provides required formatted strings (APA style) for use in 'Sweave'/'Knitr' 'Latex' integration within *.Rnw files.
+Helper functions for producing reports in Psychology (Reproducible Research). Provides required formatted strings (APA style) for use in 'Knitr'/'Latex' integration within *.Rnw files.
 }
