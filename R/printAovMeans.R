@@ -69,7 +69,7 @@ printAovMeans <- function(..., caption = "Mean", digits = 3, dv = "ms") {
 
     tab <- tab[, !duplicated(colnames(tab))]
     printTable(tab,
-               caption = paste0(caption, ": ", names(ezObj[[1]]$means$n)[i - 1]),
+               caption = paste0(caption, ": ", names(ezObj[[1]]$means$tables[i])),
                digits = digits)
   }
 

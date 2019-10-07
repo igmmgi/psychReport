@@ -37,8 +37,7 @@ aovDispMeans <- function(ezObj, value="value", caption=sys.call()) {
   for (i in 2:(length(means$n) + 1)) {
 
     dat <- as.data.frame.table(means$tables[[i]], responseName = value)
-
-    heading <- paste0(c(row.names(as.data.frame(means$n)))[i - 1])
+    heading <- names(means$tables[i])
     width <- max(nchar(caption), nchar(heading), apply(dat, 1, function(x) sum(nchar(x)))) + 8
     if (i == 2) {
       if (!is.character(caption)){
