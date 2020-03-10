@@ -54,6 +54,6 @@ meanString <- meanStrAov(aovRT, "Comp:Side", "incomp:left")
 
 \dontrun{
 # Example use in *.Rnw Sweave file
-# \\Sexpr{meanString} }
+# \Sexpr{meanString} }
 
 }

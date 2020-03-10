@@ -4,11 +4,20 @@
 \alias{aovTable}
 \title{aovTable}
 \usage{
-aovTable(ezObj, effectSize = "pes", sphericityCorrections = TRUE,
-  sphericityCorrectionType = "GG", marginalMeans = TRUE,
-  removeSumSquares = TRUE, removeIntercept = TRUE,
-  roundDigits = TRUE, numDigits = 2, dispAovTable = TRUE,
-  dispAovMeans = FALSE, caption = NULL)
+aovTable(
+  ezObj,
+  effectSize = "pes",
+  sphericityCorrections = TRUE,
+  sphericityCorrectionType = "GG",
+  marginalMeans = TRUE,
+  removeSumSquares = TRUE,
+  removeIntercept = TRUE,
+  roundDigits = TRUE,
+  numDigits = 2,
+  dispAovTable = TRUE,
+  dispAovMeans = FALSE,
+  caption = NULL
+)
 }
 \arguments{
 \item{ezObj}{Output from ezANOVA (NB. ezANOVA must be called with detailed = TRUE)}

@@ -49,6 +49,6 @@ fString <- fValueString(aovRT, "Comp:Side")
 
 \dontrun{
 # Example use in *.Rnw Sweave file
-# \\Sexpr{fString} }
+# \Sexpr{fString} }
 
 }

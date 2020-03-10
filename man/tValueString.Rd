@@ -42,6 +42,6 @@ tString <- tValueString(tObj)
 
 \dontrun{
 # Example use in *.Rnw Sweave file
-# \\Sexpr{tString}}
+# \Sexpr{tString}}
 
 }

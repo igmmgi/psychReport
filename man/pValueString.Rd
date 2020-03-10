@@ -31,6 +31,6 @@ pString <- pValueString("0.03")
 
 \dontrun{
 # Example use in *.Rnw Sweave file
-# \\Sexpr{pString} }
+# \Sexpr{pString} }
 
 }

@@ -45,6 +45,6 @@ tString <- meanStrT(tObj, numDigits = 0, unit = "ms")
 
 \dontrun{
 # Example use in *.Rnw Sweave file
-# \\Sexpr{tString} }
+# \Sexpr{tString} }
 
 }

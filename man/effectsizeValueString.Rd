@@ -50,6 +50,6 @@ pesString <- effectsizeValueString(aovRT, "Comp:Side")
 
 \dontrun{
 # Example use in *.Rnw Sweave file
-# \\Sexpr{pesString}}
+# \Sexpr{pesString}}
 
 }

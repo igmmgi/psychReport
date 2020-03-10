@@ -39,7 +39,7 @@
 #' aovString <- statStrAov(aovRT, "Comp:Side")
 #'
 #' \dontrun{
-#' # Example use in *.Rnw Sweave file
+#' # Example use in *.Rnw file
 #' # \Sexpr{aovString} }
 #'
 #' @export
@@ -50,6 +50,7 @@ statStrAov <- function(ezObj, effect) {
   eString <- effectsizeValueString(ezObj, effect)
   sString <- sphericityValueString(ezObj, effect)
 
+  message(sString)
   if (is.null(sString)) {
      return(paste0(fString, ", ", pString, ", ", eString))
   } else {

@@ -4,8 +4,12 @@
 \alias{requiredPackages}
 \title{requiredPackages}
 \usage{
-requiredPackages(packages, installPackages = FALSE,
-  lib = .libPaths()[1], repos = "http://cran.us.r-project.org")
+requiredPackages(
+  packages,
+  installPackages = FALSE,
+  lib = .libPaths()[1],
+  repos = "http://cran.us.r-project.org"
+)
 }
 \arguments{
 \item{packages}{A list of packages}

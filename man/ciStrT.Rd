@@ -44,6 +44,6 @@ ciString <- ciStrT(tObj, unit = "ms")
 
 \dontrun{
 # Example use in *.Rnw Sweave file
-# \\Sexpr{ciString}}
+# \Sexpr{ciString}}
 
 }

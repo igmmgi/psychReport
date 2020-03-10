@@ -4,8 +4,13 @@
 \alias{printTable}
 \title{printTable}
 \usage{
-printTable(obj, caption = "DF", digits = 3, onlyContents = FALSE,
-  formatStatsSymbols = TRUE)
+printTable(
+  obj,
+  caption = "DF",
+  digits = 3,
+  onlyContents = FALSE,
+  formatStatsSymbols = TRUE
+)
 }
 \arguments{
 \item{obj}{Dataframe/ezANOVA object to print}

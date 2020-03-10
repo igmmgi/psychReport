@@ -42,6 +42,6 @@ statStrT <- statStrT(tObj)
 
 \dontrun{
 # Example use in *.Rnw Sweave file
-# \\Sexpr{statStrT} }
+# \Sexpr{statStrT} }
 
 }

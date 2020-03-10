@@ -46,7 +46,7 @@ aovString <- statStrAov(aovRT, "Comp")
 aovString <- statStrAov(aovRT, "Comp:Side")
 
 \dontrun{
-# Example use in *.Rnw Sweave file
-# \\Sexpr{aovString} }
+# Example use in *.Rnw file
+# \Sexpr{aovString} }
 
 }
