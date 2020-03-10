@@ -50,7 +50,6 @@ statStrAov <- function(ezObj, effect) {
   eString <- effectsizeValueString(ezObj, effect)
   sString <- sphericityValueString(ezObj, effect)
 
-  message(sString)
   if (is.null(sString)) {
      return(paste0(fString, ", ", pString, ", ", eString))
   } else {
