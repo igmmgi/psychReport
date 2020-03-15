@@ -4,7 +4,8 @@
 \name{dat}
 \alias{dat}
 \title{dat}
-\format{A data frame with 128 rows with 6 columns:
+\format{
+A data frame with 128 rows with 6 columns:
 \describe{
   \item{VP}{Participant}
   \item{cc}{Trial N compatibility}
@@ -12,7 +13,8 @@
   \item{ra}{Response repetition vs. response alternation}
   \item{RT}{Dependent Variable: Reaction Time}
   \item{errorPer}{Dependent Variable: Error Percentage}
-  }}
+  }
+}
 \usage{
 data(dat)
 }

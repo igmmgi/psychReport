@@ -29,12 +29,12 @@ dat <- createDF(nVP = 20,
                               "Side" = c("left", "right")))
 
 dat <- addDataDF(dat,
-                 RT = list(list(c("Comp:comp", "Side:left"), vals = c(500, 150, 150)),
-                           list(c("Comp:comp", "Side:right"), vals = c(500, 150, 150)),
-                           list(c("Comp:incomp", "Side:left"), vals = c(550, 150, 150)),
-                           list(c("Comp:incomp", "Side:right"), vals = c(550, 150, 150)),
-                           list(c("Comp:neutral", "Side:left"), vals = c(525, 150, 150)),
-                           list(c("Comp:neutral", "Side:right"), vals = c(525, 150, 150))))
+                 RT = list("Comp:Side_comp:left"     = c(500, 150, 150),
+                           "Comp:Side_comp:right"    = c(500, 150, 150),
+                           "Comp:Side_incomp:left"   = c(550, 150, 150),
+                           "Comp:Side_incomp:right"  = c(550, 150, 150),
+                           "Comp:Side_neutral:left"  = c(525, 150, 150),
+                           "Comp:Side_neutral:right" = c(525, 150, 150)))
 
 # aggregate dat across trials
 datAggVP <- dat \%>\%

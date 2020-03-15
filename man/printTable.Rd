@@ -17,7 +17,7 @@ printTable(
 
 \item{caption}{Title of the dataframe}
 
-\item{digits}{Number of digits to round to NB. length can be 1, or vector with 
+\item{digits}{Number of digits to round to NB. length can be 1, or vector with
 length equal to the number of numeric columns}
 
 \item{onlyContents}{TRUE/FALSE}
@@ -39,8 +39,8 @@ requiredPackages(c("dplyr", "ez"))
 dat <- createDF(nVP = 6, nTrl = 1,
                 design = list("Comp" = c("comp", "incomp")))
 
-dat <- addDataDF(dat, RT = list(list(c("Comp:comp"), vals = c(500, 150, 100)),
-                                list(c("Comp:incomp"), vals = c(520, 150, 100))))
+dat <- addDataDF(dat, RT = list("Comp_comp"   = c(500, 150, 100),
+                                "Comp_incomp" = c(520, 150, 100)))
 printTable(dat) # latex formatted
 
 aovRT <- ezANOVA(dat, dv=.(RT), wid = .(VP), within = .(Comp),
