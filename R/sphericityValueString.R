@@ -15,29 +15,28 @@
 #' # create dataframe and add data with 3(Comp: neutral vs. comp vs. incomp) levels
 #' dat <- createDF(nVP = 20,
 #'                 nTrl = 50,
-#'                 design = list("Side" = c("left", "right"), "Comp" = c("neutral", "comp", "incomp")))
+#'                 design = list("Comp" = c("neutral", "comp", "incomp")))
 #'
-#' dat <- addDataDF(dat, RT = list(list(c("Comp:neutral"), vals = c(510, 150, 100)),
-#'                                 list(c("Comp:comp"), vals = c(500, 150, 100)),
-#'                                 list(c("Comp:incomp"), vals = c(520, 150, 100))))
+#' dat <- addDataDF(dat, RT = list("Comp_neutral" = c(510, 150, 100),
+#'                                 "Comp_comp"    = c(500, 150, 100),
+#'                                 "Comp_incomp"  = c(520, 150, 100)))
 #'
 #' # aggregate dat across trials
 #' datAggVP <- dat %>%
-#'     group_by(VP, Comp, Side) %>%
+#'     group_by(VP, Comp) %>%
 #'     summarize(N = n(),
 #'               rt = mean(RT))
 #'
 #' # repeated measures ANOVA using ezANOVA
-#' aovRT <- ezANOVA(datAggVP, dv=.(rt), wid = .(VP), within = .(Comp, Side),
+#' aovRT <- ezANOVA(datAggVP, dv=.(rt), wid = .(VP), within = .(Comp),
 #'                  return_aov = TRUE, detailed = TRUE)
-#' # adjustAovTableSphericity called by default within adjustAovTableOptions
+#' # adjustAovTableSphericity called by default within adjusutAovTableOptions
 #' aovRT <- aovTable(aovRT)
 #'
 #' sphericityValue <- sphericityValueString(aovRT, "Comp")
-#' sphericityValue <- sphericityValueString(aovRT, "Side")
 #'
 #' \dontrun{
-#' # Example use in *.Rnw file
+#' # Example use in *.Rnw Sweave file
 #' # \Sexpr{sphericityValue} }
 #'
 #' @export

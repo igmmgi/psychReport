@@ -19,10 +19,10 @@
 #'                 design = list("Comp" = c("comp", "incomp"),
 #'                               "Side" = c("left", "right")))
 #'
-#' dat <- addDataDF(dat, RT = list(list(c("Comp:comp", "Side:left"), vals = c(500, 150, 100)),
-#'                                 list(c("Comp:comp", "Side:right"), vals = c(500, 150, 100)),
-#'                                 list(c("Comp:incomp", "Side:left"), vals = c(520, 150, 100)),
-#'                                 list(c("Comp:incomp", "Side:right"), vals = c(520, 150, 100))))
+#' dat <- addDataDF(dat, RT = list("Comp:Side_comp:left"    = c(500, 150, 100),
+#'                                 "Comp:Side_comp:right"   = c(500, 150, 100),
+#'                                 "Comp:Side_incomp:left"  = c(520, 150, 100),
+#'                                 "Comp:Side_incomp:right" = c(520, 150, 100)))
 #'
 #' # aggregate dat across trials
 #' datAggVP <- dat %>%
@@ -39,7 +39,7 @@
 #' aovString <- statStrAov(aovRT, "Comp:Side")
 #'
 #' \dontrun{
-#' # Example use in *.Rnw file
+#' # Example use in *.Rnw Sweave file
 #' # \Sexpr{aovString} }
 #'
 #' @export
