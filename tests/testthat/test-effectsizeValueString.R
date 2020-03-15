@@ -7,8 +7,8 @@ test_that("statStrT", {
   dat <- createDF(nVP = 20, nTrl = 1,
                   design = list("Comp" = c("comp", "incomp")))
 
-  dat <- addDataDF(dat, RT = list(list(c("Comp:comp"), vals = c(500, 150, 100)),
-                                  list(c("Comp:incomp"), vals = c(550, 150, 100))))
+  dat <- addDataDF(dat, RT = list("Comp_comp"   = c(500, 150, 100),
+                                  "Comp_incomp" = c(550, 150, 100)))
 
   # generalized eta-squared
   aovRT <- ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
@@ -26,7 +26,7 @@ test_that("statStrT", {
   effectString <- effectsizeValueString(aovRT, effect = "Comp", effectSize = "pes")
   expect_equal(effectString, "$\\eta_{p}^2$ = 0.05")
 
-  # unknow effect size raises error
+  # unknown effect size raises error
   expect_error(effectsizeValueString(aovRT, effect = "Comp", effectSize = "zzz"))
 
 })

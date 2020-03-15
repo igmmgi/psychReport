@@ -9,8 +9,8 @@ test_that("aovJackknifeAdjustment", {
                   design = list("Comp" = c("comp", "incomp")))
 
   dat <- addDataDF(dat,
-                   RT = list(list(c("Comp:comp"), vals = c(500, 30, 50)),
-                             list(c("Comp:incomp"), vals = c(800, 30, 50))))
+                   RT = list("Comp_comp"   = c(500, 30, 50),
+                             "Comp_incomp" = c(800, 30, 50)))
 
   # repeated measures ANOVA using ezANOVA
   aovRT <- ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),

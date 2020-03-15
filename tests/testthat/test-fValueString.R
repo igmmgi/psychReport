@@ -7,10 +7,10 @@ test_that("fValueString", {
   dat <- createDF(nVP = 50, nTrl = 1,
                   design = list("Comp" = c("comp", "incomp"),
                                 "Side" = c("left", "right")))
-  dat <- addDataDF(dat, RT = list(list(c("Comp:comp", "Side:left"), vals = c(500, 150, 100)),
-                                  list(c("Comp:comp", "Side:right"), vals = c(500, 150, 100)),
-                                  list(c("Comp:incomp", "Side:left"), vals = c(550, 150, 100)),
-                                  list(c("Comp:incomp", "Side:right"), vals = c(550, 150, 100))))
+  dat <- addDataDF(dat, RT = list("Comp:Side_comp:left"    = c(500, 150, 100),
+                                  "Comp:Side_comp:right"   = c(500, 150, 100),
+                                  "Comp:Side_incomp:left"  = c(550, 150, 100),
+                                  "Comp:Side_incomp:right" = c(550, 150, 100)))
 
   aovRT <- ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp, Side),
                    return_aov = TRUE, detailed = TRUE)
