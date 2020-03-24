@@ -36,7 +36,7 @@
 #' sphericityValue <- sphericityValueString(aovRT, "Comp")
 #'
 #' \dontrun{
-#' # Example use in *.Rnw Sweave file
+#' # Example use in *.Rnw file
 #' # \Sexpr{sphericityValue} }
 #'
 #' @export
@@ -49,5 +49,5 @@ sphericityValueString <- function(ezObj, effect){
       sphericityString <- paste0("$\\epsilon$ = ", epsValue)
     }
   }
-  return (sphericityString)
+  return(sphericityString)
 }

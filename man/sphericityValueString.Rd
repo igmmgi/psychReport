@@ -46,7 +46,7 @@ aovRT <- aovTable(aovRT)
 sphericityValue <- sphericityValueString(aovRT, "Comp")
 
 \dontrun{
-# Example use in *.Rnw Sweave file
+# Example use in *.Rnw file
 # \Sexpr{sphericityValue} }
 
 }
