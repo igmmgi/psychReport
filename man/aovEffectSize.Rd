@@ -44,7 +44,7 @@ datAggVP <- dat \%>\%
 
 # repeated measures ANOVA using ezANOVA
 aovRT <- ezANOVA(datAggVP, dv=.(rt), wid = .(VP), within = .(Comp, Side),
-    return_aov = TRUE, detailed = TRUE)
+                 return_aov = TRUE, detailed = TRUE)
 aovRT <- aovEffectSize(aovRT, "ges")
 aovRT <- aovEffectSize(aovRT, "pes")
 aovDispTable(aovRT)
