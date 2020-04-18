@@ -1,6 +1,6 @@
 #' @title createDF
 #'
-#' @description Create dataframe in which to subsequently add simulated data.
+#' @description Create dataframe (see also addDataDF)
 #'
 #' @param nVP Number of participants
 #' @param nTrl Number of trials per factor/level for each participant
@@ -9,25 +9,24 @@
 #' @return dataframe
 #'
 #' @examples
-#' library(psychReport)
-#' # Example 1:
+#' library(DMCfun)
+#'
+#' # Example 1
 #' dat <- createDF()
 #'
-#' # Example 2:
-#' dat <- createDF(nVP = 50, nTrl = 50,
-#'                 design = list("Comp" = c("comp", "incomp")))
+#' # Example 2
+#' dat <- createDF(nVP = 50, nTrl = 50, design = list("Comp" = c("comp", "incomp")))
 #'
-#' # Example 3:
-#' dat <- createDF(nVP = 50, nTrl = 50,
-#'                 design = list("Comp" = c("comp", "incomp"),
-#'                               "Side" = c("left", "right")))
+#' # Example 3
+#' dat <- createDF(nVP = 50, nTrl = 50, design = list("Comp" = c("comp", "incomp"),
+#'                                                    "Side" = c("left", "right", "middle")))
 #'
 #' @export
 createDF <- function(nVP = 20,
                      nTrl = 50,
                      design = list("A" = c("A1", "A2"), "B" = c("B1", "B2"))) {
 
-  return(data.frame(VP = factor(rep(1:nVP, each = prod(sapply(design, length)) * nTrl)),
-                    do.call("rbind", rep(list(expand.grid(design)), nVP*nTrl))))
+  dat <-  data.frame(expand.grid(modifyList(design, list(VP = c(1:nVP), Trial = c(1:nTrl))))) 
+  return(dat[c("VP", names(design))])
 
 }

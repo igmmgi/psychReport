@@ -1,14 +1,14 @@
 #' @title addDataDF
 #'
 #' @description Add simulated ex-gaussian reaction-time (RT) data and
-#' binary error (Error = 1, Correct = 0) data to dataframe. This function
-#' can be used to create simulated dataframes.
+#' binary error (Error = 1, Correct = 0) data to an R DataFrame. This function
+#' can be used to create simulated data sets.
 #'
-#' @param dat DataFrame created from createDF
-#' @param RT Parameters for the call to rtDist function
-#' @param Error Parameters for the call to errDist function
+#' @param dat DataFrame (see createDF)
+#' @param RT RT parameters (see rtDist)
+#' @param Error Error parameters (see errDist)
 #'
-#' @return DataFrame with RT and Error columns
+#' @return DataFrame with RT (ms) and Error (bool) columns
 #'
 #' @examples
 #' library(psychReport)
