@@ -8,19 +8,21 @@ test_that("printAovMeans", {
   dat <- addDataDF(dat, RT = list("Comp_comp"   = c(500, 150, 100),
                                   "Comp_incomp" = c(520, 150, 100)))
 
-  aovRT <- ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
+  dat$VP <- as.factor(dat$VP)
+
+  aovRT <- ez::ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
                    return_aov = TRUE, detailed = TRUE)
   aovRT <- aovTable(aovRT)
-  expect_error(printAovMeans(aovRT), NA)
+  testthat::expect_error(printAovMeans(aovRT), NA)
 
-  aovRT <- ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
+  aovRT <- ez::ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
                    return_aov = FALSE, detailed = TRUE)
-  expect_error(printAovMeans(aovRT))
+  testthat::expect_error(printAovMeans(aovRT))
 
-  aovRT <- ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
+  aovRT <- ez::ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
                    return_aov = TRUE, detailed = TRUE)
   aovRT <- aovTable(aovRT)
-  expect_error(printAovMeans(aovRT, digits = c(2, 2)))
-  expect_error(printAovMeans(aovRT, dv = c("ms1", "ms2")))
+  testthat::expect_error(printAovMeans(aovRT, digits = c(2, 2)))
+  testthat::expect_error(printAovMeans(aovRT, dv = c("ms1", "ms2")))
 
 })

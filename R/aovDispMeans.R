@@ -9,8 +9,8 @@
 #' @return NULL
 #'
 #' @examples
-#' library(psychReport)
 #' requiredPackages(c("ez"))
+#'
 #' # Example 1:
 #' # create dataframe
 #' dat <- createDF(nVP = 50,
@@ -20,6 +20,7 @@
 #' dat <- addDataDF(dat, RT = list("Comp_comp"   = c(500, 100, 100),
 #'                                 "Comp_incomp" = c(520, 100, 100)))
 #'
+#' dat$VP <- as.factor(dat$VP)
 #' aovRT <- ezANOVA(dat, dv=.(RT), wid = .(VP), within = .(Comp),
 #'                  return_aov = TRUE, detailed = TRUE)
 #' aovRT <- aovTable(aovRT)

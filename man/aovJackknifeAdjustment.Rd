@@ -18,8 +18,8 @@ list
 Adjust ezANOVA table with corrected F (Fc = F/(n-1)^2) and p values for jackkniffed data (see Ulrich and Miller, 2001. Using the jackknife-based scoring method for measuring LRP onset effects in factorial designs. Psychophysiology, 38, 816-827.)
 }
 \examples{
-library(psychReport)
 requiredPackages(c("dplyr", "ez"))
+
 # Example 1:
 # create dataframe with 2(Comp: comp vs. incomp) and 2(Side: left vs. right) factors/levels
 dat <- createDF(nVP = 20,
@@ -40,6 +40,7 @@ datAggVP <- dat \%>\%
               rt = mean(RT))
 
 # repeated measures ANOVA using ezANOVA
+datAggVP$VP <- as.factor(datAggVP$VP)
 aovRT <- ezANOVA(datAggVP, dv=.(rt), wid = .(VP), within = .(Comp, Side),
                  return_aov = TRUE, detailed = TRUE)
 aovDispTable(aovRT)

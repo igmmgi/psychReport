@@ -2,8 +2,6 @@ context("aovDispMeans")
 
 test_that("aovDispMeans", {
 
-  set.seed(1)
-
   # create dataframe
   dat <- createDF(nVP = 50, nTrl = 1,
                   design = list("Comp" = c("comp", "neutral", "incomp")))
@@ -13,12 +11,13 @@ test_that("aovDispMeans", {
                              "Comp_neutral" = c(550, 150, 150),
                              "Comp_incomp"  = c(600, 150, 150)))
 
-  aovRT <- ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
-                   return_aov = TRUE, detailed = TRUE)
-  expect_error(aovDispMeans(aovRT))
+  dat$VP <- as.factor(dat$VP)
+  aovRT <- ez::ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
+                       return_aov = TRUE, detailed = TRUE)
+  testthat::expect_error(aovDispMeans(aovRT))
 
   aovRT <- aovTable(aovRT)
-  expect_error(aovDispMeans(aovRT), NA)
+  testthat::expect_error(aovDispMeans(aovRT), NA)
 
 })
 

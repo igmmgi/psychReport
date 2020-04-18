@@ -14,6 +14,7 @@
 #'
 #' @examples
 #' requiredPackages(c("dplyr", "ez"))
+#'
 #' # Example 1:
 #' # create dataframe
 #' dat <- createDF(nVP = 6, nTrl = 1,
@@ -23,16 +24,11 @@
 #'                                 "Comp_incomp" = c(520, 150, 100)))
 #' printTable(dat) # latex formatted
 #'
+#' dat$VP <- as.factor(dat$VP)
 #' aovRT <- ezANOVA(dat, dv=.(RT), wid = .(VP), within = .(Comp),
 #'                  return_aov = TRUE, detailed = TRUE)
 #' aovRT <- aovTable(aovRT)
 #' printTable(aovRT$ANOVA) # latex formatted
-#'
-#' \dontrun{
-#' # Example use in *.Rnw Sweave file inside R chunk
-#' # << printTable, echo = FALSE, results = tex >>=
-#' # printTable(aovRT$ANOVA, caption = "ANOVA Table")
-#' # @}
 #'
 #' @export
 printTable <- function(obj, caption = "DF", digits=3, onlyContents=FALSE,

@@ -1,4 +1,4 @@
-  #' @title mathString
+#' @title mathString
 #'
 #' @description Returns formatted string following addition/subtraction.
 #'
@@ -16,10 +16,6 @@
 #'
 #' # Example 2:
 #' string <- mathString("2.34", "1.65", "+", numDigits = 2, unit = "mV")
-#'
-#' \dontrun{
-#' # Example use in *.Rnw Sweave file
-#' # \Sexpr{string} }
 #'
 #' @export
 mathString <- function(str1, str2, operation = "-",

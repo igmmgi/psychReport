@@ -7,23 +7,21 @@
 addDataDF(dat, RT = NULL, Error = NULL)
 }
 \arguments{
-\item{dat}{DataFrame created from createDF}
+\item{dat}{DataFrame (see createDF)}
 
-\item{RT}{Parameters for the call to rtDist function}
+\item{RT}{RT parameters (see rtDist)}
 
-\item{Error}{Parameters for the call to errDist function}
+\item{Error}{Error parameters (see errDist)}
 }
 \value{
-DataFrame with RT and Error columns
+DataFrame with RT (ms) and Error (bool) columns
 }
 \description{
 Add simulated ex-gaussian reaction-time (RT) data and
-binary error (Error = 1, Correct = 0) data to dataframe. This function
-can be used to create simulated dataframes.
+binary error (Error = 1, Correct = 0) data to an R DataFrame. This function
+can be used to create simulated data sets.
 }
 \examples{
-library(psychReport)
-
 # Example 1: default dataframe
 dat <- createDF()
 dat <- addDataDF(dat)

@@ -17,8 +17,8 @@ Returns required Latex formatted string T-test required for R/Sweave integration
 For example, \emph{t}(11) = 3.45, \emph{p} < 0.05.
 }
 \examples{
-library(psychReport)
 requiredPackages(c("dplyr"))
+
 # Example 1:
 # create dataframe and add data with 2(Comp: comp vs. incomp) levels
 dat <- createDF(nVP = 20,
@@ -39,9 +39,5 @@ tObj <- t.test(datAggVP$rt[datAggVP$Comp == "comp"],
                paired = TRUE)
 
 statStrT <- statStrT(tObj)
-
-\dontrun{
-# Example use in *.Rnw Sweave file
-# \Sexpr{statStrT} }
 
 }

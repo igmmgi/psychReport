@@ -11,20 +11,22 @@ test_that("sphericityValueString", {
                                   "Comp_comp"    = c(500, 150, 100),
                                   "Comp_incomp"  = c(520, 150, 100)))
 
+  dat$VP <- as.factor(dat$VP)
+
   # repeated measures ANOVA using ezANOVA
-  aovRT <- ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
+  aovRT <- ez::ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
                    return_aov = TRUE, detailed = TRUE)
   aovRT <- aovTable(aovRT)
 
   sphericityValue <- sphericityValueString(aovRT, "Comp")
-  expect_equal(sphericityValue, "$\\epsilon$ = 0.99")
+  testthat::expect_equal(sphericityValue, "$\\epsilon$ = 0.99")
 
   # repeated measures ANOVA using ezANOVA
-  aovRT <- ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
+  aovRT <- ez::ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
                    return_aov = TRUE, detailed = TRUE)
   aovRT <- aovTable(aovRT, sphericityCorrectionType = "HF")
 
   sphericityValue <- sphericityValueString(aovRT, "Comp")
-  expect_equal(sphericityValue, "$\\epsilon$ = 1.04")
+  testthat::expect_equal(sphericityValue, "$\\epsilon$ = 1.04")
 
 })

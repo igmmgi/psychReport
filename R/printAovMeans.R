@@ -22,15 +22,10 @@
 #' dat <- addDataDF(dat, RT = list("Comp_comp"   = c(500, 150, 100),
 #'                                 "Comp_incomp" = c(520, 150, 100)))
 #'
+#' dat$VP <- as.factor(dat$VP)
 #' aovRT <- ezANOVA(dat, dv=.(RT), wid = .(VP), within = .(Comp), return_aov = TRUE, detailed = TRUE)
 #' aovRT <- aovTable(aovRT)
 #' printAovMeans(aovRT, digits = 0, dv = "mV")  # latex formatted
-#'
-#' \dontrun{
-#' # Example use in *.Rnw Sweave file inside R chunk
-#' # << printTable, echo = FALSE, results = tex >>=
-#' # printAovMeans(aovRT, caption = "ANOVA Table")
-#' # @}
 #'
 #' @export
 printAovMeans <- function(..., caption = "Mean", digits = 3, dv = "ms") {

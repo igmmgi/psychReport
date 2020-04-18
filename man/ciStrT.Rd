@@ -21,6 +21,7 @@ Returns a string with the 95\% CI from a t.test in Latex format.
 }
 \examples{
 requiredPackages(c("dplyr"))
+
 # Example 1:
 # create dataframe and add data with 2(Comp: comp vs. incomp) levels
 dat <- createDF(nVP = 20,

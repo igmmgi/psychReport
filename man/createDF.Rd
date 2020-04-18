@@ -21,20 +21,17 @@ createDF(
 dataframe
 }
 \description{
-Create dataframe in which to subsequently add simulated data.
+Create dataframe (see also addDataDF)
 }
 \examples{
-library(psychReport)
-# Example 1:
+# Example 1
 dat <- createDF()
 
-# Example 2:
-dat <- createDF(nVP = 50, nTrl = 50,
-                design = list("Comp" = c("comp", "incomp")))
+# Example 2
+dat <- createDF(nVP = 50, nTrl = 50, design = list("Comp" = c("comp", "incomp")))
 
-# Example 3:
-dat <- createDF(nVP = 50, nTrl = 50,
-                design = list("Comp" = c("comp", "incomp"),
-                              "Side" = c("left", "right")))
+# Example 3
+dat <- createDF(nVP = 50, nTrl = 50, design = list("Comp" = c("comp", "incomp"),
+                                                   "Side" = c("left", "right", "middle")))
 
 }

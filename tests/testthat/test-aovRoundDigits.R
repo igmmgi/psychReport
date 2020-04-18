@@ -13,18 +13,20 @@ test_that("aovRoundDigits", {
                              "Comp_neutral" = c(550, 150, 150),
                              "Comp_incomp"  = c(600, 150, 150)))
 
-  aovRT <- ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
+  dat$VP <- as.factor(dat$VP)
+
+  aovRT <- ez::ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
                    return_aov = TRUE, detailed = TRUE)
   aovRT <- aovRoundDigits(aovRT, 3)  # 3 sig decimal places
 
-  expect_equal(as.character(aovRT$ANOVA$F[1]), "1346.767")
-  expect_equal(as.character(aovRT$ANOVA$F[2]), "   2.171")
+  testthat::expect_equal(as.character(aovRT$ANOVA$F[1]), "1346.767")
+  testthat::expect_equal(as.character(aovRT$ANOVA$F[2]), "   2.171")
 
-  aovRT <- ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
+  aovRT <- ez::ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
                    return_aov = TRUE, detailed = TRUE)
   aovRT <- aovRoundDigits(aovRT, 1)  # 1 sig decimal places
 
-  expect_equal(as.character(aovRT$ANOVA$F[1]), "1346.8")
-  expect_equal(as.character(aovRT$ANOVA$F[2]), "   2.2")
+  testthat::expect_equal(as.character(aovRT$ANOVA$F[1]), "1346.8")
+  testthat::expect_equal(as.character(aovRT$ANOVA$F[2]), "   2.2")
 
 })

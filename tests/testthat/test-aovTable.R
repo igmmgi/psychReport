@@ -13,30 +13,32 @@ test_that("aovTable", {
                              "Comp_neutral" = c(550, 150, 150),
                              "Comp_incomp"  = c(600, 150, 150)))
 
-  aovRT <- ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
-                   return_aov = TRUE, detailed = TRUE)
+  dat$VP <- as.factor(dat$VP)
 
-  expect_error(aovTable(aovRT), NA)
-  expect_error(aovTable(aovRT, sphericityCorrections = FALSE), NA)
-  expect_error(aovTable(aovRT, sphericityCorrectionType = "HF"), NA)
-  expect_error(aovTable(aovRT, removeSumSquares = FALSE), NA)
-  expect_error(aovTable(aovRT, removeIntercept = FALSE), NA)
-  expect_error(aovTable(aovRT, marginalMeans = FALSE), NA)
-  expect_error(aovTable(aovRT, roundDigits = FALSE), NA)
-  expect_error(aovTable(aovRT, numDigits = 4), NA)
-  expect_error(aovTable(aovRT, dispAovTable = FALSE), NA)
-  expect_error(aovTable(aovRT, dispAovMeans = TRUE), NA)
+  aovRT <- ez::ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
+                       return_aov = TRUE, detailed = TRUE)
+
+  testthat::expect_error(aovTable(aovRT), NA)
+  testthat::expect_error(aovTable(aovRT, sphericityCorrections = FALSE), NA)
+  testthat::expect_error(aovTable(aovRT, sphericityCorrectionType = "HF"), NA)
+  testthat::expect_error(aovTable(aovRT, removeSumSquares = FALSE), NA)
+  testthat::expect_error(aovTable(aovRT, removeIntercept = FALSE), NA)
+  testthat::expect_error(aovTable(aovRT, marginalMeans = FALSE), NA)
+  testthat::expect_error(aovTable(aovRT, roundDigits = FALSE), NA)
+  testthat::expect_error(aovTable(aovRT, numDigits = 4), NA)
+  testthat::expect_error(aovTable(aovRT, dispAovTable = FALSE), NA)
+  testthat::expect_error(aovTable(aovRT, dispAovMeans = TRUE), NA)
 
   aovRT <- aovTable(aovRT)
-  expect_error(aovTable(aovRT))
+  testthat::expect_error(aovTable(aovRT))
 
-  aovRT <- ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
-                   return_aov = TRUE, detailed = FALSE)
-  expect_error(aovTable(aovRT))
+  aovRT <- ez::ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
+                       return_aov = TRUE, detailed = FALSE)
+  testthat::expect_error(aovTable(aovRT))
 
-  aovRT <- ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
-                   return_aov = FALSE, detailed = TRUE)
-  expect_error(aovTable(aovRT))
+  aovRT <- ez::ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
+                       return_aov = FALSE, detailed = TRUE)
+  testthat::expect_error(aovTable(aovRT))
 
 })
 

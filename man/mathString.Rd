@@ -27,8 +27,4 @@ string <- mathString("550 ms", "480 ms", "-")
 # Example 2:
 string <- mathString("2.34", "1.65", "+", numDigits = 2, unit = "mV")
 
-\dontrun{
-# Example use in *.Rnw Sweave file
-# \Sexpr{string} }
-
 }

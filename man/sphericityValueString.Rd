@@ -21,6 +21,7 @@ to 2 sig decimal places.
 }
 \examples{
 requiredPackages(c("dplyr", "ez"))
+
 # Example 1
 # create dataframe and add data with 3(Comp: neutral vs. comp vs. incomp) levels
 dat <- createDF(nVP = 20,
@@ -38,15 +39,11 @@ datAggVP <- dat \%>\%
               rt = mean(RT))
 
 # repeated measures ANOVA using ezANOVA
+datAggVP$VP <- as.factor(datAggVP$VP)
 aovRT <- ezANOVA(datAggVP, dv=.(rt), wid = .(VP), within = .(Comp),
                  return_aov = TRUE, detailed = TRUE)
-# adjustAovTableSphericity called by default within adjusutAovTableOptions
 aovRT <- aovTable(aovRT)
 
 sphericityValue <- sphericityValueString(aovRT, "Comp")
-
-\dontrun{
-# Example use in *.Rnw file
-# \Sexpr{sphericityValue} }
 
 }

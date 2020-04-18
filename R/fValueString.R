@@ -2,14 +2,14 @@
 #'
 #' @description Returns required Latex formatted string for \emph{F}(df1, df2) = XXX
 #' for R/Sweave integration. For example, \emph{F}(1, 23) = 3.45.
-#  Returns values to 2 sig decimal places.
+#' Returns values to 2 sig decimal places.
 #'
 #' @param ezObj The returned object from a call to ezANOVA
 #' @param effect The effect within the ANOVA table to return
 #'
-#' @return character
+#' @ return character
 #'
-#' @examples
+#' @ examples
 #' library(psychReport)
 #' requiredPackages(c("dplyr", "ez"))
 #' # Example 1:
@@ -31,16 +31,13 @@
 #'               rt = mean(RT))
 #'
 #' # repeated measures ANOVA using ezANOVA
+#' datAggVP$VP <- as.factor(datAggVP$VP)
 #' aovRT <- ezANOVA(datAggVP, dv=.(rt), wid = .(VP), within = .(Comp, Side),
 #'                  return_aov = TRUE, detailed = TRUE)
 #' aovRT <- aovTable(aovRT)
 #'
 #' fString <- fValueString(aovRT, "Comp")
 #' fString <- fValueString(aovRT, "Comp:Side")
-#'
-#' \dontrun{
-#' # Example use in *.Rnw Sweave file
-#' # \Sexpr{fString} }
 #'
 #' @export
 

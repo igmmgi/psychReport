@@ -10,6 +10,7 @@
 #'
 #' @examples
 #' requiredPackages(c("dplyr"))
+#'
 #' # Example 1:
 #' # create dataframe and add data with 2(Comp: comp vs. incomp) levels
 #' dat <- createDF(nVP = 20,
@@ -30,10 +31,6 @@
 #'                paired = TRUE)
 #'
 #' ciString <- ciStrT(tObj, unit = "ms")
-#'
-#' \dontrun{
-#' # Example use in *.Rnw Sweave file
-#' # \Sexpr{ciString}}
 #'
 #' @export
 ciStrT <- function(tObj, numDigits = 0, unit = "") {

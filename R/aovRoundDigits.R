@@ -8,7 +8,6 @@
 #' @return dataframe
 #'
 #' @examples
-#' library(psychReport)
 #' requiredPackages(c("dplyr", "ez"))
 #' # Example 1:
 #' # create dataframe with 2(Comp: comp vs. incomp) and 2(Side: left vs. right) factors/levels
@@ -30,6 +29,7 @@
 #'               rt = mean(RT))
 #'
 #' # repeated measures ANOVA using ezANOVA
+#' datAggVP$VP <- as.factor(datAggVP$VP)
 #' aovRT <- ezANOVA(datAggVP, dv=.(rt), wid = .(VP), within = .(Comp, Side),
 #'                  return_aov = TRUE, detailed = TRUE)
 #' aovDispTable(aovRT)

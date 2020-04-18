@@ -10,13 +10,15 @@ test_that("statStrT", {
   dat <- addDataDF(dat, RT = list("Comp_comp"   = c(500, 150, 100),
                                   "Comp_incomp" = c(550, 150, 100)))
 
+  dat$VP <- as.factor(dat$VP)
+
   # generalized eta-squared
   aovRT <- ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
                    return_aov = TRUE, detailed = TRUE)
   aovRT <- aovTable(aovRT, effectSize = "ges")
 
   effectString <- effectsizeValueString(aovRT, effect = "Comp", effectSize = "ges")
-  expect_equal(effectString, "$\\eta_{G}^2$ = 0.03")
+  testthat::expect_equal(effectString, "$\\eta_{G}^2$ = 0.03")
 
   # partial eta-squared
   aovRT <- ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
@@ -24,9 +26,9 @@ test_that("statStrT", {
   aovRT <- aovTable(aovRT, effectSize = "pes")
 
   effectString <- effectsizeValueString(aovRT, effect = "Comp", effectSize = "pes")
-  expect_equal(effectString, "$\\eta_{p}^2$ = 0.05")
+  testthat::expect_equal(effectString, "$\\eta_{p}^2$ = 0.05")
 
   # unknown effect size raises error
-  expect_error(effectsizeValueString(aovRT, effect = "Comp", effectSize = "zzz"))
+  testthat::expect_error(effectsizeValueString(aovRT, effect = "Comp", effectSize = "zzz"))
 
 })

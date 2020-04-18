@@ -8,8 +8,8 @@
 #' @return character
 #'
 #' @examples
-#' library(psychReport)
 #' requiredPackages(c("dplyr"))
+#'
 #' # Example 1:
 #' # create dataframe and add data with 2(Comp: comp vs. incomp) levels
 #' dat <- createDF(nVP = 20,
@@ -30,10 +30,6 @@
 #'                paired = TRUE)
 #'
 #' tString <- tValueString(tObj)
-#'
-#' \dontrun{
-#' # Example use in *.Rnw Sweave file
-#' # \Sexpr{tString}}
 #'
 #' @export
 tValueString <- function(tObj) {

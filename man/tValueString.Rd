@@ -17,8 +17,8 @@ Returns required Latex formatted string for \emph{t}(df) = XXX for
 R/Sweave integration. Returns values to 2 sig decimal places.
 }
 \examples{
-library(psychReport)
 requiredPackages(c("dplyr"))
+
 # Example 1:
 # create dataframe and add data with 2(Comp: comp vs. incomp) levels
 dat <- createDF(nVP = 20,
@@ -39,9 +39,5 @@ tObj <- t.test(datAggVP$rt[datAggVP$Comp == "comp"],
                paired = TRUE)
 
 tString <- tValueString(tObj)
-
-\dontrun{
-# Example use in *.Rnw Sweave file
-# \Sexpr{tString}}
 
 }

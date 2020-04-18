@@ -45,15 +45,12 @@ datAggVP <- dat \%>\%
               rt = mean(RT))
 
 # repeated measures ANOVA using ezANOVA
+datAggVP$VP <- as.factor(datAggVP$VP)
 aovRT <- ezANOVA(datAggVP, dv=.(rt), wid = .(VP), within = .(Comp, Side),
                  return_aov = TRUE, detailed = TRUE)
 aovRT <- aovTable(aovRT)
 
 meanString <- meanStrAov(aovRT, "Comp", "comp")
 meanString <- meanStrAov(aovRT, "Comp:Side", "incomp:left")
-
-\dontrun{
-# Example use in *.Rnw Sweave file
-# \Sexpr{meanString} }
 
 }

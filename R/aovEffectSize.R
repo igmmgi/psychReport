@@ -9,8 +9,8 @@
 #' @return list
 #'
 #' @examples
-#' library(psychReport)
 #' requiredPackages(c("ez", "dplyr"))
+#'
 #' # Example 1:
 #' # create dataframe with 2(Comp: comp vs. incomp) and 2(Side: left vs. right) factors/levels
 #' dat <- createDF(nVP = 20,
@@ -33,23 +33,21 @@
 #'               rt = mean(RT))
 #'
 #' # repeated measures ANOVA using ezANOVA
-#' aovRT <- ezANOVA(datAggVP, dv=.(rt), wid = .(VP), within = .(Comp, Side),
+#' datAggVP$VP <- as.factor(datAggVP$VP)
+#' aovRT <- ezANOVA(datAggVP, dv=.(rt), wid = .(VP), within = .(Comp, Side), 
 #'                  return_aov = TRUE, detailed = TRUE)
-#' aovRT <- aovEffectSize(aovRT, "ges")
 #' aovRT <- aovEffectSize(aovRT, "pes")
-#' aovDispTable(aovRT)
+#' aovRT <- aovTable(aovRT)
 #'
 #' @export
 aovEffectSize <- function(ezObj, effectSize) {
 
-  if (effectSize == "ges") {
+   if (effectSize == "ges") {
     # NB assumes no observed variables within initial call to ezANOVA!
     ezObj$ANOVA$ges <- ezObj$ANOVA$SSn / (ezObj$ANOVA$SSn + sum(unique(ezObj$ANOVA$SSd)))
-    ezObj$ANOVA$es  <- NULL
     ezObj$ANOVA$pes <- NULL
   } else if (effectSize == "pes") {
     ezObj$ANOVA$ges <- NULL
-    ezObj$ANOVA$es  <- NULL
     ezObj$ANOVA$pes <- ezObj$ANOVA$SSn / (ezObj$ANOVA$SSn + ezObj$ANOVA$SSd)
   } else {
     stop("effectSize not recognized!")

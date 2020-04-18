@@ -29,8 +29,4 @@ pString <- pValueString(0.1234, 3)
 # Example 3:
 pString <- pValueString("0.03")
 
-\dontrun{
-# Example use in *.Rnw Sweave file
-# \Sexpr{pString} }
-
 }

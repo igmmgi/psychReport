@@ -19,8 +19,8 @@ Add partial eta squared (pes) or eta-squared (es) effect size measures
 to ezANOVA table.
 }
 \examples{
-library(psychReport)
 requiredPackages(c("ez", "dplyr"))
+
 # Example 1:
 # create dataframe with 2(Comp: comp vs. incomp) and 2(Side: left vs. right) factors/levels
 dat <- createDF(nVP = 20,
@@ -43,10 +43,10 @@ datAggVP <- dat \%>\%
               rt = mean(RT))
 
 # repeated measures ANOVA using ezANOVA
+datAggVP$VP <- as.factor(datAggVP$VP)
 aovRT <- ezANOVA(datAggVP, dv=.(rt), wid = .(VP), within = .(Comp, Side),
                  return_aov = TRUE, detailed = TRUE)
-aovRT <- aovEffectSize(aovRT, "ges")
 aovRT <- aovEffectSize(aovRT, "pes")
-aovDispTable(aovRT)
+aovRT <- aovTable(aovRT)
 
 }

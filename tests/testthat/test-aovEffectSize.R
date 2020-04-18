@@ -13,25 +13,27 @@ test_that("aovEffectSize", {
                              "Comp_neutral" = c(550, 150, 150),
                              "Comp_incomp"  = c(600, 150, 150)))
 
-  aovRT <- ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
+  dat$VP <- as.factor(dat$VP)
+
+  aovRT <- ez::ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
                    return_aov = TRUE, detailed = TRUE)
 
   # generalized eta squared
   aovRT <- aovEffectSize(aovRT, effectSize = "ges")
 
-  expect_equal(aovRT$ANOVA$ges[2], 0.03038679)
-  expect_equal(aovRT$ANOVA$pes[2], NULL)
-  expect_equal(aovRT$ANOVA$es[2], NULL)
+  testthat::expect_equal(aovRT$ANOVA$ges[2], 0.03038679)
+  testthat::expect_equal(aovRT$ANOVA$pes[2], NULL)
+  testthat::expect_equal(aovRT$ANOVA$es[2], NULL)
 
   # partial eta squared
   aovRT <- aovEffectSize(aovRT, effectSize = "pes")
 
-  expect_equal(aovRT$ANOVA$pes[2], 0.04243096)
-  expect_equal(aovRT$ANOVA$ges[2], NULL)
-  expect_equal(aovRT$ANOVA$es[2], NULL)
+  testthat::expect_equal(aovRT$ANOVA$pes[2], 0.04243096)
+  testthat::expect_equal(aovRT$ANOVA$ges[2], NULL)
+  testthat::expect_equal(aovRT$ANOVA$es[2], NULL)
 
-   # non effect size
-  expect_error(aovEffectSize(aovRT, effectSize = "abc"))
+  # non effect size
+  testthat::expect_error(aovEffectSize(aovRT, effectSize = "abc"))
 
 })
 

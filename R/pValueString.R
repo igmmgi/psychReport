@@ -19,10 +19,6 @@
 #' # Example 3:
 #' pString <- pValueString("0.03")
 #'
-#' \dontrun{
-#' # Example use in *.Rnw Sweave file
-#' # \Sexpr{pString} }
-#'
 #' @export
 pValueString <- function(pVal, nsmall = 2){
 

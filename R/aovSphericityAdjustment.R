@@ -6,8 +6,11 @@
 #' @param ezObj The returned object from a call to ezANOVA
 #' @param type "GG" (Greenhouse-Geisser) or "HF" (Huynh-Feldt)
 #'
+#' @return list
+#'
 #' @examples
 #' requiredPackages(c("dplyr", "ez"))
+#'
 #' # Example 1:
 #' # create dataframe with 3(Comp: neutral vs. comp vs. incomp) factors/levels
 #' dat <- createDF(nVP = 20,
@@ -26,13 +29,12 @@
 #'               rt = mean(RT))
 #'
 #' # repeated measures ANOVA using ezANOVA
+#' datAggVP$VP <- as.factor(datAggVP$VP)
 #' aovRT <- ezANOVA(datAggVP, dv=.(rt), wid = .(VP), within = .(Comp),
 #'                  return_aov = TRUE, detailed = TRUE)
 #' aovDispTable(aovRT)
 #' aovRT <- aovSphericityAdjustment(aovRT)
 #' aovDispTable(aovRT)
-#'
-#' @return list
 #'
 #' @export
 aovSphericityAdjustment <- function(ezObj, type = "GG") {

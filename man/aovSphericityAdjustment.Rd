@@ -20,6 +20,7 @@ Huynh-Feldt). Called by default within aovTable
 }
 \examples{
 requiredPackages(c("dplyr", "ez"))
+
 # Example 1:
 # create dataframe with 3(Comp: neutral vs. comp vs. incomp) factors/levels
 dat <- createDF(nVP = 20,
@@ -38,10 +39,11 @@ datAggVP <- dat \%>\%
               rt = mean(RT))
 
 # repeated measures ANOVA using ezANOVA
-aovRT <- ezANOVA(datAggVP, dv=.(rt), wid = .(VP), within = .(Comp),
-                 return_aov = TRUE, detailed = TRUE)
-aovDispTable(aovRT)
-aovRT <- aovSphericityAdjustment(aovRT)
-aovDispTable(aovRT)
+datAggVP$VP <- as.factor(datAggVP$VP)
+# aovRT <- ezANOVA(datAggVP, dv=.(rt), wid = .(VP), within = .(Comp),
+#                  return_aov = TRUE, detailed = TRUE)
+# aovDispTable(aovRT)
+# aovRT <- aovSphericityAdjustment(aovRT)
+# aovDispTable(aovRT)
 
 }

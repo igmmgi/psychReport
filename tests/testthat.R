@@ -1,3 +1,3 @@
+Sys.setenv("R_TESTS" = "")
 library(testthat)
-library(psychReport)
 test_check("psychReport")

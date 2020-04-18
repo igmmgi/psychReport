@@ -17,8 +17,8 @@ For example, \deqn{F(1, 20) = 8.45, p < 0.01, pes = 0.45}
 Returns values to 2 sig decimal places and < 0.01, < 0.001 for p values.
 }
 \examples{
-library(psychReport)
 requiredPackages(c("dplyr", "ez"))
+
 # Example 1:
 # create dataframe and add data with 2(Comp: comp vs. incomp) and 2(Side: left vs. right)
 dat <- createDF(nVP = 20,
@@ -38,15 +38,12 @@ datAggVP <- dat \%>\%
               rt = mean(RT))
 
 # repeated measures ANOVA using ezANOVA
+datAggVP$VP <- as.factor(datAggVP$VP)
 aovRT <- ezANOVA(datAggVP, dv=.(rt), wid = .(VP), within = .(Comp, Side),
                  return_aov = TRUE, detailed = TRUE)
 aovRT <- aovTable(aovRT)
 
 aovString <- statStrAov(aovRT, "Comp")
 aovString <- statStrAov(aovRT, "Comp:Side")
-
-\dontrun{
-# Example use in *.Rnw Sweave file
-# \Sexpr{aovString} }
 
 }

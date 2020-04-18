@@ -12,18 +12,19 @@ test_that("aovDispTable", {
                    RT = list("Comp_comp"    = c(500, 150, 150),
                              "Comp_neutral" = c(550, 150, 150),
                              "Comp_incomp"  = c(600, 150, 150)))
+  dat$VP <- as.factor(dat$VP)
 
-  aovRT <- ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
+  aovRT <- ez::ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
                    return_aov = TRUE, detailed = TRUE)
-  expect_error(aovDispTable(aovRT), NA)
+  testthat::expect_error(aovDispTable(aovRT), NA)
 
-  aovRT <- ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
+  aovRT <- ez::ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
                    return_aov = FALSE, detailed = TRUE)
-  expect_error(aovDispTable(aovRT), NA)
+  testthat::expect_error(aovDispTable(aovRT), NA)
 
-  aovRT <- ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
+  aovRT <- ez::ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
                    return_aov = FALSE, detailed = FALSE)
-  expect_error(aovDispTable(aovRT), NA)
+  testthat::expect_error(aovDispTable(aovRT), NA)
 
 })
 

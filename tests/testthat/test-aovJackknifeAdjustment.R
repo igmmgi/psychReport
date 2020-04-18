@@ -13,12 +13,14 @@ test_that("aovJackknifeAdjustment", {
                              "Comp_incomp" = c(800, 30, 50)))
 
   # repeated measures ANOVA using ezANOVA
-  aovRT <- ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
+  dat$VP <- as.factor(dat$VP)
+
+  aovRT <- ez::ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
                        return_aov = TRUE, detailed = TRUE)
   aovRT_pre  <- aovTable(aovRT)
   aovRT      <- aovJackknifeAdjustment(aovRT, length(unique(dat$VP)))
   aovRT_post <- aovTable(aovRT)
 
-  expect_equal(round(as.numeric(aovRT_pre$ANOVA$F)/(49*49), 2), as.numeric(aovRT_post$ANOVA$F))
+  testthat::expect_equal(round(as.numeric(aovRT_pre$ANOVA$F)/(49*49), 2), as.numeric(aovRT_post$ANOVA$F))
 
 })

@@ -23,11 +23,3 @@ requiredPackages(
 \description{
 Installs (default if required) and loads specified packages.
 }
-\examples{
-# Example 1:
-library(psychReport)
-\dontrun{
-requiredPackages(c("tidyverse", "ez"), installPackages=FALSE)
-}
-
-}

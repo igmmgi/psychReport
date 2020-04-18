@@ -10,8 +10,8 @@
 #' @return NULL
 #'
 #' @examples
-#' library(psychReport)
 #' requiredPackages(c("dplyr", "ez"))
+#'
 #' # Example 1:
 #' # create dataframe and add data with 2(Comp: comp vs. incomp) and 2(Side: left vs. right)
 #' dat <- createDF(nVP = 20,
@@ -31,16 +31,13 @@
 #'               rt = mean(RT))
 #'
 #' # repeated measures ANOVA using ezANOVA
+#' datAggVP$VP <- as.factor(datAggVP$VP)
 #' aovRT <- ezANOVA(datAggVP, dv=.(rt), wid = .(VP), within = .(Comp, Side),
 #'                  return_aov = TRUE, detailed = TRUE)
 #' aovRT <- aovTable(aovRT)
 #'
 #' aovString <- statStrAov(aovRT, "Comp")
 #' aovString <- statStrAov(aovRT, "Comp:Side")
-#'
-#' \dontrun{
-#' # Example use in *.Rnw Sweave file
-#' # \Sexpr{aovString} }
 #'
 #' @export
 statStrAov <- function(ezObj, effect) {

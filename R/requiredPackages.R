@@ -9,13 +9,6 @@
 #'
 #' @return NULL
 #'
-#' @examples
-#' # Example 1:
-#' library(psychReport)
-#'\dontrun{
-#' requiredPackages(c("tidyverse", "ez"), installPackages=FALSE)
-#'}
-#'
 #' @export
 requiredPackages <- function(packages,
                              installPackages=FALSE,

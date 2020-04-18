@@ -2,7 +2,7 @@ context("requiredPackages")
 
 test_that("requiredPackages", {
 
-  expect_error(requiredPackages(c("ez", "dplyr")), NA)
-  expect_error(requiredPackages(c("ez", "dplyr", "xxx")))
+  testthat::expect_error(requiredPackages(c("ez", "dplyr")), NA)
+  testthat::expect_error(requiredPackages(c("ez", "dplyr", "xxx")))
 
 })
