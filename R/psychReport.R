@@ -2,4 +2,3 @@
 #'
 "_PACKAGE"
 #> [1] "_PACKAGE"
-
