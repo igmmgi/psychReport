@@ -10,8 +10,8 @@ test_that("meanStrAov", {
   dat <- addDataDF(dat, RT = list("Comp_comp"   = c(500, 150, 100),
                                   "Comp_incomp" = c(500, 150, 100)))
 
+  # repeated measures ANOVA using ezANOVA
   dat$VP <- as.factor(dat$VP)
-
   aovRT <- ez::ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
                    return_aov = TRUE, detailed = TRUE)
   aovRT <- aovTable(aovRT)
@@ -34,6 +34,6 @@ test_that("meanStrAov", {
   aovRT <- aovTable(aovRT)
 
   string <- meanStrAov(aovRT, "Comp:Side", "comp:left")
-  testthat::expect_equal(string, "659 ms")
+  testthat::expect_equal(string, "658 ms")
 
 })

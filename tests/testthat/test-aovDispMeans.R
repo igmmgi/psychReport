@@ -2,6 +2,8 @@ context("aovDispMeans")
 
 test_that("aovDispMeans", {
 
+  library(ez)
+
   # create dataframe
   dat <- createDF(nVP = 50, nTrl = 1,
                   design = list("Comp" = c("comp", "neutral", "incomp")))

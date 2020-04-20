@@ -40,10 +40,10 @@ datAggVP <- dat \%>\%
 
 # repeated measures ANOVA using ezANOVA
 datAggVP$VP <- as.factor(datAggVP$VP)
-# aovRT <- ezANOVA(datAggVP, dv=.(rt), wid = .(VP), within = .(Comp),
-#                  return_aov = TRUE, detailed = TRUE)
-# aovDispTable(aovRT)
-# aovRT <- aovSphericityAdjustment(aovRT)
-# aovDispTable(aovRT)
+aovRT <- ezANOVA(datAggVP, dv=.(rt), wid = .(VP), within = .(Comp),
+                 return_aov = TRUE, detailed = TRUE)
+aovDispTable(aovRT)
+aovRT <- aovSphericityAdjustment(aovRT)
+aovDispTable(aovRT)
 
 }

@@ -13,8 +13,9 @@ statStrT(tObj)
 character
 }
 \description{
-Returns required Latex formatted string T-test required for R/Sweave integration.
+Returns required Latex formatted string T-test required for R/Knitr integration.
 For example, \emph{t}(11) = 3.45, \emph{p} < 0.05.
+Returns values to 2 sig decimal places and < 0.01, < 0.001 for p values.
 }
 \examples{
 requiredPackages(c("dplyr"))

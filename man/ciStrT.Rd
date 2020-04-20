@@ -43,8 +43,4 @@ tObj <- t.test(datAggVP$rt[datAggVP$Comp == "comp"],
 
 ciString <- ciStrT(tObj, unit = "ms")
 
-\dontrun{
-# Example use in *.Rnw Sweave file
-# \Sexpr{ciString}}
-
 }
