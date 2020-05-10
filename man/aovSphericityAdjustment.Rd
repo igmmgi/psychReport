@@ -4,12 +4,12 @@
 \alias{aovSphericityAdjustment}
 \title{aovSphericityAdjustment}
 \usage{
-aovSphericityAdjustment(ezObj, type = "GG")
+aovSphericityAdjustment(aovObj, type = "GG")
 }
 \arguments{
-\item{ezObj}{The returned object from a call to ezANOVA}
-
 \item{type}{"GG" (Greenhouse-Geisser) or "HF" (Huynh-Feldt)}
+
+\item{ezObj}{The returned object from a call to ezANOVA}
 }
 \value{
 list

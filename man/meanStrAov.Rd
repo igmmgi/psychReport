@@ -4,10 +4,10 @@
 \alias{meanStrAov}
 \title{meanStrAov}
 \usage{
-meanStrAov(ezObj, effect, level, unit = "ms", numDigits = 0)
+meanStrAov(aovObj, effect, level, unit = "ms", numDigits = 0)
 }
 \arguments{
-\item{ezObj}{Output from ezANOVA called with "return_aov = TRUE"}
+\item{aovObj}{Output from aov or ezANOVA (NB. ezANOVA must be called with detailed = TRUE)}
 
 \item{effect}{Effect to return}
 
@@ -48,6 +48,12 @@ datAggVP <- dat \%>\%
 datAggVP$VP <- as.factor(datAggVP$VP)
 aovRT <- ezANOVA(datAggVP, dv=.(rt), wid = .(VP), within = .(Comp, Side),
                  return_aov = TRUE, detailed = TRUE)
+aovRT <- aovTable(aovRT)
+
+meanString <- meanStrAov(aovRT, "Comp", "comp")
+meanString <- meanStrAov(aovRT, "Comp:Side", "incomp:left")
+
+aovRT <- aov(rt ~ Comp*Side + Error(VP/(Comp*Side)), datAggVP)
 aovRT <- aovTable(aovRT)
 
 meanString <- meanStrAov(aovRT, "Comp", "comp")

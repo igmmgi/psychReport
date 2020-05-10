@@ -4,10 +4,10 @@
 \alias{aovRoundDigits}
 \title{aovRoundDigits}
 \usage{
-aovRoundDigits(ezObj, nsmall = 2)
+aovRoundDigits(aovObj, nsmall = 2)
 }
 \arguments{
-\item{ezObj}{Output from ezANOVA}
+\item{aovObj}{Output from aov or ezANOVA}
 
 \item{nsmall}{Number of small digits to round to within ANOVA table}
 }
@@ -45,5 +45,8 @@ aovRT <- ezANOVA(datAggVP, dv=.(rt), wid = .(VP), within = .(Comp, Side),
 aovDispTable(aovRT)
 aovRT <- aovRoundDigits(aovRT, 2)
 aovDispTable(aovRT)
+
+aovRT <- aov(rt ~ Comp*Side + Error(VP/(Comp*Side)), datAggVP)
+aovRT <- aovRoundDigits(aovRT, 2)
 
 }

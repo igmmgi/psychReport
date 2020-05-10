@@ -4,14 +4,14 @@
 \alias{effectsizeValueString}
 \title{effectsizeValueString}
 \usage{
-effectsizeValueString(ezObj, effect, effectSize = "pes")
+effectsizeValueString(aovObj, effect, effectSize = "pes")
 }
 \arguments{
-\item{ezObj}{The returned object from a call to ezANOVA}
+\item{aovObj}{Output from aov or ezANOVA (NB. ezANOVA must be called with detailed = TRUE)}
 
 \item{effect}{The effect within the ANOVA table to return}
 
-\item{effectSize}{The effect size to report ("ges" default witin ezANOVA, "pes" partial eta squared)}
+\item{effectSize}{The effect size to report ("ges" default within ezANOVA, "pes" partial eta squared)}
 }
 \value{
 character
@@ -19,6 +19,7 @@ character
 \description{
 Returns required Latex formatted string for effect size (eta squared, partial
 eta square, generalized eta squared) = XXX for R/Sweave integration.
+Returns values to 2 sig decimal places.
 }
 \examples{
 requiredPackages(c("dplyr", "ez"))
@@ -44,6 +45,12 @@ datAggVP <- dat \%>\%
 datAggVP$VP <- as.factor(datAggVP$VP)
 aovRT <- ezANOVA(datAggVP, dv=.(rt), wid = .(VP), within = .(Comp, Side),
                  return_aov = TRUE, detailed = TRUE)
+aovRT <- aovTable(aovRT)
+
+pesString <- effectsizeValueString(aovRT, "Comp")  # partial eta squared
+pesString <- effectsizeValueString(aovRT, "Comp:Side")
+
+aovRT <- aov(rt ~ Comp*Side + Error(VP/(Comp*Side)), datAggVP)
 aovRT <- aovTable(aovRT)
 
 pesString <- effectsizeValueString(aovRT, "Comp")  # partial eta squared

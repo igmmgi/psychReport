@@ -4,10 +4,10 @@
 \alias{aovDispTable}
 \title{aovDispTable}
 \usage{
-aovDispTable(ezObj, caption = sys.call())
+aovDispTable(aovObj, caption = sys.call())
 }
 \arguments{
-\item{ezObj}{Output from ezANOVA}
+\item{aovObj}{Output from aov or ezANOVA}
 
 \item{caption}{Required for heading}
 }
@@ -27,6 +27,9 @@ dat <- addDataDF(dat, RT = list("Comp_comp"   = c(500, 150, 100),
 
 dat$VP <- as.factor(dat$VP)
 aovRT <- ezANOVA(dat, dv=.(RT), wid = .(VP), within = .(Comp), return_aov = TRUE, detailed = TRUE)
+aovDispTable(aovRT)
+
+aovRT <- aov(RT ~ Comp + Error(VP/(Comp)), dat)
 aovDispTable(aovRT)
 
 }

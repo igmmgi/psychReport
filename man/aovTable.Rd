@@ -5,11 +5,10 @@
 \title{aovTable}
 \usage{
 aovTable(
-  ezObj,
+  aovObj,
   effectSize = "pes",
   sphericityCorrections = TRUE,
   sphericityCorrectionType = "GG",
-  marginalMeans = TRUE,
   removeSumSquares = TRUE,
   removeIntercept = TRUE,
   roundDigits = TRUE,
@@ -20,17 +19,14 @@ aovTable(
 )
 }
 \arguments{
-\item{ezObj}{Output from ezANOVA (NB. ezANOVA must be called with detailed = TRUE)}
+\item{aovObj}{Output from aov or ezANOVA (NB. ezANOVA must be called with detailed = TRUE)}
 
 \item{effectSize}{"ges" (generalized eta-squared), "es" (eta-squared), or
 "pes" (partial eta-squared)}
 
-\item{sphericityCorrections}{TRUE/FALSE}
+\item{sphericityCorrections}{TRUE/FALSE (ezANOVA)}
 
-\item{sphericityCorrectionType}{"GG" (default) vs. "HF"}
-
-\item{marginalMeans}{Return marginal means via model.tables (NB. ezANOVA must
-be called with return_aov = TRUE)}
+\item{sphericityCorrectionType}{"GG" (default) vs. "HF" (ezANOVA)}
 
 \item{removeSumSquares}{TRUE/FALSE Remove SSn/SSd columns from the ANOVA table}
 
@@ -81,5 +77,9 @@ datAggVP$VP <- as.factor(datAggVP$VP)
 aovRT <- ezANOVA(datAggVP, dv=.(rt), wid = .(VP), within = .(Comp, Side),
                  return_aov = TRUE, detailed = TRUE)
 aovRT <- aovTable(aovRT)
+
+aovRT <- aov(rt ~ Comp*Side + Error(VP/(Comp*Side)), datAggVP)
+aovRT <- aovTable(aovRT)
+
 
 }

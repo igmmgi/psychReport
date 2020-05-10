@@ -4,10 +4,10 @@
 \alias{statStrAov}
 \title{statStrAov}
 \usage{
-statStrAov(ezObj, effect)
+statStrAov(aovObj, effect)
 }
 \arguments{
-\item{ezObj}{Output from ezANOVA (NB. ezANOVA must be called with detailed = TRUE)}
+\item{aovObj}{Output from aov or ezANOVA (NB. ezANOVA must be called with detailed = TRUE)}
 
 \item{effect}{The effect required from the anova table}
 }
@@ -41,6 +41,12 @@ datAggVP <- dat \%>\%
 datAggVP$VP <- as.factor(datAggVP$VP)
 aovRT <- ezANOVA(datAggVP, dv=.(rt), wid = .(VP), within = .(Comp, Side),
                  return_aov = TRUE, detailed = TRUE)
+aovRT <- aovTable(aovRT)
+
+aovString <- statStrAov(aovRT, "Comp")
+aovString <- statStrAov(aovRT, "Comp:Side")
+
+aovRT <- aov(rt ~ Comp*Side + Error(VP/(Comp*Side)), datAggVP)
 aovRT <- aovTable(aovRT)
 
 aovString <- statStrAov(aovRT, "Comp")

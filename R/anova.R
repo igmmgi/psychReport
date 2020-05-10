@@ -1,8 +1,30 @@
+#' @title aovTidyTable
+#'
+#' @description Take output from base aov function and produce a "tidy" ANOVA table
+#' similar to the output of ezANOVA
+#'
+#' @param aovOb Output from aov function
+#'
+#' @return aov
+#'
+#' @export
+aovTidyTable <- function(aovObj) {
+  aovTable        <- tidy(aovObj)
+  aovTable        <- aovTable[2:nrow(aovTable), 2:7]
+  aovTable        <- cbind(aovTable[seq(1, nrow(aovTable), 2),], aovTable[seq(2, nrow(aovTable), 2), c(2,3,4)])
+  aovTable        <- aovTable[, c(1,2,7,4,8,5,6)]
+  names(aovTable) <- c("Effect", "DFn", "DFd", "SSn", "SSd", "F", "p")
+  aovObj$means    <- stats::model.tables(aovObj, type = "mean")
+  aovObj$ANOVA    <- aovTable
+  return(aovObj)
+}
+
+
 #' @title aovDispTable
 #'
 #' @description Display formatted ANOVA table in command window.
 #'
-#' @param ezObj Output from ezANOVA
+#' @param aovObj Output from aov or ezANOVA
 #' @param caption Required for heading
 #'
 #' @return NULL
@@ -22,15 +44,26 @@
 #' aovRT <- ezANOVA(dat, dv=.(RT), wid = .(VP), within = .(Comp), return_aov = TRUE, detailed = TRUE)
 #' aovDispTable(aovRT)
 #'
+#' aovRT <- aov(RT ~ Comp + Error(VP/(Comp)), dat)
+#' aovDispTable(aovRT)
+#'
 #' @export
-aovDispTable <- function(ezObj, caption=sys.call()) {
+aovDispTable <- function(aovObj, caption=sys.call()) {
+
+  if (length(class(aovObj)) > 1) {
+    if (is.null(aovObj$ANOVA)) {
+      aovObj <- aovTidyTable(aovObj)
+    }
+  }
+
   if (!is.character(caption)) {
     caption <- paste0("ANOVA:", unlist(lapply(caption[2], as.character)))
   }
-  width <- max(apply(ezObj$ANOVA, 1, function(x) sum(nchar(x))))
+  width <- max(apply(aovObj$ANOVA, 1, function(x) sum(nchar(x))))
   print(cli::rule(line = 2, center = crayon::black(caption), width = width + 13))
-  print(ezObj$ANOVA, row.names = FALSE)
+  print(aovObj$ANOVA, row.names = FALSE)
   print(cli::rule(width = width + 13))
+
 }
 
 
@@ -39,7 +72,7 @@ aovDispTable <- function(ezObj, caption=sys.call()) {
 #'
 #' @description Displays marginal means from model.tables in the command window.
 #'
-#' @param ezObj Output from ezANOVA  (NB. ezANOVA must be called with \"return_aov = TRUE\"")
+#' @param aovObj Output from aov or ezANOVA  (NB. ezANOVA must be called with \"return_aov = TRUE\"")
 #' @param value String for column name
 #' @param caption Required for heading
 #'
@@ -63,14 +96,20 @@ aovDispTable <- function(ezObj, caption=sys.call()) {
 #' aovRT <- aovTable(aovRT)
 #' aovDispMeans(aovRT)
 #'
+#' aovRT <- aov(RT ~ Comp + Error(VP/(Comp)), dat)
+#' aovDispTable(aovRT)
+#' aovDispMeans(aovRT)
+#'
 #' @export
-aovDispMeans <- function(ezObj, value="value", caption=sys.call()) {
+aovDispMeans <- function(aovObj, value="value", caption=sys.call()) {
 
-  if (is.null(ezObj$means)) {
-    stop("ezANOVA object does not contain marginal means!\nCall ezANOVA with \"return_aov = TRUE\"")
-  } else {
-    means = ezObj$means
+
+  if (length(class(aovObj)) > 1) {
+    if (is.null(aovObj$ANOVA)) {
+      aovObj <- aovTidyTable(aovObj)
+    }
   }
+    means <- aovObj$means
 
   for (i in 2:(length(means$n) + 1)) {
 
@@ -95,9 +134,9 @@ aovDispMeans <- function(ezObj, value="value", caption=sys.call()) {
 #' @title aovEffectSize
 #'
 #' @description Add partial eta squared (pes) or eta-squared (es) effect size measures
-#' to ezANOVA table.
+#' to anova table.
 #'
-#' @param ezObj Output from ezANOVA
+#' @param aovObj Output from aov or ezANOVA
 #' @param effectSize "ges" vs. pes"
 #'
 #' @return list
@@ -133,21 +172,30 @@ aovDispMeans <- function(ezObj, value="value", caption=sys.call()) {
 #' aovRT <- aovEffectSize(aovRT, "pes")
 #' aovRT <- aovTable(aovRT)
 #'
+#' aovRT <- aov(rt ~ Comp * Side + Error(VP/(Comp*Side)), datAggVP)
+#' aovRT <- aovEffectSize(aovRT, "pes")
+#'
 #' @export
-aovEffectSize <- function(ezObj, effectSize) {
+aovEffectSize <- function(aovObj, effectSize) {
 
-   if (effectSize == "ges") {
+  if (length(class(aovObj)) > 1) {
+    if (is.null(aovObj$ANOVA)) {
+      aovObj <- aovTidyTable(aovObj)
+    }
+  }
+
+  if (effectSize == "ges") {
     # NB assumes no observed variables within initial call to ezANOVA!
-    ezObj$ANOVA$ges <- ezObj$ANOVA$SSn / (ezObj$ANOVA$SSn + sum(unique(ezObj$ANOVA$SSd)))
-    ezObj$ANOVA$pes <- NULL
+    aovObj$ANOVA$ges <- aovObj$ANOVA$SSn / (aovObj$ANOVA$SSn + sum(unique(aovObj$ANOVA$SSd)))
+    aovObj$ANOVA$pes <- NULL
   } else if (effectSize == "pes") {
-    ezObj$ANOVA$ges <- NULL
-    ezObj$ANOVA$pes <- ezObj$ANOVA$SSn / (ezObj$ANOVA$SSn + ezObj$ANOVA$SSd)
+    aovObj$ANOVA$ges <- NULL
+    aovObj$ANOVA$pes <- aovObj$ANOVA$SSn / (aovObj$ANOVA$SSn + aovObj$ANOVA$SSd)
   } else {
     stop("effectSize not recognized!")
   }
 
-  return(ezObj)
+  return(aovObj)
 
 }
 
@@ -155,9 +203,10 @@ aovEffectSize <- function(ezObj, effectSize) {
 
 #' @title adjustJackknifeAdjustment
 #'
-#' @description Adjust ezANOVA table with corrected F (Fc = F/(n-1)^2) and p values for jackkniffed data (see Ulrich and Miller, 2001. Using the jackknife-based scoring method for measuring LRP onset effects in factorial designs. Psychophysiology, 38, 816-827.)
+#' @description Adjust ezANOVA table with corrected F (Fc = F/(n-1)^2) and p values for jackkniffed data (see Ulrich and Miller, 2001.
+#' Using the jackknife-based scoring method for measuring LRP onset effects in factorial designs. Psychophysiology, 38, 816-827.)
 #'
-#' @param ezObj Output from ezANOVA
+#' @param aovObj Output from aov or ezANOVA
 #' @param numVPs The number of participants
 #'
 #' @return list
@@ -192,25 +241,33 @@ aovEffectSize <- function(ezObj, effectSize) {
 #' aovRT <- aovJackknifeAdjustment(aovRT, length(unique(datAggVP$VP)))
 #' aovDispTable(aovRT)
 #'
+#' aovRT <- aov(rt ~ Comp*Side + Error(VP/(Comp*Side)), datAggVP)
+#' aovRT <- aovJackknifeAdjustment(aovRT, length(unique(datAggVP$VP)))
+#'
 #' @export
-aovJackknifeAdjustment <- function(ezObj, numVPs) {
+aovJackknifeAdjustment <- function(aovObj, numVPs) {
 
-  ezObj$ANOVA$SSd     <- ezObj$ANOVA$SSd*((numVPs - 1) ^ 2)
-  ezObj$ANOVA$F       <- ezObj$ANOVA$F/((numVPs - 1) ^ 2)
-  ezObj$ANOVA$p       <- 1 - stats::pf(ezObj$ANOVA$F, ezObj$ANOVA$DFn, ezObj$ANOVA$DFd)
-  ezObj$ANOVA$"p<.05" <- pValueSummary(ezObj$ANOVA$p)
+  if (length(class(aovObj)) > 1) {
+    if (is.null(aovObj$ANOVA)) {
+      aovObj <- aovTidyTable(aovObj)
+    }
+  }
 
-  return(ezObj)
+  aovObj$ANOVA$SSd     <- aovObj$ANOVA$SSd*((numVPs - 1) ^ 2)
+  aovObj$ANOVA$F       <- aovObj$ANOVA$F/((numVPs - 1) ^ 2)
+  aovObj$ANOVA$p       <- 1 - stats::pf(aovObj$ANOVA$F, aovObj$ANOVA$DFn, aovObj$ANOVA$DFd)
+  aovObj$ANOVA$"p<.05" <- pValueSummary(aovObj$ANOVA$p)
+
+  return(aovObj)
 
 }
-
 
 
 #' @title aovRoundDigits
 #'
 #' @description Round digits to n decimal places in ezANOVA table
 #'
-#' @param ezObj Output from ezANOVA
+#' @param aovObj Output from aov or ezANOVA
 #' @param nsmall Number of small digits to round to within ANOVA table
 #'
 #' @return dataframe
@@ -244,15 +301,23 @@ aovJackknifeAdjustment <- function(ezObj, numVPs) {
 #' aovRT <- aovRoundDigits(aovRT, 2)
 #' aovDispTable(aovRT)
 #'
+#' aovRT <- aov(rt ~ Comp*Side + Error(VP/(Comp*Side)), datAggVP)
+#' aovRT <- aovRoundDigits(aovRT, 2)
+#'
 #' @export
-aovRoundDigits <- function(ezObj,
-                           nsmall = 2) {
+aovRoundDigits <- function(aovObj, nsmall = 2) {
+
+  if (length(class(aovObj)) > 1) {
+    if (is.null(aovObj$ANOVA)) {
+      aovObj <- aovTidyTable(aovObj)
+    }
+  }
 
   colNames <- c("SSn", "SSd", "F", "p", "eps", "ges", "es", "pes")
-  colIdx   <- which(names(ezObj$ANOVA) %in% colNames)
-  ezObj$ANOVA[, colIdx] <- format(round(ezObj$ANOVA[, colIdx], nsmall), nsmall = nsmall)
+  colIdx   <- which(names(aovObj$ANOVA) %in% colNames)
+  aovObj$ANOVA[, colIdx] <- format(round(aovObj$ANOVA[, colIdx], nsmall), nsmall = nsmall)
 
-  return(ezObj)
+  return(aovObj)
 
 }
 
@@ -297,27 +362,27 @@ aovRoundDigits <- function(ezObj,
 #' aovDispTable(aovRT)
 #'
 #' @export
-aovSphericityAdjustment <- function(ezObj, type = "GG") {
+aovSphericityAdjustment <- function(aovObj, type = "GG") {
 
-  hasSphericity <- ezObj$"Sphericity Corrections"
+  hasSphericity <- aovObj$"Sphericity Corrections"
   if (is.null(hasSphericity)) {
-    return(ezObj)
+    return(aovObj)
   }
 
-  sphericityRows <- match(rownames(ezObj$"Sphericity Corrections"), rownames(ezObj$ANOVA))
+  sphericityRows <- match(rownames(aovObj$"Sphericity Corrections"), rownames(aovObj$ANOVA))
   if (type == "GG") {
-    ezObj$ANOVA$p[sphericityRows]   <- ezObj$"Sphericity Corrections"$"p[GG]"
-    ezObj$ANOVA$eps                 <- rep(0, length(ezObj$ANOVA$"Effect"))
-    ezObj$ANOVA$eps[sphericityRows] <- ezObj$"Sphericity Corrections"$GGe
+    aovObj$ANOVA$p[sphericityRows]   <- aovObj$"Sphericity Corrections"$"p[GG]"
+    aovObj$ANOVA$eps                 <- rep(0, length(aovObj$ANOVA$"Effect"))
+    aovObj$ANOVA$eps[sphericityRows] <- aovObj$"Sphericity Corrections"$GGe
   } else if (type == "HF") {
-    ezObj$ANOVA$p[sphericityRows]   <- ezObj$"Sphericity Corrections"$"p[HF]"
-    ezObj$ANOVA$eps                 <- rep(0, length(ezObj$ANOVA$"Effect"))
-    ezObj$ANOVA$eps[sphericityRows] <- ezObj$"Sphericity Corrections"$HFe
+    aovObj$ANOVA$p[sphericityRows]   <- aovObj$"Sphericity Corrections"$"p[HF]"
+    aovObj$ANOVA$eps                 <- rep(0, length(aovObj$ANOVA$"Effect"))
+    aovObj$ANOVA$eps[sphericityRows] <- aovObj$"Sphericity Corrections"$HFe
   } else {
     stop("Sphericity correction type not recognized!")
   }
 
-  return(ezObj)
+  return(aovObj)
 
 }
 
@@ -329,13 +394,11 @@ aovSphericityAdjustment <- function(ezObj, type = "GG") {
 #' effect sizes (eta squared, partial eta squared), the calculation of marginal
 #' means and formating options for the ANOVA table (e.g., detailed, rounding).
 #'
-#' @param ezObj Output from ezANOVA (NB. ezANOVA must be called with detailed = TRUE)
+#' @param aovObj Output from aov or ezANOVA (NB. ezANOVA must be called with detailed = TRUE)
 #' @param effectSize "ges" (generalized eta-squared), "es" (eta-squared), or
 #' "pes" (partial eta-squared)
-#' @param sphericityCorrections TRUE/FALSE
-#' @param sphericityCorrectionType "GG" (default) vs. "HF"
-#' @param marginalMeans Return marginal means via model.tables (NB. ezANOVA must
-#' be called with return_aov = TRUE)
+#' @param sphericityCorrections TRUE/FALSE (ezANOVA)
+#' @param sphericityCorrectionType "GG" (default) vs. "HF" (ezANOVA)
 #' @param removeSumSquares TRUE/FALSE Remove SSn/SSd columns from the ANOVA table
 #' @param removeIntercept TRUE/FALSE Remove intercept row from the ANOVA table
 #' @param roundDigits TRUE/FALSE Round numerical values to numDigits
@@ -374,12 +437,15 @@ aovSphericityAdjustment <- function(ezObj, type = "GG") {
 #'                  return_aov = TRUE, detailed = TRUE)
 #' aovRT <- aovTable(aovRT)
 #'
+#' aovRT <- aov(rt ~ Comp*Side + Error(VP/(Comp*Side)), datAggVP)
+#' aovRT <- aovTable(aovRT)
+#'
+#'
 #' @export
-aovTable <- function(ezObj,
+aovTable <- function(aovObj,
                      effectSize = "pes",
                      sphericityCorrections = TRUE,
                      sphericityCorrectionType = "GG",
-                     marginalMeans = TRUE,
                      removeSumSquares = TRUE,
                      removeIntercept = TRUE,
                      roundDigits = TRUE,
@@ -388,61 +454,72 @@ aovTable <- function(ezObj,
                      dispAovMeans = FALSE,
                      caption = NULL) {
 
-  if (!"SSn" %in% names(ezObj$ANOVA)) {
+  aov_function <- "ezANOVA"
+  if (length(class(aovObj)) > 1) {
+    aov_function <- "aov"
+    if (is.null(aovObj$ANOVA)) {
+      aovObj <- aovTidyTable(aovObj)
+    }
+  }
+
+  if (!"SSn" %in% names(aovObj$ANOVA)) {
     stop("Call ezANOVA with \"detailed = TRUE\"!")
   }
 
-  if (!"aov" %in% names(ezObj)) {
+  if (aov_function == "ezANOVA" & !"aov" %in% names(aovObj)) {
       stop("Call ezANOVA with \"return_aov = TRUE\"!")
   }
 
   if (effectSize != "ges") {
-      ezObj <- aovEffectSize(ezObj, effectSize)
+      aovObj <- aovEffectSize(aovObj, effectSize)
   }
 
-  if (sphericityCorrections) {
-    ezObj <- aovSphericityAdjustment(ezObj, sphericityCorrectionType)
+  if (sphericityCorrections & any(aovObj$ANOVA$DFn > 1)) {
+    if(aov_function == "aov") {
+      warning("Sphericity Corrections not within aov. Use ezANOVA.")
+    }
+    aovObj <- aovSphericityAdjustment(aovObj, sphericityCorrectionType)
   }
 
-  if (removeIntercept) {
-    ezObj$ANOVA <- ezObj$ANOVA[-c(1), ]
+  if (aov_function == "ezANOVA" & removeIntercept) {
+    aovObj$ANOVA <- aovObj$ANOVA[-c(1), ]
   }
 
   # p-value summary *** vs. ** vs *
-  ezObj$ANOVA$"p<.05" <- pValueSummary(ezObj$ANOVA$p)
+  aovObj$ANOVA$"p<.05" <- pValueSummary(aovObj$ANOVA$p)
 
   if (roundDigits) {
-    ezObj <- aovRoundDigits(ezObj, nsmall = numDigits)
+    aovObj <- aovRoundDigits(aovObj, nsmall = numDigits)
   }
 
   if (removeSumSquares) {
-    ezObj$ANOVA$SSn <- NULL
-    ezObj$ANOVA$SSd <- NULL
+    aovObj$ANOVA$SSn <- NULL
+    aovObj$ANOVA$SSd <- NULL
   }
 
-  if (marginalMeans) {
-    ezObj$means <- stats::model.tables(ezObj$aov, type = "mean")
+  if (aov_function == "ezANOVA") {
+    aovObj$means <- stats::model.tables(aovObj$aov, type = "mean")
   }
 
   if (dispAovTable) {
       if (is.null(caption)) {
-          aovDispTable(ezObj, caption = sys.call())
+          aovDispTable(aovObj, caption = sys.call())
       } else {
-          aovDispTable(ezObj, caption = caption)
+          aovDispTable(aovObj, caption = caption)
       }
   }
 
   if (dispAovMeans) {
       if (is.null(caption)) {
-          aovDispMeans(ezObj, caption = sys.call())
+          aovDispMeans(aovObj, caption = sys.call())
       } else {
-          aovDispMeans(ezObj, caption = caption)
+          aovDispMeans(aovObj, caption = caption)
       }
   }
 
-  ezObj$aovTable = TRUE
+  aovObj$aovTable = TRUE
 
-  return(ezObj)
+  return(aovObj)
 
 }
 
@@ -452,11 +529,11 @@ aovTable <- function(ezObj,
 #'
 #' @description Returns required Latex formatted string for effect size (eta squared, partial
 #' eta square, generalized eta squared) = XXX for R/Sweave integration.
-#  Returns values to 2 sig decimal places.
-
-#' @param ezObj The returned object from a call to ezANOVA
+#' Returns values to 2 sig decimal places.
+#'
+#' @param aovObj Output from aov or ezANOVA (NB. ezANOVA must be called with detailed = TRUE)
 #' @param effect The effect within the ANOVA table to return
-#' @param effectSize The effect size to report ("ges" default witin ezANOVA, "pes" partial eta squared)
+#' @param effectSize The effect size to report ("ges" default within ezANOVA, "pes" partial eta squared)
 #'
 #' @return character
 #'
@@ -489,19 +566,30 @@ aovTable <- function(ezObj,
 #' pesString <- effectsizeValueString(aovRT, "Comp")  # partial eta squared
 #' pesString <- effectsizeValueString(aovRT, "Comp:Side")
 #'
+#' aovRT <- aov(rt ~ Comp*Side + Error(VP/(Comp*Side)), datAggVP)
+#' aovRT <- aovTable(aovRT)
+#'
+#' pesString <- effectsizeValueString(aovRT, "Comp")  # partial eta squared
+#' pesString <- effectsizeValueString(aovRT, "Comp:Side")
+#'
 #' @export
+effectsizeValueString <- function(aovObj, effect, effectSize = "pes"){
 
-effectsizeValueString <- function(ezObj, effect, effectSize = "pes"){
+  if (length(class(aovObj)) > 1) {
+    if (is.null(aovObj$ANOVA)) {
+      aovObj <- aovTidyTable(aovObj)
+    }
+  }
 
-  effectSizeIdx <- which(names(ezObj$ANOVA) %in% effectSize)
+  effectSizeIdx <- which(names(aovObj$ANOVA) %in% effectSize)
   if (length(effectSizeIdx) == 0) {
     stop("Requested effect size not present in ANOVA table!")
   }
   if (effectSize == "ges") {
-    effectSizeValue <- ezObj$ANOVA[, "ges"][ezObj$ANOVA$Effect == effect]
+    effectSizeValue <- aovObj$ANOVA[, "ges"][aovObj$ANOVA$Effect == effect]
     return(paste0("$\\eta_{G}^2$ = ", effectSizeValue))
   } else if (effectSize == "pes") {
-    effectSizeValue  <- ezObj$ANOVA[, "pes"][ezObj$ANOVA$Effect == effect]
+    effectSizeValue  <- aovObj$ANOVA[, "pes"][aovObj$ANOVA$Effect == effect]
     return(paste0("$\\eta_{p}^2$ = ", effectSizeValue))
   }
 }
@@ -514,12 +602,13 @@ effectsizeValueString <- function(ezObj, effect, effectSize = "pes"){
 #' for R/Sweave integration. For example, \emph{F}(1, 23) = 3.45.
 #' Returns values to 2 sig decimal places.
 #'
-#' @param ezObj The returned object from a call to ezANOVA
+#' @param aovObj Output from aov or ezANOVA (NB. ezANOVA must be called with detailed = TRUE)
 #' @param effect The effect within the ANOVA table to return
 #'
-#' @ return character
+#' @return character
 #'
-#' @ examples
+#' @examples
+#'
 #' library(psychReport)
 #' requiredPackages(c("dplyr", "ez"))
 #' # Example 1:
@@ -549,12 +638,25 @@ effectsizeValueString <- function(ezObj, effect, effectSize = "pes"){
 #' fString <- fValueString(aovRT, "Comp")
 #' fString <- fValueString(aovRT, "Comp:Side")
 #'
+#' aovRT <- aov(rt ~ Comp*Side + Error(VP/(Comp*Side)), datAggVP)
+#' aovRT <- aovTable(aovRT)
+#'
+#' fString <- fValueString(aovRT, "Comp")
+#' fString <- fValueString(aovRT, "Comp:Side")
+#'
 #' @export
+fValueString <- function(aovObj, effect){
 
-fValueString <- function(ezObj, effect){
-  DFn    <- ezObj$ANOVA[, "DFn"][ezObj$ANOVA$Effect == effect]
-  DFd    <- ezObj$ANOVA[, "DFd"][ezObj$ANOVA$Effect == effect]
-  fValue <- ezObj$ANOVA[, "F"][ezObj$ANOVA$Effect == effect]
+  if (length(class(aovObj)) > 1) {
+    if (is.null(aovObj$ANOVA)) {
+      aovObj <- aovTidyTable(aovObj)
+    }
+  }
+
+  DFn    <- aovObj$ANOVA[, "DFn"][aovObj$ANOVA$Effect == effect]
+  DFd    <- aovObj$ANOVA[, "DFd"][aovObj$ANOVA$Effect == effect]
+  fValue <- aovObj$ANOVA[, "F"][aovObj$ANOVA$Effect == effect]
+
   return(paste0("\\emph{F}", "(", DFn, ", ", DFd, ") = ", fValue))
 }
 
@@ -565,7 +667,7 @@ fValueString <- function(ezObj, effect){
 #' @description Returns marginal means from ezANOVA object for requested effect in Latex format.
 #' Assumes means added to aovObj (e.g., aovObj$means <- model.tables(aovObj$aov, type = "mean").
 #'
-#' @param ezObj Output from ezANOVA called with "return_aov = TRUE"
+#' @param aovObj Output from aov or ezANOVA (NB. ezANOVA must be called with detailed = TRUE)
 #' @param effect Effect to return
 #' @param level Level of effect
 #' @param unit "ms" vs. "mv" vs. "\%"
@@ -602,11 +704,23 @@ fValueString <- function(ezObj, effect){
 #' meanString <- meanStrAov(aovRT, "Comp", "comp")
 #' meanString <- meanStrAov(aovRT, "Comp:Side", "incomp:left")
 #'
+#' aovRT <- aov(rt ~ Comp*Side + Error(VP/(Comp*Side)), datAggVP)
+#' aovRT <- aovTable(aovRT)
+#'
+#' meanString <- meanStrAov(aovRT, "Comp", "comp")
+#' meanString <- meanStrAov(aovRT, "Comp:Side", "incomp:left")
+#'
 #' @export
-meanStrAov <- function(ezObj, effect, level, unit = "ms", numDigits = 0) {
+meanStrAov <- function(aovObj, effect, level, unit = "ms", numDigits = 0) {
 
-  row <- which(ezObj$ANOVA$Effect == effect) + 1
-  dat <- as.data.frame.table(ezObj$means$tables[[row]], responseName = "DV")
+  if (length(class(aovObj)) > 1) {
+    if (is.null(aovObj$ANOVA)) {
+      aovObj <- aovTidyTable(aovObj)
+    }
+  }
+
+  row <- which(aovObj$ANOVA$Effect == effect) + 1
+  dat <- as.data.frame.table(aovObj$means$tables[[row]], responseName = "DV")
 
   effect <- unlist(strsplit(effect, ":"))
   level  <- unlist(strsplit(level, ":"))
@@ -633,6 +747,7 @@ meanStrAov <- function(ezObj, effect, level, unit = "ms", numDigits = 0) {
 #' @description Returns Latex formatted table of marginal means from model.tables.
 #' Uses printTable (xtable) latex package with some basic defaults.
 #' For more examples, see R package xtable
+#' @param ... Output from aov or ezANOVA (NB. ezANOVA must be called with detailed = TRUE)
 #' @param ... Output from ezANOVA  (NB. ezANOVA must be called with \"return_aov = TRUE\"")
 #' @param caption Title for the table
 #' @param digits Number of digits to round to
@@ -657,19 +772,29 @@ meanStrAov <- function(ezObj, effect, level, unit = "ms", numDigits = 0) {
 #' aovRT <- aovTable(aovRT)
 #' printAovMeans(aovRT, digits = 0, dv = "mV")  # latex formatted
 #'
+#' aovRT <- aov(RT ~ Comp + Error(VP/(Comp)), dat)
+#' aovRT <- aovTable(aovRT)
+#' printAovMeans(aovRT, digits = 0, dv = "mV")  # latex formatted
+#'
 #' @export
 printAovMeans <- function(..., caption = "Mean", digits = 3, dv = "ms") {
 
-  ezObj <- list(...)
-  for (i in seq(1:length(ezObj))) {
-    if (is.null(ezObj[[i]]$means)) {
+  if (length(class(aovObj)) > 1) {
+    if (is.null(aovObj$ANOVA)) {
+      aovObj <- aovTidyTable(aovObj)
+    }
+  }
+
+  aovObj <- list(...)
+  for (i in seq(1:length(aovObj))) {
+    if (is.null(aovObj[[i]]$means)) {
       stop("ezANOVA object does not contain marginal means!\nCall ezANOVA with \"return_aov = TRUE\"")
     }
   }
-  if (!length(digits) %in% c(1, length(ezObj))) {
+  if (!length(digits) %in% c(1, length(aovObj))) {
     stop("length digits must equal 1 or number of ezObj inputs")
   }
-  if (!length(dv) %in% c(1, length(ezObj))) {
+  if (!length(dv) %in% c(1, length(aovObj))) {
     stop("dv length must equal 1 or number of ezObj inputs")
   }
 
@@ -683,18 +808,18 @@ printAovMeans <- function(..., caption = "Mean", digits = 3, dv = "ms") {
   dv <- gsub("_", "\\_",      dv, fixed = TRUE)
   dv <- gsub("mV", "$\\mu$V", dv, fixed = TRUE)
 
-  for (i in 2:(length(ezObj[[1]]$means$n) + 1)) {
+  for (i in 2:(length(aovObj[[1]]$means$n) + 1)) {
 
-    tab <- as.data.frame.table(ezObj[[1]]$means$tables[[i]])
+    tab <- as.data.frame.table(aovObj[[1]]$means$tables[[i]])
     names(tab)[ncol(tab)] <- dv[1]
-    for (j in 1:length(ezObj)) {
-      tab <- cbind(tab, as.data.frame.table(ezObj[[j]]$means$tables[[i]]))
+    for (j in 1:length(aovObj)) {
+      tab <- cbind(tab, as.data.frame.table(aovObj[[j]]$means$tables[[i]]))
       names(tab)[ncol(tab)] <- dv[j]
     }
 
     tab <- tab[, !duplicated(colnames(tab))]
     printTable(tab,
-               caption = paste0(caption, ": ", names(ezObj[[1]]$means$tables[i])),
+               caption = paste0(caption, ": ", names(aovObj[[1]]$means$tables[i])),
                digits = digits)
   }
 
@@ -708,7 +833,7 @@ printAovMeans <- function(..., caption = "Mean", digits = 3, dv = "ms") {
 #' For example, \deqn{F(1, 20) = 8.45, p < 0.01, pes = 0.45}
 #' Returns values to 2 sig decimal places and < 0.01, < 0.001 for p values.
 #'
-#' @param ezObj Output from ezANOVA (NB. ezANOVA must be called with detailed = TRUE)
+#' @param aovObj Output from aov or ezANOVA (NB. ezANOVA must be called with detailed = TRUE)
 #' @param effect The effect required from the anova table
 #'
 #' @return NULL
@@ -743,13 +868,19 @@ printAovMeans <- function(..., caption = "Mean", digits = 3, dv = "ms") {
 #' aovString <- statStrAov(aovRT, "Comp")
 #' aovString <- statStrAov(aovRT, "Comp:Side")
 #'
+#' aovRT <- aov(rt ~ Comp*Side + Error(VP/(Comp*Side)), datAggVP)
+#' aovRT <- aovTable(aovRT)
+#'
+#' aovString <- statStrAov(aovRT, "Comp")
+#' aovString <- statStrAov(aovRT, "Comp:Side")
+#'
 #' @export
-statStrAov <- function(ezObj, effect) {
+statStrAov <- function(aovObj, effect) {
 
-  fString <- fValueString(ezObj, effect)
-  pString <- pValueString(ezObj$ANOVA[, "p"][ezObj$ANOVA$Effect == effect])
-  eString <- effectsizeValueString(ezObj, effect)
-  sString <- sphericityValueString(ezObj, effect)
+  fString <- fValueString(aovObj, effect)
+  pString <- pValueString(aovObj$ANOVA[, "p"][aovObj$ANOVA$Effect == effect])
+  eString <- effectsizeValueString(aovObj, effect)
+  sString <- sphericityValueString(aovObj, effect)
 
   if (is.null(sString)) {
      return(paste0(fString, ", ", pString, ", ", eString))

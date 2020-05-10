@@ -40,4 +40,8 @@ aovRT <- ezANOVA(dat, dv=.(RT), wid = .(VP), within = .(Comp), return_aov = TRUE
 aovRT <- aovTable(aovRT)
 printAovMeans(aovRT, digits = 0, dv = "mV")  # latex formatted
 
+aovRT <- aov(RT ~ Comp + Error(VP/(Comp)), dat)
+aovRT <- aovTable(aovRT)
+printAovMeans(aovRT, digits = 0, dv = "mV")  # latex formatted
+
 }

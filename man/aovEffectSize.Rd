@@ -4,10 +4,10 @@
 \alias{aovEffectSize}
 \title{aovEffectSize}
 \usage{
-aovEffectSize(ezObj, effectSize)
+aovEffectSize(aovObj, effectSize)
 }
 \arguments{
-\item{ezObj}{Output from ezANOVA}
+\item{aovObj}{Output from aov or ezANOVA}
 
 \item{effectSize}{"ges" vs. pes"}
 }
@@ -16,7 +16,7 @@ list
 }
 \description{
 Add partial eta squared (pes) or eta-squared (es) effect size measures
-to ezANOVA table.
+to anova table.
 }
 \examples{
 requiredPackages(c("ez", "dplyr"))
@@ -48,5 +48,8 @@ aovRT <- ezANOVA(datAggVP, dv=.(rt), wid = .(VP), within = .(Comp, Side),
                  return_aov = TRUE, detailed = TRUE)
 aovRT <- aovEffectSize(aovRT, "pes")
 aovRT <- aovTable(aovRT)
+
+aovRT <- aov(rt ~ Comp * Side + Error(VP/(Comp*Side)), datAggVP)
+aovRT <- aovEffectSize(aovRT, "pes")
 
 }

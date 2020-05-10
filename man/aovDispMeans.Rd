@@ -4,10 +4,10 @@
 \alias{aovDispMeans}
 \title{aovDispMeans}
 \usage{
-aovDispMeans(ezObj, value = "value", caption = sys.call())
+aovDispMeans(aovObj, value = "value", caption = sys.call())
 }
 \arguments{
-\item{ezObj}{Output from ezANOVA  (NB. ezANOVA must be called with \"return_aov = TRUE\"")}
+\item{aovObj}{Output from aov or ezANOVA  (NB. ezANOVA must be called with \"return_aov = TRUE\"")}
 
 \item{value}{String for column name}
 
@@ -32,6 +32,10 @@ dat$VP <- as.factor(dat$VP)
 aovRT <- ezANOVA(dat, dv=.(RT), wid = .(VP), within = .(Comp),
                  return_aov = TRUE, detailed = TRUE)
 aovRT <- aovTable(aovRT)
+aovDispMeans(aovRT)
+
+aovRT <- aov(RT ~ Comp + Error(VP/(Comp)), dat)
+aovDispTable(aovRT)
 aovDispMeans(aovRT)
 
 }
