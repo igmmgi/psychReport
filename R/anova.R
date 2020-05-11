@@ -9,7 +9,7 @@
 #'
 #' @export
 aovTidyTable <- function(aovObj) {
-  aovTable        <- tidy(aovObj)
+  aovTable        <- broom::tidy(aovObj)
   aovTable        <- aovTable[2:nrow(aovTable), 2:7]
   aovTable        <- cbind(aovTable[seq(1, nrow(aovTable), 2),], aovTable[seq(2, nrow(aovTable), 2), c(2,3,4)])
   aovTable        <- aovTable[, c(1,2,7,4,8,5,6)]

@@ -1,7 +1,7 @@
 Package: psychReport
 Type: Package
 Title: Reproducible Reports in Psychology
-Version: 0.9.1
+Version: 0.10.0
 Author: Ian G Mackenzie
 Maintainer: Ian G Mackenzie <ian.mackenzie@uni-tuebingen.de>
 Description: Helper functions for producing reports in Psychology (Reproducible Research). Provides required formatted strings (APA style) for use in 'Knitr'/'Latex' integration within *.Rnw files.
@@ -14,7 +14,8 @@ Imports:
   crayon,
   dplyr,
   ez,
-  xtable
+  xtable,
+  broom
 Suggests:
   testthat
 Depends: R(>= 3.4)
