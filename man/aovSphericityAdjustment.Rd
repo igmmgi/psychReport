@@ -7,9 +7,9 @@
 aovSphericityAdjustment(aovObj, type = "GG")
 }
 \arguments{
-\item{type}{"GG" (Greenhouse-Geisser) or "HF" (Huynh-Feldt)}
+\item{aovObj}{The returned object from a call to ezANOVA}
 
-\item{ezObj}{The returned object from a call to ezANOVA}
+\item{type}{"GG" (Greenhouse-Geisser) or "HF" (Huynh-Feldt)}
 }
 \value{
 list
@@ -19,12 +19,9 @@ Adjust ezANOVA table with corrections for sphericity (Greenhouse-Geisser or
 Huynh-Feldt). Called by default within aovTable
 }
 \examples{
-requiredPackages(c("dplyr", "ez"))
-
 # Example 1:
 # create dataframe with 3(Comp: neutral vs. comp vs. incomp) factors/levels
-dat <- createDF(nVP = 20,
-                nTrl = 50,
+dat <- createDF(nVP = 20, nTrl = 1,
                 design = list("Comp" = c("neutral", "comp", "incomp")))
 
 dat <- addDataDF(dat,
@@ -32,15 +29,11 @@ dat <- addDataDF(dat,
                            "Comp_comp"    = c(500, 150, 100),
                            "Comp_incomp"  = c(520, 150, 100)))
 
-# aggregate dat across trials
-datAggVP <- dat \%>\%
-    group_by(VP, Comp) \%>\%
-    summarize(N = n(),
-              rt = mean(RT))
+dat$VP <- as.factor(dat$VP)
 
-# repeated measures ANOVA using ezANOVA
-datAggVP$VP <- as.factor(datAggVP$VP)
-aovRT <- ezANOVA(datAggVP, dv=.(rt), wid = .(VP), within = .(Comp),
+# using ezANOVA
+library(ez)
+aovRT <- ezANOVA(dat, dv=.(RT), wid = .(VP), within = .(Comp),
                  return_aov = TRUE, detailed = TRUE)
 aovDispTable(aovRT)
 aovRT <- aovSphericityAdjustment(aovRT)

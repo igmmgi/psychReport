@@ -19,12 +19,9 @@ Adjust ezANOVA table with corrected F (Fc = F/(n-1)^2) and p values for jackknif
 Using the jackknife-based scoring method for measuring LRP onset effects in factorial designs. Psychophysiology, 38, 816-827.)
 }
 \examples{
-requiredPackages(c("dplyr", "ez"))
-
 # Example 1:
 # create dataframe with 2(Comp: comp vs. incomp) and 2(Side: left vs. right) factors/levels
-dat <- createDF(nVP = 20,
-                nTrl = 50,
+dat <- createDF(nVP = 20, nTrl = 1,
                 design = list("Comp" = c("comp", "incomp"),
                               "Side" = c("left", "right")))
 
@@ -33,22 +30,18 @@ dat <- addDataDF(dat,
                            "Comp:Side_comp:right"   = c(500, 150, 150),
                            "Comp:Side_incomp:left"  = c(500, 150, 150),
                            "Comp:Side_incomp:right" = c(500, 150, 150)))
+dat$VP <- as.factor(dat$VP)
 
-# aggregate dat across trials
-datAggVP <- dat \%>\%
-    group_by(VP, Comp, Side) \%>\%
-    summarize(N  = n(),
-              rt = mean(RT))
+aovRT <- aov(RT ~ Comp*Side + Error(VP/(Comp*Side)), dat)
+aovRT <- aovJackknifeAdjustment(aovRT, length(unique(dat$VP)))
+aovDispTable(aovRT)
 
-# repeated measures ANOVA using ezANOVA
-datAggVP$VP <- as.factor(datAggVP$VP)
-aovRT <- ezANOVA(datAggVP, dv=.(rt), wid = .(VP), within = .(Comp, Side),
+# or with ezANOVA
+library(ez)
+aovRT <- ezANOVA(dat, dv=.(RT), wid = .(VP), within = .(Comp, Side),
                  return_aov = TRUE, detailed = TRUE)
-aovDispTable(aovRT)
-aovRT <- aovJackknifeAdjustment(aovRT, length(unique(datAggVP$VP)))
+aovRT <- aovJackknifeAdjustment(aovRT, length(unique(dat$VP)))
 aovDispTable(aovRT)
 
-aovRT <- aov(rt ~ Comp*Side + Error(VP/(Comp*Side)), datAggVP)
-aovRT <- aovJackknifeAdjustment(aovRT, length(unique(datAggVP$VP)))
 
 }

@@ -25,11 +25,9 @@ Returns marginal means from ezANOVA object for requested effect in Latex format.
 Assumes means added to aovObj (e.g., aovObj$means <- model.tables(aovObj$aov, type = "mean").
 }
 \examples{
-requiredPackages(c("dplyr", "ez"))
 # Example 1:
 # create dataframe and add data with 2(Comp: comp vs. incomp) and 2(Side: left vs. right)
-dat <- createDF(nVP = 20,
-                nTrl = 50,
+dat <- createDF(nVP = 20, nTrl = 1,
                 design = list("Comp" = c("comp", "incomp"),
                               "Side" = c("left", "right")))
 
@@ -38,22 +36,17 @@ dat <- addDataDF(dat, RT = list("Comp:Side_comp:left"    = c(500, 150, 100),
                                 "Comp:Side_incomp:left"  = c(520, 150, 100),
                                 "Comp:Side_incomp:right" = c(520, 150, 100)))
 
-# aggregate dat across trials
-datAggVP <- dat \%>\%
-    group_by(VP, Comp, Side) \%>\%
-    summarize(N  = n(),
-              rt = mean(RT))
+dat$VP <- as.factor(dat$VP)
 
-# repeated measures ANOVA using ezANOVA
-datAggVP$VP <- as.factor(datAggVP$VP)
-aovRT <- ezANOVA(datAggVP, dv=.(rt), wid = .(VP), within = .(Comp, Side),
-                 return_aov = TRUE, detailed = TRUE)
+aovRT <- aov(RT ~ Comp*Side + Error(VP/(Comp*Side)), dat)
 aovRT <- aovTable(aovRT)
 
 meanString <- meanStrAov(aovRT, "Comp", "comp")
 meanString <- meanStrAov(aovRT, "Comp:Side", "incomp:left")
 
-aovRT <- aov(rt ~ Comp*Side + Error(VP/(Comp*Side)), datAggVP)
+# or using ezANOVA
+aovRT <- ezANOVA(dat, dv=.(RT), wid = .(VP), within = .(Comp, Side),
+                 return_aov = TRUE, detailed = TRUE)
 aovRT <- aovTable(aovRT)
 
 meanString <- meanStrAov(aovRT, "Comp", "comp")

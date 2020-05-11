@@ -24,24 +24,23 @@ Uses printTable (xtable) latex package with some basic defaults.
 For more examples, see R package xtable
 }
 \examples{
-library(psychReport)
-requiredPackages(c("ez"))
 # Example 1:
 # create dataframe
-dat <- createDF(nVP = 6,
-                nTrl = 1,
+dat <- createDF(nVP = 6, nTrl = 1,
                 design = list("Comp" = c("comp", "incomp")))
 
 dat <- addDataDF(dat, RT = list("Comp_comp"   = c(500, 150, 100),
                                 "Comp_incomp" = c(520, 150, 100)))
 
 dat$VP <- as.factor(dat$VP)
-aovRT <- ezANOVA(dat, dv=.(RT), wid = .(VP), within = .(Comp), return_aov = TRUE, detailed = TRUE)
-aovRT <- aovTable(aovRT)
-printAovMeans(aovRT, digits = 0, dv = "mV")  # latex formatted
 
 aovRT <- aov(RT ~ Comp + Error(VP/(Comp)), dat)
 aovRT <- aovTable(aovRT)
-printAovMeans(aovRT, digits = 0, dv = "mV")  # latex formatted
+printAovMeans(aovRT, digits = 0, dv = "ms")  # latex formatted
+
+# or using ezANOVA
+aovRT <- ezANOVA(dat, dv=.(RT), wid = .(VP), within = .(Comp), return_aov = TRUE, detailed = TRUE)
+aovRT <- aovTable(aovRT)
+printAovMeans(aovRT, digits = 0, dv = "ms")  # latex formatted
 
 }

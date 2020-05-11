@@ -15,8 +15,7 @@ test_that("aovJackknifeAdjustment", {
   # repeated measures ANOVA using ezANOVA
   dat$VP <- as.factor(dat$VP)
 
-  aovRT <- ez::ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
-                       return_aov = TRUE, detailed = TRUE)
+  aovRT      <- ez::ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp), return_aov = TRUE, detailed = TRUE)
   aovRT_pre  <- aovTable(aovRT)
   aovRT      <- aovJackknifeAdjustment(aovRT, length(unique(dat$VP)))
   aovRT_post <- aovTable(aovRT)

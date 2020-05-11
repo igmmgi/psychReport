@@ -7,12 +7,26 @@
 aovTidyTable(aovObj)
 }
 \arguments{
-\item{aovOb}{Output from aov function}
+\item{aovObj}{Output from aov function}
 }
 \value{
-DataFrame
+list
 }
 \description{
 Take output from base aov function and produce a "tidy" ANOVA table
-similar to the output of ezANOVA
+similar to the output of ezANOVA. The output also contains the marginal means.
+}
+\examples{
+# create dataframe
+dat <- createDF(nVP = 6, nTrl = 1,
+                design = list("Comp" = c("comp", "incomp")))
+
+dat <- addDataDF(dat, RT = list("Comp_comp"   = c(500, 150, 100),
+                                "Comp_incomp" = c(520, 150, 100)))
+
+dat$VP <- as.factor(dat$VP)
+
+aovObj <- aov(RT ~ Comp + Error(VP/(Comp)), dat)
+aovObj <- aovTidyTable(aovObj)
+aovObj$ANOVA
 }

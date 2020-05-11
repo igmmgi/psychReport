@@ -16,20 +16,20 @@ Display formatted ANOVA table in command window.
 }
 \examples{
 # Example 1:
-requiredPackages(c("ez"))
 # create dataframe
-dat <- createDF(nVP = 6,
-                nTrl = 1,
+dat <- createDF(nVP = 6, nTrl = 1,
                 design = list("Comp" = c("comp", "incomp")))
 
 dat <- addDataDF(dat, RT = list("Comp_comp"   = c(500, 150, 100),
                                 "Comp_incomp" = c(520, 150, 100)))
-
 dat$VP <- as.factor(dat$VP)
-aovRT <- ezANOVA(dat, dv=.(RT), wid = .(VP), within = .(Comp), return_aov = TRUE, detailed = TRUE)
-aovDispTable(aovRT)
 
-aovRT <- aov(RT ~ Comp + Error(VP/(Comp)), dat)
+aovObj <- aov(RT ~ Comp + Error(VP/(Comp)), dat)
+aovDispTable(aovObj)
+
+# or with ezANOVA
+library(ez)
+aovRT <- ezANOVA(dat, dv=.(RT), wid = .(VP), within = .(Comp), return_aov = TRUE, detailed = TRUE)
 aovDispTable(aovRT)
 
 }

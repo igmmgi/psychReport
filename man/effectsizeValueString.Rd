@@ -4,29 +4,25 @@
 \alias{effectsizeValueString}
 \title{effectsizeValueString}
 \usage{
-effectsizeValueString(aovObj, effect, effectSize = "pes")
+effectsizeValueString(aovObj, effect)
 }
 \arguments{
 \item{aovObj}{Output from aov or ezANOVA (NB. ezANOVA must be called with detailed = TRUE)}
 
 \item{effect}{The effect within the ANOVA table to return}
-
-\item{effectSize}{The effect size to report ("ges" default within ezANOVA, "pes" partial eta squared)}
 }
 \value{
 character
 }
 \description{
-Returns required Latex formatted string for effect size (eta squared, partial
-eta square, generalized eta squared) = XXX for R/Sweave integration.
+Returns required Latex formatted string for effect
+size (partial eta squared) = XXX for R/Sweave integration.
 Returns values to 2 sig decimal places.
 }
 \examples{
-requiredPackages(c("dplyr", "ez"))
 # Example 1:
 # create dataframe and add data with 2(Comp: comp vs. incomp) and 2(Side: left vs. right)
-dat <- createDF(nVP = 20,
-                nTrl = 50,
+dat <- createDF(nVP = 20, nTrl = 1,
                 design = list("Comp" = c("comp", "incomp"),
                               "Side" = c("left", "right")))
 
@@ -35,22 +31,18 @@ dat <- addDataDF(dat, RT = list("Comp:Side_comp:left"    = c(500, 150, 100),
                                 "Comp:Side_incomp:left"  = c(520, 150, 100),
                                 "Comp:Side_incomp:right" = c(520, 150, 100)))
 
-# aggregate dat across trials
-datAggVP <- dat \%>\%
-    group_by(VP, Comp, Side) \%>\%
-    summarize(N  = n(),
-              rt = mean(RT))
+dat$VP <- as.factor(dat$VP)
 
-# repeated measures ANOVA using ezANOVA
-datAggVP$VP <- as.factor(datAggVP$VP)
-aovRT <- ezANOVA(datAggVP, dv=.(rt), wid = .(VP), within = .(Comp, Side),
-                 return_aov = TRUE, detailed = TRUE)
+aovRT <- aov(RT ~ Comp*Side + Error(VP/(Comp*Side)), dat)
 aovRT <- aovTable(aovRT)
 
 pesString <- effectsizeValueString(aovRT, "Comp")  # partial eta squared
 pesString <- effectsizeValueString(aovRT, "Comp:Side")
 
-aovRT <- aov(rt ~ Comp*Side + Error(VP/(Comp*Side)), datAggVP)
+# or using ezANOVA
+library(ez)
+aovRT <- ezANOVA(dat, dv=.(RT), wid = .(VP), within = .(Comp, Side),
+                 return_aov = TRUE, detailed = TRUE)
 aovRT <- aovTable(aovRT)
 
 pesString <- effectsizeValueString(aovRT, "Comp")  # partial eta squared

@@ -18,11 +18,9 @@ dataframe
 Round digits to n decimal places in ezANOVA table
 }
 \examples{
-requiredPackages(c("dplyr", "ez"))
 # Example 1:
 # create dataframe with 2(Comp: comp vs. incomp) and 2(Side: left vs. right) factors/levels
-dat <- createDF(nVP = 20,
-                nTrl = 50,
+dat <- createDF(nVP = 20, nTrl = 1,
                 design = list("Comp" = c("comp", "incomp"),
                               "Side" = c("left", "right")))
 
@@ -32,21 +30,17 @@ dat <- addDataDF(dat,
                            "Comp:Side_incomp:left"  = c(500, 150, 150),
                            "Comp:Side_incomp:right" = c(500, 150, 150)))
 
-# aggregate dat across trials
-datAggVP <- dat \%>\%
-    group_by(VP, Comp, Side) \%>\%
-    summarize(N  = n(),
-              rt = mean(RT))
+dat$VP <- as.factor(dat$VP)
 
-# repeated measures ANOVA using ezANOVA
-datAggVP$VP <- as.factor(datAggVP$VP)
-aovRT <- ezANOVA(datAggVP, dv=.(rt), wid = .(VP), within = .(Comp, Side),
+aovRT <- aov(RT ~ Comp*Side + Error(VP/(Comp*Side)), dat)
+aovRT <- aovRoundDigits(aovRT, 2)
+aovDispTable(aovRT)
+
+# or sing ezANOVA
+aovRT <- ezANOVA(dat, dv=.(RT), wid = .(VP), within = .(Comp, Side),
                  return_aov = TRUE, detailed = TRUE)
 aovDispTable(aovRT)
 aovRT <- aovRoundDigits(aovRT, 2)
 aovDispTable(aovRT)
-
-aovRT <- aov(rt ~ Comp*Side + Error(VP/(Comp*Side)), datAggVP)
-aovRT <- aovRoundDigits(aovRT, 2)
 
 }

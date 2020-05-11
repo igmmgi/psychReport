@@ -6,23 +6,15 @@
 \usage{
 aovTable(
   aovObj,
-  effectSize = "pes",
   sphericityCorrections = TRUE,
   sphericityCorrectionType = "GG",
   removeSumSquares = TRUE,
-  removeIntercept = TRUE,
   roundDigits = TRUE,
-  numDigits = 2,
-  dispAovTable = TRUE,
-  dispAovMeans = FALSE,
-  caption = NULL
+  numDigits = 2
 )
 }
 \arguments{
 \item{aovObj}{Output from aov or ezANOVA (NB. ezANOVA must be called with detailed = TRUE)}
-
-\item{effectSize}{"ges" (generalized eta-squared), "es" (eta-squared), or
-"pes" (partial eta-squared)}
 
 \item{sphericityCorrections}{TRUE/FALSE (ezANOVA)}
 
@@ -30,17 +22,9 @@ aovTable(
 
 \item{removeSumSquares}{TRUE/FALSE Remove SSn/SSd columns from the ANOVA table}
 
-\item{removeIntercept}{TRUE/FALSE Remove intercept row from the ANOVA table}
-
 \item{roundDigits}{TRUE/FALSE Round numerical values to numDigits}
 
 \item{numDigits}{The number of digits to round to if roundDigits = TRUE}
-
-\item{dispAovTable}{Display the ANOVA table in the command window}
-
-\item{dispAovMeans}{Display the marginal means in the command window}
-
-\item{caption}{Table caption}
 }
 \value{
 list
@@ -51,12 +35,9 @@ effect sizes (eta squared, partial eta squared), the calculation of marginal
 means and formating options for the ANOVA table (e.g., detailed, rounding).
 }
 \examples{
-requiredPackages(c("dplyr", "ez"))
-
 # Example 1:
 # create dataframe with 2(Comp: comp vs. incomp) and 2(Side: left vs. right) factors/levels
-dat <- createDF(nVP = 20,
-                nTrl = 50,
+dat <- createDF(nVP = 20, nTrl = 1,
                 design = list("Comp" = c("comp", "incomp"),
                               "Side" = c("left", "right")))
 
@@ -66,20 +47,14 @@ dat <- addDataDF(dat,
                            "Comp:Side_incomp:left"  = c(500, 150, 150),
                            "Comp:Side_incomp:right" = c(500, 150, 150)))
 
-# aggregate dat across trials
-datAggVP <- dat \%>\%
-    group_by(VP, Comp, Side) \%>\%
-    summarize(N  = n(),
-              rt = mean(RT))
+dat$VP <- as.factor(dat$VP)
 
-# repeated measures ANOVA using ezANOVA
-datAggVP$VP <- as.factor(datAggVP$VP)
-aovRT <- ezANOVA(datAggVP, dv=.(rt), wid = .(VP), within = .(Comp, Side),
+aovRT <- aov(RT ~ Comp*Side + Error(VP/(Comp*Side)), dat)
+aovRT <- aovTable(aovRT)
+
+# or using ezANOVA
+aovRT <- ezANOVA(dat, dv=.(RT), wid = .(VP), within = .(Comp, Side),
                  return_aov = TRUE, detailed = TRUE)
 aovRT <- aovTable(aovRT)
-
-aovRT <- aov(rt ~ Comp*Side + Error(VP/(Comp*Side)), datAggVP)
-aovRT <- aovTable(aovRT)
-
 
 }

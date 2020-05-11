@@ -4,10 +4,10 @@
 \alias{sphericityValueString}
 \title{sphericityValueString}
 \usage{
-sphericityValueString(ezObj, effect)
+sphericityValueString(aovObj, effect)
 }
 \arguments{
-\item{ezObj}{The returned object from a call to ezANOVA}
+\item{aovObj}{The returned object from a call to ezANOVA}
 
 \item{effect}{The effect within the ANOVA table to return}
 }
@@ -20,27 +20,19 @@ values (HF, GG) = XXX for R/Sweave integration. Returns values
 to 2 sig decimal places.
 }
 \examples{
-requiredPackages(c("dplyr", "ez"))
-
 # Example 1
 # create dataframe and add data with 3(Comp: neutral vs. comp vs. incomp) levels
-dat <- createDF(nVP = 20,
-                nTrl = 50,
+dat <- createDF(nVP = 20, nTrl = 1,
                 design = list("Comp" = c("neutral", "comp", "incomp")))
 
 dat <- addDataDF(dat, RT = list("Comp_neutral" = c(510, 150, 100),
                                 "Comp_comp"    = c(500, 150, 100),
                                 "Comp_incomp"  = c(520, 150, 100)))
 
-# aggregate dat across trials
-datAggVP <- dat \%>\%
-    group_by(VP, Comp) \%>\%
-    summarize(N = n(),
-              rt = mean(RT))
+dat$VP <- as.factor(dat$VP)
 
 # repeated measures ANOVA using ezANOVA
-datAggVP$VP <- as.factor(datAggVP$VP)
-aovRT <- ezANOVA(datAggVP, dv=.(rt), wid = .(VP), within = .(Comp),
+aovRT <- ezANOVA(dat, dv=.(RT), wid = .(VP), within = .(Comp),
                  return_aov = TRUE, detailed = TRUE)
 aovRT <- aovTable(aovRT)
 

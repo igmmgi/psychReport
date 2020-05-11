@@ -17,19 +17,10 @@ test_that("aovEffectSize", {
 
   aovRT <- ez::ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp), return_aov = TRUE, detailed = TRUE)
 
-  # generalized eta squared
-  aovRT <- aovEffectSize(aovRT, effectSize = "ges")
-
-  testthat::expect_equal(aovRT$ANOVA$ges[2], 0.03036415)
-  testthat::expect_equal(aovRT$ANOVA$pes[2], NULL)
-  testthat::expect_equal(aovRT$ANOVA$es[2], NULL)
-
   # partial eta squared
-  aovRT <- aovEffectSize(aovRT, effectSize = "pes")
+  aovRT <- aovEffectSize(aovRT)
 
   testthat::expect_equal(aovRT$ANOVA$pes[2], 0.04240754)
-  testthat::expect_equal(aovRT$ANOVA$ges[2], NULL)
-  testthat::expect_equal(aovRT$ANOVA$es[2], NULL)
 
   # non effect size
   testthat::expect_error(aovEffectSize(aovRT, effectSize = "abc"))

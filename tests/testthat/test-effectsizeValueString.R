@@ -12,20 +12,12 @@ test_that("statStrT", {
 
   dat$VP <- as.factor(dat$VP)
 
-  # generalized eta-squared
-  aovRT <- ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
-                   return_aov = TRUE, detailed = TRUE)
-  aovRT <- aovTable(aovRT, effectSize = "ges")
-
-  effectString <- effectsizeValueString(aovRT, effect = "Comp", effectSize = "ges")
-  testthat::expect_equal(effectString, "$\\eta_{G}^2$ = 0.03")
-
   # partial eta-squared
   aovRT <- ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
                    return_aov = TRUE, detailed = TRUE)
-  aovRT <- aovTable(aovRT, effectSize = "pes")
+  aovRT <- aovTable(aovRT)
 
-  effectString <- effectsizeValueString(aovRT, effect = "Comp", effectSize = "pes")
+  effectString <- effectsizeValueString(aovRT, effect = "Comp")
   testthat::expect_equal(effectString, "$\\eta_{p}^2$ = 0.05")
 
   # unknown effect size raises error
