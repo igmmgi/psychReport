@@ -30,8 +30,6 @@ dat <- addDataDF(dat,
                            "Comp:Side_neutral:left"  = c(525, 150, 150),
                            "Comp:Side_neutral:right" = c(525, 150, 150)))
 
-dat$VP <- as.factor(dat$VP)
-
 aovRT <- aov(RT ~ Comp * Side + Error(VP/(Comp*Side)), dat)
 aovRT <- aovPartialEtaSquared(aovRT)
 aovRT <- aovDispTable(aovRT)

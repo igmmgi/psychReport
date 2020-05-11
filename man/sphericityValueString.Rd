@@ -29,8 +29,6 @@ dat <- addDataDF(dat, RT = list("Comp_neutral" = c(510, 150, 100),
                                 "Comp_comp"    = c(500, 150, 100),
                                 "Comp_incomp"  = c(520, 150, 100)))
 
-dat$VP <- as.factor(dat$VP)
-
 # repeated measures ANOVA using ezANOVA
 aovRT <- ezANOVA(dat, dv=.(RT), wid = .(VP), within = .(Comp),
                  return_aov = TRUE, detailed = TRUE)

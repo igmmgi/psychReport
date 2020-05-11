@@ -24,7 +24,6 @@ dat <- createDF(nVP = 50, nTrl = 1,
 
 dat <- addDataDF(dat, RT = list("Comp_comp"   = c(500, 100, 100),
                                 "Comp_incomp" = c(520, 100, 100)))
-dat$VP <- as.factor(dat$VP)
 
 aovRT <- aov(RT ~ Comp + Error(VP/(Comp)), dat)
 aovDispMeans(aovRT)

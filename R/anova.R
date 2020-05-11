@@ -15,8 +15,6 @@
 #' dat <- addDataDF(dat, RT = list("Comp_comp"   = c(500, 150, 100),
 #'                                 "Comp_incomp" = c(520, 150, 100)))
 #'
-#' dat$VP <- as.factor(dat$VP)
-#'
 #' aovObj <- aov(RT ~ Comp + Error(VP/(Comp)), dat)
 #' aovObj <- aovTidyTable(aovObj)
 #' aovObj$ANOVA
@@ -60,7 +58,6 @@ aovTidyTable <- function(aovObj) {
 #'
 #' dat <- addDataDF(dat, RT = list("Comp_comp"   = c(500, 150, 100),
 #'                                 "Comp_incomp" = c(520, 150, 100)))
-#' dat$VP <- as.factor(dat$VP)
 #'
 #' aovObj <- aov(RT ~ Comp + Error(VP/(Comp)), dat)
 #' aovDispTable(aovObj)
@@ -107,7 +104,6 @@ aovDispTable <- function(aovObj, caption=sys.call()) {
 #'
 #' dat <- addDataDF(dat, RT = list("Comp_comp"   = c(500, 100, 100),
 #'                                 "Comp_incomp" = c(520, 100, 100)))
-#' dat$VP <- as.factor(dat$VP)
 #'
 #' aovRT <- aov(RT ~ Comp + Error(VP/(Comp)), dat)
 #' aovDispMeans(aovRT)
@@ -173,8 +169,6 @@ aovDispMeans <- function(aovObj, value="value", caption=sys.call()) {
 #'                            "Comp:Side_neutral:left"  = c(525, 150, 150),
 #'                            "Comp:Side_neutral:right" = c(525, 150, 150)))
 #'
-#' dat$VP <- as.factor(dat$VP)
-#'
 #' aovRT <- aov(RT ~ Comp * Side + Error(VP/(Comp*Side)), dat)
 #' aovRT <- aovPartialEtaSquared(aovRT)
 #' aovRT <- aovDispTable(aovRT)
@@ -224,7 +218,6 @@ aovPartialEtaSquared <- function(aovObj) {
 #'                            "Comp:Side_comp:right"   = c(500, 150, 150),
 #'                            "Comp:Side_incomp:left"  = c(500, 150, 150),
 #'                            "Comp:Side_incomp:right" = c(500, 150, 150)))
-#' dat$VP <- as.factor(dat$VP)
 #'
 #' aovRT <- aov(RT ~ Comp*Side + Error(VP/(Comp*Side)), dat)
 #' aovRT <- aovJackknifeAdjustment(aovRT, length(unique(dat$VP)))
@@ -278,8 +271,6 @@ aovJackknifeAdjustment <- function(aovObj, numVPs) {
 #'                            "Comp:Side_incomp:left"  = c(500, 150, 150),
 #'                            "Comp:Side_incomp:right" = c(500, 150, 150)))
 #'
-#' dat$VP <- as.factor(dat$VP)
-#'
 #' aovRT <- aov(RT ~ Comp*Side + Error(VP/(Comp*Side)), dat)
 #' aovRT <- aovRoundDigits(aovRT, 2)
 #' aovDispTable(aovRT)
@@ -328,8 +319,6 @@ aovRoundDigits <- function(aovObj, nsmall = 2) {
 #'                  RT = list("Comp_neutral" = c(510, 150, 100),
 #'                            "Comp_comp"    = c(500, 150, 100),
 #'                            "Comp_incomp"  = c(520, 150, 100)))
-#'
-#' dat$VP <- as.factor(dat$VP)
 #'
 #' # using ezANOVA
 #' library(ez)
@@ -393,8 +382,6 @@ aovSphericityAdjustment <- function(aovObj, type = "GG") {
 #'                            "Comp:Side_comp:right"   = c(500, 150, 150),
 #'                            "Comp:Side_incomp:left"  = c(500, 150, 150),
 #'                            "Comp:Side_incomp:right" = c(500, 150, 150)))
-#'
-#' dat$VP <- as.factor(dat$VP)
 #'
 #' aovRT <- aov(RT ~ Comp*Side + Error(VP/(Comp*Side)), dat)
 #' aovRT <- aovTable(aovRT)
@@ -483,8 +470,6 @@ aovTable <- function(aovObj,
 #'                                 "Comp:Side_incomp:left"  = c(520, 150, 100),
 #'                                 "Comp:Side_incomp:right" = c(520, 150, 100)))
 #'
-#' dat$VP <- as.factor(dat$VP)
-#'
 #' aovRT <- aov(RT ~ Comp*Side + Error(VP/(Comp*Side)), dat)
 #' aovRT <- aovTable(aovRT)
 #'
@@ -540,8 +525,6 @@ effectsizeValueString <- function(aovObj, effect){
 #'                                 "Comp:Side_incomp:left"  = c(520, 150, 100),
 #'                                 "Comp:Side_incomp:right" = c(520, 150, 100)))
 #'
-#' dat$VP <- as.factor(dat$VP)
-#'
 #' # or using ezANOVA
 #' library(ez)
 #' aovRT <- ezANOVA(dat, dv=.(RT), wid = .(VP), within = .(Comp, Side),
@@ -592,8 +575,6 @@ fValueString <- function(aovObj, effect){
 #'                                 "Comp:Side_comp:right"   = c(500, 150, 100),
 #'                                 "Comp:Side_incomp:left"  = c(520, 150, 100),
 #'                                 "Comp:Side_incomp:right" = c(520, 150, 100)))
-#'
-#' dat$VP <- as.factor(dat$VP)
 #'
 #' aovRT <- aov(RT ~ Comp*Side + Error(VP/(Comp*Side)), dat)
 #' aovRT <- aovTable(aovRT)
@@ -660,8 +641,6 @@ meanStrAov <- function(aovObj, effect, level, unit = "ms", numDigits = 0) {
 #'
 #' dat <- addDataDF(dat, RT = list("Comp_comp"   = c(500, 150, 100),
 #'                                 "Comp_incomp" = c(520, 150, 100)))
-#'
-#' dat$VP <- as.factor(dat$VP)
 #'
 #' aovRT <- aov(RT ~ Comp + Error(VP/(Comp)), dat)
 #' aovRT <- aovTable(aovRT)
@@ -740,8 +719,6 @@ printAovMeans <- function(..., caption = "Mean", digits = 3, dv = "ms") {
 #'                                 "Comp:Side_incomp:left"  = c(520, 150, 100),
 #'                                 "Comp:Side_incomp:right" = c(520, 150, 100)))
 #'
-#' dat$VP <- as.factor(dat$VP)
-#'
 #' aovRT <- aov(RT ~ Comp*Side + Error(VP/(Comp*Side)), dat)
 #' aovRT <- aovTable(aovRT)
 #'
@@ -799,8 +776,6 @@ statStrAov <- function(aovObj, effect) {
 #' dat <- addDataDF(dat, RT = list("Comp_neutral" = c(510, 150, 100),
 #'                                 "Comp_comp"    = c(500, 150, 100),
 #'                                 "Comp_incomp"  = c(520, 150, 100)))
-#'
-#' dat$VP <- as.factor(dat$VP)
 #'
 #' # repeated measures ANOVA using ezANOVA
 #' aovRT <- ezANOVA(dat, dv=.(RT), wid = .(VP), within = .(Comp),

@@ -24,7 +24,7 @@ createDF <- function(nVP = 20,
                      nTrl = 50,
                      design = list("A" = c("A1", "A2"), "B" = c("B1", "B2"))) {
 
-  dat <-  data.frame(expand.grid(modifyList(design, list(VP = c(1:nVP), Trial = c(1:nTrl)))))
+  dat <-  data.frame(expand.grid(modifyList(design, list(VP = factor(c(1:nVP)), Trial = c(1:nTrl)))))
   return(dat[c("VP", names(design))])
 
 }

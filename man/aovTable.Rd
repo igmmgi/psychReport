@@ -47,8 +47,6 @@ dat <- addDataDF(dat,
                            "Comp:Side_incomp:left"  = c(500, 150, 150),
                            "Comp:Side_incomp:right" = c(500, 150, 150)))
 
-dat$VP <- as.factor(dat$VP)
-
 aovRT <- aov(RT ~ Comp*Side + Error(VP/(Comp*Side)), dat)
 aovRT <- aovTable(aovRT)
 
