@@ -2,6 +2,7 @@
 #'
 #' @description Take output from base aov function and produce a "tidy" ANOVA table
 #' similar to the output of ezANOVA. The output also contains the marginal means.
+#' NB: currently within only.
 #'
 #' @param aovObj Output from aov function
 #'
@@ -25,6 +26,7 @@ aovTidyTable <- function(aovObj) {
   # create ANOVA table structure similar to ezANOVA
   aovTable        <- broom::tidy(aovObj)
   aovTable        <- aovTable[2:nrow(aovTable), 2:7]
+
   aovTable        <- cbind(aovTable[seq(1, nrow(aovTable), 2), ], aovTable[seq(2, nrow(aovTable), 2), ])
   aovTable        <- aovTable[, c(1, 2, 8, 3, 9, 5, 6)]
   names(aovTable) <- c("Effect", "DFn", "DFd", "SSn", "SSd", "F", "p")
