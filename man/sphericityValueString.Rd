@@ -30,6 +30,7 @@ dat <- addDataDF(dat, RT = list("Comp_neutral" = c(510, 150, 100),
                                 "Comp_incomp"  = c(520, 150, 100)))
 
 # repeated measures ANOVA using ezANOVA
+library(ez)
 aovRT <- ezANOVA(dat, dv=.(RT), wid = .(VP), within = .(Comp),
                  return_aov = TRUE, detailed = TRUE)
 aovRT <- aovTable(aovRT)

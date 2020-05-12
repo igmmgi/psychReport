@@ -43,6 +43,7 @@ meanString <- meanStrAov(aovRT, "Comp", "comp")
 meanString <- meanStrAov(aovRT, "Comp:Side", "incomp:left")
 
 # or using ezANOVA
+library(ez)
 aovRT <- ezANOVA(dat, dv=.(RT), wid = .(VP), within = .(Comp, Side),
                  return_aov = TRUE, detailed = TRUE)
 aovRT <- aovTable(aovRT)

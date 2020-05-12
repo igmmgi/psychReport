@@ -275,7 +275,8 @@ aovJackknifeAdjustment <- function(aovObj, numVPs) {
 #' aovRT <- aovRoundDigits(aovRT, 2)
 #' aovDispTable(aovRT)
 #'
-#' # or sing ezANOVA
+#' # or using ezANOVA
+#' library(ez)
 #' aovRT <- ezANOVA(dat, dv=.(RT), wid = .(VP), within = .(Comp, Side),
 #'                  return_aov = TRUE, detailed = TRUE)
 #' aovDispTable(aovRT)
@@ -289,7 +290,7 @@ aovRoundDigits <- function(aovObj, nsmall = 2) {
     aovObj <- aovTidyTable(aovObj)  # convert base aov output
   }
 
-  colNames <- c("SSn", "SSd", "F", "p", "eps", "ges", "es", "pes")
+  colNames <- c("SSn", "SSd", "F", "p", "eps", "ges", "pes")
   colIdx   <- which(names(aovObj$ANOVA) %in% colNames)
   aovObj$ANOVA[, colIdx] <- format(round(aovObj$ANOVA[, colIdx], nsmall), nsmall = nsmall)
 
@@ -387,6 +388,7 @@ aovSphericityAdjustment <- function(aovObj, type = "GG") {
 #' aovRT <- aovTable(aovRT)
 #'
 #' # or using ezANOVA
+#' library(ez)
 #' aovRT <- ezANOVA(dat, dv=.(RT), wid = .(VP), within = .(Comp, Side),
 #'                  return_aov = TRUE, detailed = TRUE)
 #' aovRT <- aovTable(aovRT)
@@ -583,6 +585,7 @@ fValueString <- function(aovObj, effect){
 #' meanString <- meanStrAov(aovRT, "Comp:Side", "incomp:left")
 #'
 #' # or using ezANOVA
+#' library(ez)
 #' aovRT <- ezANOVA(dat, dv=.(RT), wid = .(VP), within = .(Comp, Side),
 #'                  return_aov = TRUE, detailed = TRUE)
 #' aovRT <- aovTable(aovRT)
@@ -647,6 +650,7 @@ meanStrAov <- function(aovObj, effect, level, unit = "ms", numDigits = 0) {
 #' printAovMeans(aovRT, digits = 0, dv = "ms")  # latex formatted
 #'
 #' # or using ezANOVA
+#' library(ez)
 #' aovRT <- ezANOVA(dat, dv=.(RT), wid = .(VP), within = .(Comp), return_aov = TRUE, detailed = TRUE)
 #' aovRT <- aovTable(aovRT)
 #' printAovMeans(aovRT, digits = 0, dv = "ms")  # latex formatted
@@ -727,6 +731,7 @@ printAovMeans <- function(..., caption = "Mean", digits = 3, dv = "ms") {
 #'
 #'
 #' # or using ezANOVA
+#' library(ez)
 #' aovRT <- ezANOVA(dat, dv=.(RT), wid = .(VP), within = .(Comp, Side),
 #'                  return_aov = TRUE, detailed = TRUE)
 #' aovRT <- aovTable(aovRT)
@@ -778,6 +783,7 @@ statStrAov <- function(aovObj, effect) {
 #'                                 "Comp_incomp"  = c(520, 150, 100)))
 #'
 #' # repeated measures ANOVA using ezANOVA
+#' library(ez)
 #' aovRT <- ezANOVA(dat, dv=.(RT), wid = .(VP), within = .(Comp),
 #'                  return_aov = TRUE, detailed = TRUE)
 #' aovRT <- aovTable(aovRT)

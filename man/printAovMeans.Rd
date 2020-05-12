@@ -37,6 +37,7 @@ aovRT <- aovTable(aovRT)
 printAovMeans(aovRT, digits = 0, dv = "ms")  # latex formatted
 
 # or using ezANOVA
+library(ez)
 aovRT <- ezANOVA(dat, dv=.(RT), wid = .(VP), within = .(Comp), return_aov = TRUE, detailed = TRUE)
 aovRT <- aovTable(aovRT)
 printAovMeans(aovRT, digits = 0, dv = "ms")  # latex formatted

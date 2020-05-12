@@ -34,7 +34,8 @@ aovRT <- aov(RT ~ Comp*Side + Error(VP/(Comp*Side)), dat)
 aovRT <- aovRoundDigits(aovRT, 2)
 aovDispTable(aovRT)
 
-# or sing ezANOVA
+# or using ezANOVA
+library(ez)
 aovRT <- ezANOVA(dat, dv=.(RT), wid = .(VP), within = .(Comp, Side),
                  return_aov = TRUE, detailed = TRUE)
 aovDispTable(aovRT)
