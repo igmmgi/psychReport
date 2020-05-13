@@ -16,7 +16,7 @@ character
 }
 \description{
 Returns required Latex formatted string for effect
-size (partial eta squared) = XXX for R/Sweave integration.
+size (partial eta squared) = XXX for R/knitr integration.
 Returns values to 2 sig decimal places.
 }
 \examples{

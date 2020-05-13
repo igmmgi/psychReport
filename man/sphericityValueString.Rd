@@ -16,7 +16,7 @@ character
 }
 \description{
 Returns required Latex formatted string for sphericity epsilon
-values (HF, GG) = XXX for R/Sweave integration. Returns values
+values (HF, GG) = XXX for R/knitr integration. Returns values
 to 2 sig decimal places.
 }
 \examples{

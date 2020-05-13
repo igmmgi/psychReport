@@ -14,7 +14,7 @@ character
 }
 \description{
 Returns required Latex formatted string for \emph{t}(df) = XXX for
-R/Sweave integration. Returns values to 2 sig decimal places.
+R/knitr integration. Returns values to 2 sig decimal places.
 }
 \examples{
 requiredPackages(c("dplyr"))

@@ -16,7 +16,7 @@ character
 }
 \description{
 Returns required Latex formatted string for \emph{F}(df1, df2) = XXX
-for R/Sweave integration. For example, \emph{F}(1, 23) = 3.45.
+for R/knitr integration. For example, \emph{F}(1, 23) = 3.45.
 Returns values to 2 sig decimal places.
 }
 \examples{

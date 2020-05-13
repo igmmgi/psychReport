@@ -12,7 +12,7 @@ statStrAov(aovObj, effect)
 \item{effect}{The effect required from the anova table}
 }
 \description{
-Returns Latex formatted string from ANOVA required for R/Sweave integration.
+Returns Latex formatted string from ANOVA required for R/knitr integration.
 For example, \deqn{F(1, 20) = 8.45, p < 0.01, pes = 0.45}
 Returns values to 2 sig decimal places and < 0.01, < 0.001 for p values.
 }

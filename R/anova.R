@@ -461,7 +461,7 @@ aovTable <- function(aovObj,
 #' @title effectsizeValueString
 #'
 #' @description Returns required Latex formatted string for effect
-#' size (partial eta squared) = XXX for R/Sweave integration.
+#' size (partial eta squared) = XXX for R/knitr integration.
 #' Returns values to 2 sig decimal places.
 #'
 #' @param aovObj Output from aov or ezANOVA (NB. ezANOVA must be called with detailed = TRUE)
@@ -516,7 +516,7 @@ effectsizeValueString <- function(aovObj, effect){
 #' @title fValueString
 #'
 #' @description Returns required Latex formatted string for \emph{F}(df1, df2) = XXX
-#' for R/Sweave integration. For example, \emph{F}(1, 23) = 3.45.
+#' for R/knitr integration. For example, \emph{F}(1, 23) = 3.45.
 #' Returns values to 2 sig decimal places.
 #'
 #' @param aovObj Output from aov or ezANOVA (NB. ezANOVA must be called with detailed = TRUE)
@@ -711,7 +711,7 @@ printAovMeans <- function(..., caption = "Mean", digits = 3, dv = "ms") {
 
 #' @title statStrAov
 #'
-#' @description Returns Latex formatted string from ANOVA required for R/Sweave integration.
+#' @description Returns Latex formatted string from ANOVA required for R/knitr integration.
 #' For example, \deqn{F(1, 20) = 8.45, p < 0.01, pes = 0.45}
 #' Returns values to 2 sig decimal places and < 0.01, < 0.001 for p values.
 #'
@@ -773,7 +773,7 @@ statStrAov <- function(aovObj, effect) {
 #' @title sphericityValueString
 #'
 #' @description Returns required Latex formatted string for sphericity epsilon
-#' values (HF, GG) = XXX for R/Sweave integration. Returns values
+#' values (HF, GG) = XXX for R/knitr integration. Returns values
 #' to 2 sig decimal places.
 #'
 #' @param aovObj The returned object from a call to ezANOVA

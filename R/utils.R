@@ -154,7 +154,7 @@ numValueString <- function(value, numDigits = 2, unit = "") {
 
 #' @title pValueString
 #'
-#' @description Returns Latex formatted string from a p-value required for R/Sweave integration.
+#' @description Returns Latex formatted string from a p-value required for R/knitr integration.
 #' For example, \emph{p} = 0.11 or \emph{p} < 0.01
 #' Returns values to 2 sig decimal places if p-value >= 0.05.
 #'
