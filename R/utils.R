@@ -38,7 +38,6 @@ printTable <- function(obj, caption = "DF", digits=3, onlyContents=FALSE,
   if (formatStatsSymbols) {
     names(obj) <- sub("\\<p\\>",   "\\\\textit{p}",   names(obj))
     names(obj) <- sub("\\<F\\>",   "\\\\textit{F}",   names(obj))
-    names(obj) <- sub("\\<es\\>",  "$\\\\eta^2$",     names(obj))
     names(obj) <- sub("\\<pes\\>", "$\\\\eta_{p}^2$", names(obj))
     names(obj) <- sub("\\<ges\\>", "$\\\\eta_{G}^2$", names(obj))
     names(obj) <- sub("\\<eps\\>", "$\\\\epsilon$",   names(obj))
@@ -205,7 +204,6 @@ pValueString <- function(pVal, nsmall = 2){
 #' when \emph{p} > .05 (default 2 significant decimal places).
 #'
 #' @param pVal vector with p-value between 0 and 1
-#' @param nsmall Number of small digits to round to
 #'
 #' @return character
 #'
@@ -223,7 +221,7 @@ pValueSummary <- function(pVal) {
 
   psum <- ifelse(pVal < 0.001, "***",
                  ifelse(pVal < 0.01, "**",
-                       ifelse(pVal <= 0.05, "*", " ")))
+                       ifelse(pVal <= 0.05, "*", "")))
 
   return(psum)
 

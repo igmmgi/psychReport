@@ -4,12 +4,10 @@
 \alias{pValueSummary}
 \title{pValueSummary}
 \usage{
-pValueSummary(pVal, nsmall = 2)
+pValueSummary(pVal)
 }
 \arguments{
 \item{pVal}{vector with p-value between 0 and 1}
-
-\item{nsmall}{Number of small digits to round to}
 }
 \value{
 character
@@ -19,10 +17,8 @@ Returns p-values summarized using ***, **, *, or exact value
 when \emph{p} > .05 (default 2 significant decimal places).
 }
 \examples{
-# Example 1:
+# Examples:
 psum <- pValueSummary(0.0067)
-
-# Example 2:
-psum <- pValueSummary(c(0.6712, 0.1, 0.0001), nsmall = 3)
+psum <- pValueSummary(c(0.0001, 0.002, 0.02, 0.1))
 
 }
