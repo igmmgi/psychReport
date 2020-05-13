@@ -210,14 +210,12 @@ pValueString <- function(pVal, nsmall = 2){
 #' @return character
 #'
 #' @examples
-#' # Example 1:
+#' # Examples:
 #' psum <- pValueSummary(0.0067)
-#'
-#' # Example 2:
-#' psum <- pValueSummary(c(0.6712, 0.1, 0.0001), nsmall = 3)
+#' psum <- pValueSummary(c(0.0001, 0.002, 0.02, 0.1))
 #'
 #' @export
-pValueSummary <- function(pVal, nsmall = 2) {
+pValueSummary <- function(pVal) {
 
   if (!is.numeric(pVal)) {
      stop("Input contains a non-number!")
@@ -225,9 +223,7 @@ pValueSummary <- function(pVal, nsmall = 2) {
 
   psum <- ifelse(pVal < 0.001, "***",
                  ifelse(pVal < 0.01, "**",
-                       ifelse(pVal < 0.05, "*",
-                              gsub("0\\.", ".", format(round(pVal, digits = nsmall),
-                                                       nsmall = nsmall)))))
+                       ifelse(pVal <= 0.05, "*", " ")))
 
   return(psum)
 

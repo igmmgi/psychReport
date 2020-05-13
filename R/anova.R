@@ -2,7 +2,6 @@
 #'
 #' @description Take output from base aov function and produce a "tidy" ANOVA table
 #' similar to the output of ezANOVA. The output also contains the marginal means.
-#' NB: currently within only.
 #'
 #' @param aovObj Output from aov function
 #'
@@ -24,17 +23,25 @@
 aovTidyTable <- function(aovObj) {
 
   # create ANOVA table structure similar to ezANOVA
-  aovTable        <- broom::tidy(aovObj)
-  aovTable        <- aovTable[2:nrow(aovTable), 2:7]
+  aovTable <- broom::tidy(aovObj)
 
-  aovTable        <- cbind(aovTable[seq(1, nrow(aovTable), 2), ], aovTable[seq(2, nrow(aovTable), 2), ])
-  aovTable        <- aovTable[, c(1, 2, 8, 3, 9, 5, 6)]
+  residuals <- aovTable[aovTable$term == "Residuals", ]
+  aovTable  <- aovTable[!aovTable$term == "Residuals", ]
+
+  aovTable$DFd <- 0
+  aovTable$SSd <- 0
+  for (row in 1:nrow(aovTable)) {
+    aovTable$DFd[row] <- residuals$df[residuals$stratum == aovTable$stratum[row]]
+    aovTable$SSd[row] <- residuals$sumsq[residuals$stratum == aovTable$stratum[row]]
+  }
+
+  aovTable        <- aovTable[, c(2, 3, 8, 4, 9, 6, 7)]
   names(aovTable) <- c("Effect", "DFn", "DFd", "SSn", "SSd", "F", "p")
 
   aovTable$"p<.05" <- pValueSummary(aovTable$p)
 
   out       <- NULL
-  out$ANOVA <- aovTable
+  out$ANOVA <- as.data.frame(aovTable)
   out$means <- stats::model.tables(aovObj, type = "mean")  # marginal means
 
   return(out)
