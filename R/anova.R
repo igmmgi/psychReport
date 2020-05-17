@@ -638,7 +638,6 @@ meanStrAov <- function(aovObj, effect, level, unit = "ms", numDigits = 0) {
 #' Uses printTable (xtable) latex package with some basic defaults.
 #' For more examples, see R package xtable
 #' @param ... Output from aov or ezANOVA (NB. ezANOVA must be called with detailed = TRUE)
-#' @param ... Output from ezANOVA  (NB. ezANOVA must be called with \"return_aov = TRUE\"")
 #' @param caption Title for the table
 #' @param digits Number of digits to round to
 #' @param dv Name of the dependent variable (e.g., "ms", "\%")

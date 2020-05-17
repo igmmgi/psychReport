@@ -7,7 +7,7 @@
 printAovMeans(..., caption = "Mean", digits = 3, dv = "ms")
 }
 \arguments{
-\item{...}{Output from ezANOVA  (NB. ezANOVA must be called with \"return_aov = TRUE\"")}
+\item{...}{Output from aov or ezANOVA (NB. ezANOVA must be called with detailed = TRUE)}
 
 \item{caption}{Title for the table}
 
