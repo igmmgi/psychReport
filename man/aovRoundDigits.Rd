@@ -9,7 +9,7 @@ aovRoundDigits(aovObj, nsmall = 2)
 \arguments{
 \item{aovObj}{Output from aov or ezANOVA}
 
-\item{nsmall}{Number of small digits to round to within ANOVA table}
+\item{nsmall}{Number of digits to round to within ANOVA table}
 }
 \value{
 dataframe

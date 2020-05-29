@@ -263,7 +263,7 @@ aovJackknifeAdjustment <- function(aovObj, numVPs) {
 #' @description Round digits to n decimal places in ezANOVA table
 #'
 #' @param aovObj Output from aov or ezANOVA
-#' @param nsmall Number of small digits to round to within ANOVA table
+#' @param nsmall Number of digits to round to within ANOVA table
 #'
 #' @return dataframe
 #'
@@ -293,7 +293,7 @@ aovJackknifeAdjustment <- function(aovObj, numVPs) {
 #' aovDispTable(aovRT)
 #'
 #' @export
-aovRoundDigits <- function(aovObj, nsmall = 2) {
+aovRoundDigits <- function(aovObj, nsmall=2) {
 
   if (is.null(aovObj$ANOVA)) {
     aovObj <- aovTidyTable(aovObj)  # convert base aov output
