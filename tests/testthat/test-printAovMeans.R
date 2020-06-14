@@ -8,8 +8,13 @@ test_that("printAovMeans", {
   dat <- addDataDF(dat, RT = list("Comp_comp"   = c(500, 150, 100),
                                   "Comp_incomp" = c(520, 150, 100)))
 
-  dat$VP <- as.factor(dat$VP)
+  # base R aov
+  aovRT <- aov(RT ~ Comp + Error(VP/Comp), dat)
+  aovRT <- aovTable(aovRT)
 
+  testthat::expect_error(printAovMeans(aovRT), NA)
+
+  # ezANOVA
   aovRT <- ez::ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
                    return_aov = TRUE, detailed = TRUE)
   aovRT <- aovTable(aovRT)

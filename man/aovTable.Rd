@@ -6,6 +6,7 @@
 \usage{
 aovTable(
   aovObj,
+  effectSize = "pes",
   sphericityCorrections = TRUE,
   sphericityCorrectionType = "GG",
   removeSumSquares = TRUE,
@@ -15,6 +16,8 @@ aovTable(
 }
 \arguments{
 \item{aovObj}{Output from aov or ezANOVA (NB. ezANOVA must be called with detailed = TRUE)}
+
+\item{effectSize}{Effect size (pes vs. ges)}
 
 \item{sphericityCorrections}{TRUE/FALSE (ezANOVA)}
 
@@ -32,7 +35,7 @@ list
 \description{
 Adjust ezANOVA table output. Options include calculation of alternative
 effect sizes (eta squared, partial eta squared), the calculation of marginal
-means and formating options for the ANOVA table (e.g., detailed, rounding).
+means and formatting options for the ANOVA table (e.g., detailed, rounding).
 }
 \examples{
 # Example 1:

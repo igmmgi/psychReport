@@ -11,7 +11,11 @@ test_that("aovDispMeans", {
                              "Comp_neutral" = c(550, 150, 150),
                              "Comp_incomp"  = c(600, 150, 150)))
 
-  dat$VP <- as.factor(dat$VP)
+  # base R aov
+  aovRT <- aov(RT ~ Comp + Error(VP/(Comp)), dat)
+  testthat::expect_error(aovDispMeans(aovRT), NA)
+
+  # ezANOVA
   aovRT <- ez::ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
                        return_aov = TRUE, detailed = TRUE)
   testthat::expect_error(aovDispMeans(aovRT))

@@ -11,8 +11,7 @@ test_that("sphericityValueString", {
                                   "Comp_comp"    = c(500, 150, 100),
                                   "Comp_incomp"  = c(520, 150, 100)))
 
-  # repeated measures ANOVA using ezANOVA
-  dat$VP <- as.factor(dat$VP)
+  # ezANOVA
   aovRT <- ez::ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
                    return_aov = TRUE, detailed = TRUE)
   aovRT <- aovTable(aovRT)

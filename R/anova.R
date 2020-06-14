@@ -87,7 +87,7 @@ aovDispTable <- function(aovObj, caption=sys.call()) {
     caption <- paste0("ANOVA:", unlist(lapply(caption[2], as.character)))
   }
   width <- max(apply(aovObj$ANOVA, 1, function(x) sum(nchar(x))))
-  print(cli::rule(line = 2, center = crayon::black(caption), width = width + 13))
+  print(cli::rule(line = 2, center = caption, width = width + 13))
   print(aovObj$ANOVA, row.names = FALSE)
   print(cli::rule(width = width + 13))
 
@@ -143,9 +143,9 @@ aovDispMeans <- function(aovObj, value="value", caption=sys.call()) {
       if (!is.character(caption)){
         caption <- paste0("ANOVA:", unlist(lapply(caption[2], as.character)))
       }
-      print(cli::rule(line = 2, center = crayon::black(caption), width = width))
+      print(cli::rule(line = 2, center = caption, width = width))
     }
-    print(cli::rule(center = crayon::black(heading), width = width))
+    print(cli::rule(center = heading, width = width))
     print(dat, row.names = FALSE)
     cat("\n")
   }
@@ -155,11 +155,13 @@ aovDispMeans <- function(aovObj, value="value", caption=sys.call()) {
 
 
 
-#' @title aovPartialEtaSquared
+#' @title aovEffectSize
 #'
-#' @description Add partial eta squared (pes) to ANOVA table
+#' @description Add effect size to ANOVA table. Effect sizes: partial eta squared (pes),
+#' vs. ges (generalized eta squared, NB: default when using ezANOVA).
 #'
 #' @param aovObj Output from aov or ezANOVA
+#' @param effectSize Effect size (pes vs. ges)
 #'
 #' @return list
 #'
@@ -179,25 +181,31 @@ aovDispMeans <- function(aovObj, value="value", caption=sys.call()) {
 #'                            "Comp:Side_neutral:right" = c(525, 150, 150)))
 #'
 #' aovRT <- aov(RT ~ Comp * Side + Error(VP/(Comp*Side)), dat)
-#' aovRT <- aovPartialEtaSquared(aovRT)
+#' aovRT <- aovEffectSize(aovRT)
 #' aovRT <- aovDispTable(aovRT)
 #'
 #' # or with ezANOVA
 #' library(ez)
 #' aovRT <- ezANOVA(dat, dv=.(RT), wid = .(VP), within = .(Comp, Side),
 #'                  return_aov = TRUE, detailed = TRUE)
-#' aovRT <- aovPartialEtaSquared(aovRT)
+#' aovRT <- aovEffectSize(aovRT)
 #' aovDispTable(aovRT)
 #'
 #' @export
-aovPartialEtaSquared <- function(aovObj) {
+aovEffectSize <- function(aovObj, effectSize = "pes") {
 
   if (is.null(aovObj$ANOVA)) {
     aovObj <- aovTidyTable(aovObj)  # convert base aov output
   }
 
-  aovObj$ANOVA$ges <- NULL
-  aovObj$ANOVA$pes <- aovObj$ANOVA$SSn / (aovObj$ANOVA$SSn + aovObj$ANOVA$SSd)
+  if (effectSize == "pes") {
+    aovObj$ANOVA$ges <- NULL
+    aovObj$ANOVA$pes <- aovObj$ANOVA$SSn / (aovObj$ANOVA$SSn + aovObj$ANOVA$SSd)
+  } else if (effectSize == "ges") {
+    aovObj$ANOVA$pes <- NULL
+    # NB assumes no observed variables within initial call to ezANOVA!
+    aovObj$ANOVA$ges <- aovObj$ANOVA$SSn / (aovObj$ANOVA$SSn + sum(unique(aovObj$ANOVA$SSd)))
+  }
 
   return(aovObj)
 
@@ -369,9 +377,10 @@ aovSphericityAdjustment <- function(aovObj, type = "GG") {
 #'
 #' @description Adjust ezANOVA table output. Options include calculation of alternative
 #' effect sizes (eta squared, partial eta squared), the calculation of marginal
-#' means and formating options for the ANOVA table (e.g., detailed, rounding).
+#' means and formatting options for the ANOVA table (e.g., detailed, rounding).
 #'
 #' @param aovObj Output from aov or ezANOVA (NB. ezANOVA must be called with detailed = TRUE)
+#' @param effectSize Effect size (pes vs. ges)
 #' @param sphericityCorrections TRUE/FALSE (ezANOVA)
 #' @param sphericityCorrectionType "GG" (default) vs. "HF" (ezANOVA)
 #' @param removeSumSquares TRUE/FALSE Remove SSn/SSd columns from the ANOVA table
@@ -404,6 +413,7 @@ aovSphericityAdjustment <- function(aovObj, type = "GG") {
 #'
 #' @export
 aovTable <- function(aovObj,
+                     effectSize = "pes",
                      sphericityCorrections = TRUE,
                      sphericityCorrectionType = "GG",
                      removeSumSquares = TRUE,
@@ -422,7 +432,13 @@ aovTable <- function(aovObj,
   aovObj$ANOVA$"p<.05" <- pValueSummary(aovObj$ANOVA$p)
 
   # add partial eta-squared
-  aovObj <- aovPartialEtaSquared(aovObj)
+  if (effectSize == "pes") {
+    aovObj <- aovEffectSize(aovObj, effectSize = "pes")
+  } else if (effectSize == "ges") {
+    if (is.null(aovObj$ANOVA$ges)) {
+      aovObj <- aovEffectSize(aovObj, effectSize = "ges")
+    }
+  }
 
   if (sphericityCorrections & any(aovObj$ANOVA$DFn > 1)) {
     hasSphericity <- aovObj$"Sphericity Corrections"
@@ -466,6 +482,7 @@ aovTable <- function(aovObj,
 #'
 #' @param aovObj Output from aov or ezANOVA (NB. ezANOVA must be called with detailed = TRUE)
 #' @param effect The effect within the ANOVA table to return
+#' @param effectSize pes (partial eta squared) vs. ges (generalised eta squared)
 #'
 #' @return character
 #'
@@ -497,18 +514,23 @@ aovTable <- function(aovObj,
 #' pesString <- effectsizeValueString(aovRT, "Comp:Side")
 #'
 #' @export
-effectsizeValueString <- function(aovObj, effect){
+effectsizeValueString <- function(aovObj, effect, effectSize = "pes"){
 
   if (is.null(aovObj$ANOVA)) {
     stop("aovObj does not have appropriate ANOVA table")
   }
 
-  effectSizeIdx <- which(names(aovObj$ANOVA) %in% "pes")
+  effectSizeIdx <- which(names(aovObj$ANOVA) %in% effectSize)
   if (length(effectSizeIdx) == 0) {
-    stop("partial eta-squared not in ANOVA table!")
+    stop(paste0(effectSize, " not in ANOVA table!"))
   }
-  effectSizeValue  <- aovObj$ANOVA[, "pes"][aovObj$ANOVA$Effect == effect]
-  return(paste0("$\\eta_{p}^2$ = ", effectSizeValue))
+  if (effectSize == "pes") {
+    effectSizeValue  <- aovObj$ANOVA[, "pes"][aovObj$ANOVA$Effect == effect]
+    return(paste0("$\\eta_{p}^2$ = ", effectSizeValue))
+  } else if (effectSize == "ges") {
+    effectSizeValue <- aovObj$ANOVA[, "ges"][aovObj$ANOVA$Effect == effect]
+    return(paste0("$\\eta_{G}^2$ = ", effectSizeValue))
+  }
 }
 
 
@@ -606,7 +628,7 @@ fValueString <- function(aovObj, effect){
 meanStrAov <- function(aovObj, effect, level, unit = "ms", numDigits = 0) {
 
   if (is.null(aovObj$ANOVA)) {
-    stop("aovObj does not have appropriate ANOVA table")
+    aovObj <- aovTable(aovObj)  # convert base aov output
   }
 
   row <- which(aovObj$ANOVA$Effect == effect) + 1
@@ -751,7 +773,7 @@ printAovMeans <- function(..., caption = "Mean", digits = 3, dv = "ms") {
 statStrAov <- function(aovObj, effect) {
 
   if (is.null(aovObj$ANOVA)) {
-    aovObj <- aovTidyTable(aovObj)  # convert base aov output
+    aovObj <- aovTable(aovObj)  # convert base aov output
   }
 
   fString <- fValueString(aovObj, effect)
@@ -800,10 +822,6 @@ statStrAov <- function(aovObj, effect) {
 #'
 #' @export
 sphericityValueString <- function(aovObj, effect){
-
-  if (is.null(aovObj$ANOVA)) {
-    aovObj <- aovTidyTable(aovObj)  # convert base aov output
-  }
 
   sphericityString = NULL
   if ("eps" %in% names(aovObj$ANOVA)) {

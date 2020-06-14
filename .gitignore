@@ -1,8 +1,4 @@
-.Rbuildignore
-.RData
+.Rproj.user
 .Rhistory
-.Rproj.user/
+.RData
 .Ruserdata
-.directory
-createCRANpackage.sh
-psychReport.Rproj/

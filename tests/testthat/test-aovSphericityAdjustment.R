@@ -13,8 +13,14 @@ test_that("aovSphericityAdjustment", {
                              "Comp_neutral" = c(550, 150, 150),
                              "Comp_incomp"  = c(600, 150, 150)))
 
-  dat$VP <- as.factor(dat$VP)
+  # base R aov
+  aovRT <- aov(RT ~ Comp + Error(VP/(Comp)), dat)
+  testthat::expect_error(aovSphericityAdjustment(aovRT))
 
+  testthat::expect_error(aovTable(aovRT))
+  testthat::expect_error(aovTable(aovRT, sphericityCorrections = FALSE), NA)
+
+  # ezANOVA
   aovRT <- ez::ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
                    return_aov = TRUE, detailed = TRUE)
 

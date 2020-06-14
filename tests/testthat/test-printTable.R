@@ -8,13 +8,18 @@ test_that("printTable", {
   dat <- addDataDF(dat, RT = list("Comp_comp"   = c(500, 150, 100),
                                   "Comp_incomp" = c(520, 150, 100)))
 
-  dat$VP <- as.factor(dat$VP)
+  # base R aov
+  aovRT <- aov(RT ~ Comp + Error(VP/Comp), dat)
+  testthat::expect_error(printTable(aovRT), NA)
 
+  # ezANOVA
   aovRT <- ez::ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
                    return_aov = TRUE, detailed = TRUE)
   aovRT <- aovTable(aovRT)
 
   testthat::expect_error(printTable(dat), NA)
+  testthat::expect_error(printTable(dat, caption = "Test", digits = c(0, 2)), NA)
+  testthat::expect_error(printTable(dat, caption = "Test", digits = c(0, 2, 0)))
   testthat::expect_error(printTable(aovRT$ANOVA), NA)
 
 })

@@ -4,12 +4,14 @@
 \alias{effectsizeValueString}
 \title{effectsizeValueString}
 \usage{
-effectsizeValueString(aovObj, effect)
+effectsizeValueString(aovObj, effect, effectSize = "pes")
 }
 \arguments{
 \item{aovObj}{Output from aov or ezANOVA (NB. ezANOVA must be called with detailed = TRUE)}
 
 \item{effect}{The effect within the ANOVA table to return}
+
+\item{effectSize}{pes (partial eta squared) vs. ges (generalised eta squared)}
 }
 \value{
 character

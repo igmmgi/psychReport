@@ -13,17 +13,27 @@ test_that("aovRoundDigits", {
                              "Comp_neutral" = c(550, 150, 150),
                              "Comp_incomp"  = c(600, 150, 150)))
 
+  # base R aov
+  aovRT <- aov(RT ~ Comp + Error(VP/(Comp)), dat)
+  aovRT <- aovRoundDigits(aovRT, 3)
+
+  testthat::expect_equal(as.character(aovRT$ANOVA$F[1]), "2.170")
+
+  aovRT <- aov(RT ~ Comp + Error(VP/(Comp)), dat)
+  aovRT <- aovRoundDigits(aovRT, 1)
+
+  testthat::expect_equal(as.character(aovRT$ANOVA$F[1]), "2.2")
+
   # repeated measures ANOVA using ezANOVA
-  dat$VP <- as.factor(dat$VP)
   aovRT <- ez::ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
-                   return_aov = TRUE, detailed = TRUE)
+                       return_aov = TRUE, detailed = TRUE)
   aovRT <- aovRoundDigits(aovRT, 3)  # 3 sig decimal places
 
   testthat::expect_equal(as.character(aovRT$ANOVA$F[1]), "1346.037")
   testthat::expect_equal(as.character(aovRT$ANOVA$F[2]), "   2.170")
 
   aovRT <- ez::ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
-                   return_aov = TRUE, detailed = TRUE)
+                       return_aov = TRUE, detailed = TRUE)
   aovRT <- aovRoundDigits(aovRT, 1)  # 1 sig decimal places
 
   testthat::expect_equal(as.character(aovRT$ANOVA$F[1]), "1346.0")

@@ -14,8 +14,18 @@ test_that("statStrAov", {
                                   "Comp:Side_incomp:left"  = c(550, 150, 100),
                                   "Comp:Side_incomp:right" = c(550, 150, 100)))
 
+  # base R aov
+  aovRT <- aov(RT ~ Comp*Side + Error(VP/(Comp*Side)), dat)
+
+  aovStringComp     <- statStrAov(aovRT, "Comp")
+  aovStringSide     <- statStrAov(aovRT, "Side")
+  aovStringCompSide <- statStrAov(aovRT, "Comp:Side")
+
+  testthat::expect_equal(aovStringComp,     "\\emph{F}(1, 49) = 4.39, \\emph{p} = .04, $\\eta_{p}^2$ = 0.08")
+  testthat::expect_equal(aovStringSide,     "\\emph{F}(1, 49) = 0.32, \\emph{p} = .57, $\\eta_{p}^2$ = 0.01")
+  testthat::expect_equal(aovStringCompSide, "\\emph{F}(1, 49) = 0.49, \\emph{p} = .49, $\\eta_{p}^2$ = 0.01")
+
   # repeated measures ANOVA using ezANOVA
-  dat$VP <- as.factor(dat$VP)
   aovRT <- ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp, Side),
                    return_aov = TRUE, detailed = TRUE)
   aovRT <- aovTable(aovRT)
@@ -33,7 +43,7 @@ test_that("statStrAov", {
                   design = list("Comp" = c("comp", "neutral", "incomp")))
   dat <- addDataDF(dat)
 
-  # repeated measures ANOVA using ezANOVA
+  # ezANOVA
   dat$VP <- as.factor(dat$VP)
   aovRT <- ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
                    return_aov = TRUE, detailed = TRUE)
