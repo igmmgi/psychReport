@@ -34,7 +34,7 @@ dat <- addDataDF(dat, RT = list("Comp_comp"   = c(500, 150, 100),
 
 aovRT <- aov(RT ~ Comp + Error(VP/(Comp)), dat)
 aovRT <- aovTable(aovRT)
-printAovMeans(aovRT, digits = 0, dv = "ms")  # latex formatted
+printAovMeans(aovRT, digits = 3, dv = "ms")  # latex formatted
 
 # or using ezANOVA
 library(ez)

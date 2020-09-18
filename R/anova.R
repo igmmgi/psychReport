@@ -18,6 +18,7 @@
 #' aovObj <- aov(RT ~ Comp + Error(VP/(Comp)), dat)
 #' aovObj <- aovTidyTable(aovObj)
 #' aovObj$ANOVA
+#' printTable(aovObj$ANOVA, digits = c(0,2,3,4,5,6))
 #
 #' @export
 aovTidyTable <- function(aovObj) {
@@ -296,8 +297,7 @@ aovJackknifeAdjustment <- function(aovObj, numVPs) {
 #' library(ez)
 #' aovRT <- ezANOVA(dat, dv=.(RT), wid = .(VP), within = .(Comp, Side),
 #'                  return_aov = TRUE, detailed = TRUE)
-#' aovDispTable(aovRT)
-#' aovRT <- aovRoundDigits(aovRT, 2)
+#' aovRT <- aovRoundDigits(aovRT, 3)
 #' aovDispTable(aovRT)
 #'
 #' @export
@@ -309,7 +309,10 @@ aovRoundDigits <- function(aovObj, nsmall=2) {
 
   colNames <- c("SSn", "SSd", "F", "p", "eps", "ges", "pes")
   colIdx   <- which(names(aovObj$ANOVA) %in% colNames)
-  aovObj$ANOVA[, colIdx] <- format(round(aovObj$ANOVA[, colIdx], nsmall), nsmall = nsmall)
+  colNames <- names(aovObj$ANOVA)[colIdx]
+
+  aovObj$ANOVA <- aovObj$ANOVA %>%
+    mutate_at(vars(colNames), list(~ round(., digits = nsmall)))
 
   return(aovObj)
 
@@ -677,7 +680,7 @@ meanStrAov <- function(aovObj, effect, level, unit = "ms", numDigits = 0) {
 #'
 #' aovRT <- aov(RT ~ Comp + Error(VP/(Comp)), dat)
 #' aovRT <- aovTable(aovRT)
-#' printAovMeans(aovRT, digits = 0, dv = "ms")  # latex formatted
+#' printAovMeans(aovRT, digits = 3, dv = "ms")  # latex formatted
 #'
 #' # or using ezANOVA
 #' library(ez)

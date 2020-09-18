@@ -27,4 +27,5 @@ dat <- addDataDF(dat, RT = list("Comp_comp"   = c(500, 150, 100),
 aovObj <- aov(RT ~ Comp + Error(VP/(Comp)), dat)
 aovObj <- aovTidyTable(aovObj)
 aovObj$ANOVA
+printTable(aovObj$ANOVA, digits = c(0,2,3,4,5,6))
 }

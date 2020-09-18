@@ -22,13 +22,13 @@
 #'
 #' dat <- addDataDF(dat, RT = list("Comp_comp"   = c(500, 150, 100),
 #'                                 "Comp_incomp" = c(520, 150, 100)))
-#' printTable(dat) # latex formatted
+#' printTable(dat, digits = 1) # latex formatted
 #'
 #' dat$VP <- as.factor(dat$VP)
 #' aovRT <- ezANOVA(dat, dv=.(RT), wid = .(VP), within = .(Comp),
 #'                  return_aov = TRUE, detailed = TRUE)
 #' aovRT <- aovTable(aovRT)
-#' printTable(aovRT$ANOVA) # latex formatted
+#' printTable(aovRT$ANOVA, digits = c(0, 0, 2, 2, 2)) # latex formatted
 #'
 #' @export
 printTable <- function(obj, caption = "DF", digits=3, onlyContents=FALSE,
@@ -51,17 +51,12 @@ printTable <- function(obj, caption = "DF", digits=3, onlyContents=FALSE,
             } else {
                 tmp = rep(0, ncol(obj))
                 tmp[numeric_cols] <- digits
-                digits <- tmp
+                digits <- c(0, tmp)
             }
         }
     }
 
-  tab <- xtable::xtable(obj, caption = caption)
-  tab <- xtable::autoformat(tab)
-  if (length(digits) > 1){
-      digits <- c(0, digits)
-  }
-  xtable::digits(tab) <- digits
+  tab <- xtable::xtable(obj, caption = caption, digits = digits)
 
   print(tab,
         table.placement = "H",

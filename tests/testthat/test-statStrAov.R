@@ -50,6 +50,6 @@ test_that("statStrAov", {
   aovRT <- aovTable(aovRT)
 
   aovStringComp <- statStrAov(aovRT, "Comp")
-  testthat::expect_equal(aovStringComp, "\\emph{F}(2, 98) = 0.02, \\emph{p} = .98, $\\eta_{p}^2$ = 0.00, $\\epsilon$ = 0.97")
+  testthat::expect_equal(aovStringComp, "\\emph{F}(2, 98) = 0.02, \\emph{p} = .98, $\\eta_{p}^2$ = 0, $\\epsilon$ = 0.97")
 
 })
