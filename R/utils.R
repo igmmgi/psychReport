@@ -65,6 +65,7 @@ printTable <- function(obj, caption = "DF", digits=3, onlyContents=FALSE,
         floating = FALSE,
         tabular.environment = "longtable",
         only.contents = onlyContents,
+        hline.after = c(-1, 0),
         sanitize.text.function = function(x){x})
 }
 
