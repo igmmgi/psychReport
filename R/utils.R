@@ -47,11 +47,14 @@ printTable <- function(obj, caption = "DF", digits=3, onlyContents=FALSE,
     if(length(digits) != ncol(obj)){
       # find numeric columns
       numeric_cols = NULL
+      defaultWarningLevel <- getOption("warn")
+      options(warn = -1) # temp turn off warnings (NAs by coercion)
       for (col in 1:ncol(obj)) {
         if (!is.factor(obj[1, col]) & !is.na(as.numeric(obj[1, col]))) {
           numeric_cols <- c(numeric_cols, col)
         }
       }
+      options(warn = defaultWarningLevel)
       if(length(digits) != length(numeric_cols)){
         stop("Number of digits does not equal number of numeric columns!")
       } else {
