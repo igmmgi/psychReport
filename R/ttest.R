@@ -144,6 +144,7 @@ meanStrT <- function(tObj, numDigits = 0, unit = "") {
 #' @return character
 #'
 #' @examples
+#' library(psychReport)
 #' requiredPackages(c("dplyr"))
 #'
 #' # Example 1:

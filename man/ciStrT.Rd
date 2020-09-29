@@ -20,6 +20,7 @@ character
 Returns a string with the 95\% CI from a t.test in Latex format.
 }
 \examples{
+library(psychReport)
 requiredPackages(c("dplyr"))
 
 # Example 1:

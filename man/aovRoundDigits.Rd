@@ -38,7 +38,7 @@ aovDispTable(aovRT)
 library(ez)
 aovRT <- ezANOVA(dat, dv=.(RT), wid = .(VP), within = .(Comp, Side),
                  return_aov = TRUE, detailed = TRUE)
-aovRT <- aovRoundDigits(aovRT, 3)
+aovRT <- aovRoundDigits(aovRT, 2)
 aovDispTable(aovRT)
 
 }

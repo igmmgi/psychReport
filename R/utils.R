@@ -43,18 +43,25 @@ printTable <- function(obj, caption = "DF", digits=3, onlyContents=FALSE,
     names(obj) <- sub("\\<eps\\>", "$\\\\epsilon$",   names(obj))
   }
 
-    if (length(digits) != 1) {
-        if(length(digits) != ncol(obj)){
-            numeric_cols <- which(unlist(lapply(obj, is.numeric)))
-            if(length(digits) != length(numeric_cols)){
-                stop("Number of digits does not equal number of numeric columns!")
-            } else {
-                tmp = rep(0, ncol(obj))
-                tmp[numeric_cols] <- digits
-                digits <- c(0, tmp)
-            }
+  if (length(digits) != 1) {
+    if(length(digits) != ncol(obj)){
+      # find numeric columns
+      numeric_cols = NULL
+      for (col in 1:ncol(obj)) {
+        if (!is.factor(obj[1, col]) & !is.na(as.numeric(obj[1, col]))) {
+          numeric_cols <- c(numeric_cols, col)
         }
+      }
+      if(length(digits) != length(numeric_cols)){
+        stop("Number of digits does not equal number of numeric columns!")
+      } else {
+        # make digits length required by xtable command
+        tmp = rep(0, ncol(obj))
+        tmp[numeric_cols] <- digits
+        digits <- c(0, tmp)
+      }
     }
+  }
 
   tab <- xtable::xtable(obj, caption = caption, digits = digits)
 
@@ -173,10 +180,10 @@ numValueString <- function(value, numDigits = 2, unit = "") {
 pValueString <- function(pVal, nsmall = 2){
 
   if (is.character(pVal)) {
-     pVal <- as.numeric(pVal)
-     if (is.na(pVal)) {
+    pVal <- as.numeric(pVal)
+    if (is.na(pVal)) {
       stop("Can't convert string to number!")
-     }
+    }
   }
 
   if (pVal >= 0.01) {
@@ -212,12 +219,12 @@ pValueString <- function(pVal, nsmall = 2){
 pValueSummary <- function(pVal) {
 
   if (!is.numeric(pVal)) {
-     stop("Input contains a non-number!")
+    stop("Input contains a non-number!")
   }
 
   psum <- ifelse(pVal < 0.001, "***",
                  ifelse(pVal < 0.01, "**",
-                       ifelse(pVal <= 0.05, "*", "")))
+                        ifelse(pVal <= 0.05, "*", "")))
 
   return(psum)
 

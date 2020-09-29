@@ -22,7 +22,7 @@ test_that("aovRoundDigits", {
   aovRT <- aov(RT ~ Comp + Error(VP/(Comp)), dat)
   aovRT <- aovRoundDigits(aovRT, 1)
 
-  testthat::expect_equal(as.character(aovRT$ANOVA$F[1]), "2.2")
+  testthat::expect_equal(as.character(aovRT$ANOVA$F[1]), "2.20")
 
   # repeated measures ANOVA using ezANOVA
   aovRT <- ez::ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
@@ -30,13 +30,13 @@ test_that("aovRoundDigits", {
   aovRT <- aovRoundDigits(aovRT, 3)  # 3 sig decimal places
 
   testthat::expect_equal(as.character(aovRT$ANOVA$F[1]), "1346.037")
-  testthat::expect_equal(as.character(aovRT$ANOVA$F[2]), "2.17")
+  testthat::expect_equal(as.character(aovRT$ANOVA$F[2]), "2.170")
 
   aovRT <- ez::ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
                        return_aov = TRUE, detailed = TRUE)
   aovRT <- aovRoundDigits(aovRT, 1)  # 1 sig decimal places
 
-  testthat::expect_equal(as.character(aovRT$ANOVA$F[1]), "1346")
-  testthat::expect_equal(as.character(aovRT$ANOVA$F[2]), "2.2")
+  testthat::expect_equal(as.character(aovRT$ANOVA$F[1]), "1346.00")
+  testthat::expect_equal(as.character(aovRT$ANOVA$F[2]), "2.20")
 
 })

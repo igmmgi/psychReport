@@ -1,5 +1,5 @@
 exportPattern("^[[:alpha:]]+")
 importFrom("utils", "modifyList")
-importFrom("dplyr", "%>%", "vars", "mutate_at")
+importFrom("dplyr", "%>%", "vars", "mutate_at", "all_of")
 importFrom("broom", "tidy")
 importFrom("ez", "ezANOVA")

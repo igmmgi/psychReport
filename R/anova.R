@@ -297,7 +297,7 @@ aovJackknifeAdjustment <- function(aovObj, numVPs) {
 #' library(ez)
 #' aovRT <- ezANOVA(dat, dv=.(RT), wid = .(VP), within = .(Comp, Side),
 #'                  return_aov = TRUE, detailed = TRUE)
-#' aovRT <- aovRoundDigits(aovRT, 3)
+#' aovRT <- aovRoundDigits(aovRT, 2)
 #' aovDispTable(aovRT)
 #'
 #' @export
@@ -312,7 +312,7 @@ aovRoundDigits <- function(aovObj, nsmall=2) {
   colNames <- names(aovObj$ANOVA)[colIdx]
 
   aovObj$ANOVA <- aovObj$ANOVA %>%
-    mutate_at(vars(colNames), list(~ round(., digits = nsmall)))
+    mutate_at(vars(all_of(colNames)), list(~ trimws(format(round(., digits = nsmall), nsmall = 2))))
 
   return(aovObj)
 
