@@ -44,7 +44,7 @@ test_that("statStrAov", {
   # ezANOVA
   dat$VP <- as.factor(dat$VP)
   aovRT <- ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp), return_aov = TRUE, detailed = TRUE)
-  aovRT <- aovTable(aovRT)
+  aovRT <- aovTable(aovRT, sphericityCorrectionAdjDF = FALSE)
 
   aovStringComp <- statStrAov(aovRT, "Comp")
   testthat::expect_equal(aovStringComp, "\\emph{F}(2, 98) = 0.02, \\emph{p} = .98, $\\eta_{p}^2$ = 0.00, $\\epsilon$ = 0.97")

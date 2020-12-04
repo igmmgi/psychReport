@@ -4,12 +4,14 @@
 \alias{aovSphericityAdjustment}
 \title{aovSphericityAdjustment}
 \usage{
-aovSphericityAdjustment(aovObj, type = "GG")
+aovSphericityAdjustment(aovObj, type = "GG", adjDF = TRUE)
 }
 \arguments{
 \item{aovObj}{The returned object from a call to ezANOVA}
 
 \item{type}{"GG" (Greenhouse-Geisser) or "HF" (Huynh-Feldt)}
+
+\item{adjDF}{TRUE/FALSE Should DF's be adjusted?}
 }
 \value{
 list

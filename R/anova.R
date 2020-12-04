@@ -307,7 +307,11 @@ aovRoundDigits <- function(aovObj, nsmall=2) {
     aovObj <- aovTidyTable(aovObj)  # convert base aov output
   }
 
-  colNames <- c("SSn", "SSd", "F", "p", "eps", "ges", "pes")
+  if (all(aovObj$ANOVA$DFn == as.integer(aovObj$ANOVA$DFn)) & all(aovObj$ANOVA$DFn == as.integer(aovObj$ANOVA$DFn))) {
+    colNames <- c("SSn", "SSd", "F", "p", "eps", "ges", "pes")
+  } else {
+    colNames <- c("SSn", "SSd", "DFn", "DFd", "F", "p", "eps", "ges", "pes")
+  }
   colIdx   <- which(names(aovObj$ANOVA) %in% colNames)
   colNames <- names(aovObj$ANOVA)[colIdx]
 
@@ -327,6 +331,7 @@ aovRoundDigits <- function(aovObj, nsmall=2) {
 #'
 #' @param aovObj The returned object from a call to ezANOVA
 #' @param type "GG" (Greenhouse-Geisser) or "HF" (Huynh-Feldt)
+#' @param adjDF TRUE/FALSE Should DF's be adjusted?
 #'
 #' @return list
 #'
@@ -350,7 +355,7 @@ aovRoundDigits <- function(aovObj, nsmall=2) {
 #' aovDispTable(aovRT)
 #'
 #' @export
-aovSphericityAdjustment <- function(aovObj, type = "GG") {
+aovSphericityAdjustment <- function(aovObj, type = "GG", adjDF = TRUE) {
 
   hasSphericity <- aovObj$"Sphericity Corrections"
   if (is.null(hasSphericity)) {
@@ -370,6 +375,13 @@ aovSphericityAdjustment <- function(aovObj, type = "GG") {
     stop("Sphericity correction type not recognized!")
   }
 
+  aovObj$ANOVA$`p<.05` <- ifelse(aovObj$ANOVA$p<.05,"*","")
+
+  if (adjDF) {
+    aovObj$ANOVA$DFn[sphericityRows] <- aovObj$ANOVA$DFn[sphericityRows] * aovObj$ANOVA$eps[sphericityRows]
+    aovObj$ANOVA$DFd[sphericityRows] <- aovObj$ANOVA$DFd[sphericityRows] * aovObj$ANOVA$eps[sphericityRows]
+  }
+
   return(aovObj)
 
 }
@@ -386,6 +398,7 @@ aovSphericityAdjustment <- function(aovObj, type = "GG") {
 #' @param effectSize Effect size (pes vs. ges)
 #' @param sphericityCorrections TRUE/FALSE (ezANOVA)
 #' @param sphericityCorrectionType "GG" (default) vs. "HF" (ezANOVA)
+#' @param sphericityCorrectionAdjDF TRUE/FALSE Should DF's values be corrected?
 #' @param removeSumSquares TRUE/FALSE Remove SSn/SSd columns from the ANOVA table
 #' @param roundDigits TRUE/FALSE Round numerical values to numDigits
 #' @param numDigits The number of digits to round to if roundDigits = TRUE
@@ -419,6 +432,7 @@ aovTable <- function(aovObj,
                      effectSize = "pes",
                      sphericityCorrections = TRUE,
                      sphericityCorrectionType = "GG",
+                     sphericityCorrectionAdjDF = TRUE,
                      removeSumSquares = TRUE,
                      roundDigits = TRUE,
                      numDigits = 2) {
@@ -431,8 +445,6 @@ aovTable <- function(aovObj,
     stop("Call ezANOVA with \"detailed = TRUE\"!")
   }
 
-  # p-value summary *** vs. ** vs *
-  aovObj$ANOVA$"p<.05" <- pValueSummary(aovObj$ANOVA$p)
 
   # add partial eta-squared
   if (effectSize == "pes") {
@@ -448,9 +460,11 @@ aovTable <- function(aovObj,
     if (is.null(hasSphericity)) {
       stop("Sphericity Corrections not within aov(). Use ezANOVA().")
     }
-    aovObj <- aovSphericityAdjustment(aovObj, sphericityCorrectionType)
+    aovObj <- aovSphericityAdjustment(aovObj, sphericityCorrectionType, sphericityCorrectionAdjDF)
   }
 
+  # p-value summary *** vs. ** vs *
+  aovObj$ANOVA$"p<.05" <- pValueSummary(aovObj$ANOVA$p)
   aovObj$ANOVA <- aovObj$ANOVA[aovObj$ANOVA$Effect != "(Intercept)", ]
 
   if (roundDigits) {

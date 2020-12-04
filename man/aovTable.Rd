@@ -9,6 +9,7 @@ aovTable(
   effectSize = "pes",
   sphericityCorrections = TRUE,
   sphericityCorrectionType = "GG",
+  sphericityCorrectionAdjDF = TRUE,
   removeSumSquares = TRUE,
   roundDigits = TRUE,
   numDigits = 2
@@ -22,6 +23,8 @@ aovTable(
 \item{sphericityCorrections}{TRUE/FALSE (ezANOVA)}
 
 \item{sphericityCorrectionType}{"GG" (default) vs. "HF" (ezANOVA)}
+
+\item{sphericityCorrectionAdjDF}{TRUE/FALSE Should DF's values be corrected?}
 
 \item{removeSumSquares}{TRUE/FALSE Remove SSn/SSd columns from the ANOVA table}
 
