@@ -317,16 +317,19 @@ aovRoundDigits <- function(aovObj, nsmall=2) {
     aovObj <- aovTidyTable(aovObj)  # convert base aov output
   }
 
-  if (all(aovObj$ANOVA$DFn == as.integer(aovObj$ANOVA$DFn)) & all(aovObj$ANOVA$DFn == as.integer(aovObj$ANOVA$DFn))) {
-    colNames <- c("SSn", "SSd", "F", "p", "eps", "ges", "pes")
-  } else {
-    colNames <- c("SSn", "SSd", "DFn", "DFd", "F", "p", "eps", "ges", "pes")
-  }
+  colNames <- c("SSn", "SSd", "F", "p", "eps", "ges", "pes")
   colIdx   <- which(names(aovObj$ANOVA) %in% colNames)
   colNames <- names(aovObj$ANOVA)[colIdx]
 
   aovObj$ANOVA <- aovObj$ANOVA %>%
     mutate_at(vars(all_of(colNames)), list(~ trimws(format(round(., digits = nsmall), nsmall = 2))))
+
+  aovObj$ANOVA$DFn <- ifelse(aovObj$ANOVA$DFn == as.integer(aovObj$ANOVA$DFn),
+                             trimws(as.integer(aovObj$ANOVA$DFn)),
+                             trimws(format(round(aovObj$ANOVA$DFn, digits = nsmall), nsmall = 2)))
+  aovObj$ANOVA$DFd <- ifelse(aovObj$ANOVA$DFd == as.integer(aovObj$ANOVA$DFd),
+                             trimws(as.integer(aovObj$ANOVA$DFd)),
+                             trimws(format(round(aovObj$ANOVA$DFd, digits = nsmall), nsmall = 2)))
 
   return(aovObj)
 
