@@ -9,7 +9,7 @@ aovTable(
   effectSize = "pes",
   sphericityCorrections = TRUE,
   sphericityCorrectionType = "GG",
-  sphericityCorrectionAdjDF = TRUE,
+  sphericityCorrectionAdjDF = FALSE,
   removeSumSquares = TRUE,
   roundDigits = TRUE,
   numDigits = 2

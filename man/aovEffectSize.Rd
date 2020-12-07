@@ -34,6 +34,7 @@ dat <- addDataDF(dat,
                            "Comp:Side_neutral:right" = c(525, 150, 150)))
 
 aovRT <- aov(RT ~ Comp * Side + Error(VP/(Comp*Side)), dat)
+aovDispMeans(aovRT)
 aovRT <- aovEffectSize(aovRT)
 aovRT <- aovDispTable(aovRT)
 

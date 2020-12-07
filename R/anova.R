@@ -87,10 +87,12 @@ aovDispTable <- function(aovObj, caption=sys.call()) {
   if (!is.character(caption)) {
     caption <- paste0("ANOVA:", unlist(lapply(caption[2], as.character)))
   }
-  width <- max(apply(aovObj$ANOVA, 1, function(x) sum(nchar(x))))
-  print(cli::rule(line = 2, center = caption, width = width + 13))
+  width <- apply(aovObj$ANOVA, 2, function(x)  max(unlist(lapply(x, nchar))))
+  width <- sum(pmax(width, unlist(lapply(names(aovObj$ANOVA), nchar)))) + ncol(aovObj$ANOVA) + 1
+
+  print(cli::rule(line = 2, center = caption, width = width))
   print(aovObj$ANOVA, row.names = FALSE)
-  print(cli::rule(width = width + 13))
+  print(cli::rule(width = width))
 
 }
 
@@ -135,11 +137,15 @@ aovDispMeans <- function(aovObj, value="value", caption=sys.call()) {
     aovObj <- aovTidyTable(aovObj)  # convert base aov output
   }
 
-  for (i in 2:(length(aovObj$means$n) + 1)) {
+  nTotal <- length(aovObj$means$n) + 1
+  for (i in 2:nTotal) {
 
     dat     <- as.data.frame.table(aovObj$means$tables[[i]], responseName = value)
     heading <- names(aovObj$means$tables[i])
-    width   <- max(nchar(caption), nchar(heading), apply(dat, 1, function(x) sum(nchar(x)))) + 8
+
+    width   <- apply(dat, 2, function(x) max(unlist(lapply(x, nchar))))
+    width   <- sum(pmax(width, unlist(lapply(names(dat), nchar)))) + ncol(dat) + 1
+
     if (i == 2) {
       if (!is.character(caption)){
         caption <- paste0("ANOVA:", unlist(lapply(caption[2], as.character)))
@@ -148,9 +154,12 @@ aovDispMeans <- function(aovObj, value="value", caption=sys.call()) {
     }
     print(cli::rule(center = heading, width = width))
     print(dat, row.names = FALSE)
-    cat("\n")
+    if (i < nTotal) {
+      cat("\n")
+    } else {
+      print(cli::rule(line = 2, width = width))
+    }
   }
-  print(cli::rule(width = width))
 
 }
 
@@ -182,6 +191,7 @@ aovDispMeans <- function(aovObj, value="value", caption=sys.call()) {
 #'                            "Comp:Side_neutral:right" = c(525, 150, 150)))
 #'
 #' aovRT <- aov(RT ~ Comp * Side + Error(VP/(Comp*Side)), dat)
+#' aovDispMeans(aovRT)
 #' aovRT <- aovEffectSize(aovRT)
 #' aovRT <- aovDispTable(aovRT)
 #'
@@ -363,20 +373,27 @@ aovSphericityAdjustment <- function(aovObj, type = "GG", adjDF = TRUE) {
   }
 
   sphericityRows <- match(rownames(aovObj$"Sphericity Corrections"), rownames(aovObj$ANOVA))
+  # sphericityRows <- sphericityRows[aovObj$`Mauchly's Test for Sphericity`$p< 0.05]
   if (type == "GG") {
-    aovObj$ANOVA$p[sphericityRows]   <- aovObj$"Sphericity Corrections"$"p[GG]"
+    # Adjust p-values where Mauchls's test significant
+    aovObj$ANOVA$p[sphericityRows]   <- ifelse(aovObj$"Mauchly's Test for Sphericity"$"p" < 0.05, aovObj$"Sphericity Corrections"$"p[GG]", aovObj$ANOVA$p[sphericityRows])
     aovObj$ANOVA$eps                 <- rep(0, length(aovObj$ANOVA$"Effect"))
-    aovObj$ANOVA$eps[sphericityRows] <- aovObj$"Sphericity Corrections"$GGe
+    aovObj$ANOVA$eps[sphericityRows] <- aovObj$"Sphericity Corrections"$"GGe"
   } else if (type == "HF") {
-    aovObj$ANOVA$p[sphericityRows]   <- aovObj$"Sphericity Corrections"$"p[HF]"
+    # Adjust p-values where Mauchls's test significant
+    aovObj$ANOVA$p[sphericityRows]   <- ifelse(aovObj$"Mauchly's Test for Sphericity"$"p" < 0.05, aovObj$"Sphericity Corrections"$"p[HF]", aovObj$ANOVA$p[sphericityRows])
     aovObj$ANOVA$eps                 <- rep(0, length(aovObj$ANOVA$"Effect"))
-    aovObj$ANOVA$eps[sphericityRows] <- aovObj$"Sphericity Corrections"$HFe
+    aovObj$ANOVA$eps[sphericityRows] <- aovObj$"Sphericity Corrections"$"HFe"
   } else {
     stop("Sphericity correction type not recognized!")
   }
 
+  aovObj$ANOVA$"eps_p<.05"                 <- rep("", length(aovObj$ANOVA$"Effect"))
+  aovObj$ANOVA$"eps_p<.05"[sphericityRows] <- aovObj$"Mauchly's Test for Sphericity"$"p<.05"
   aovObj$ANOVA$`p<.05` <- ifelse(aovObj$ANOVA$p<.05,"*","")
 
+  # Adjust degrees of freedom where Mauchls's test significant
+  sphericityRows <- sphericityRows[aovObj$"Mauchly's Test for Sphericity"$"p" < 0.05]
   if (adjDF) {
     aovObj$ANOVA$DFn[sphericityRows] <- aovObj$ANOVA$DFn[sphericityRows] * aovObj$ANOVA$eps[sphericityRows]
     aovObj$ANOVA$DFd[sphericityRows] <- aovObj$ANOVA$DFd[sphericityRows] * aovObj$ANOVA$eps[sphericityRows]
@@ -432,7 +449,7 @@ aovTable <- function(aovObj,
                      effectSize = "pes",
                      sphericityCorrections = TRUE,
                      sphericityCorrectionType = "GG",
-                     sphericityCorrectionAdjDF = TRUE,
+                     sphericityCorrectionAdjDF = FALSE,
                      removeSumSquares = TRUE,
                      roundDigits = TRUE,
                      numDigits = 2) {
