@@ -374,26 +374,25 @@ aovSphericityAdjustment <- function(aovObj, type = "GG", adjDF = TRUE) {
   if (is.null(hasSphericity)) {
       stop("aovObj does not have sphericity corrections.")
   }
+  if (!type %in% c("GG", "HF")) {
+    stop("Sphericity correction type not recognized!")
+  }
 
   sphericityRows <- match(rownames(aovObj$"Sphericity Corrections"), rownames(aovObj$ANOVA))
-  # sphericityRows <- sphericityRows[aovObj$`Mauchly's Test for Sphericity`$p< 0.05]
+  # Adjust p-values where Mauchls's test significant
   if (type == "GG") {
-    # Adjust p-values where Mauchls's test significant
     aovObj$ANOVA$p[sphericityRows]   <- ifelse(aovObj$"Mauchly's Test for Sphericity"$"p" < 0.05, aovObj$"Sphericity Corrections"$"p[GG]", aovObj$ANOVA$p[sphericityRows])
     aovObj$ANOVA$eps                 <- rep(0, length(aovObj$ANOVA$"Effect"))
     aovObj$ANOVA$eps[sphericityRows] <- aovObj$"Sphericity Corrections"$"GGe"
   } else if (type == "HF") {
-    # Adjust p-values where Mauchls's test significant
     aovObj$ANOVA$p[sphericityRows]   <- ifelse(aovObj$"Mauchly's Test for Sphericity"$"p" < 0.05, aovObj$"Sphericity Corrections"$"p[HF]", aovObj$ANOVA$p[sphericityRows])
     aovObj$ANOVA$eps                 <- rep(0, length(aovObj$ANOVA$"Effect"))
     aovObj$ANOVA$eps[sphericityRows] <- aovObj$"Sphericity Corrections"$"HFe"
-  } else {
-    stop("Sphericity correction type not recognized!")
   }
 
   aovObj$ANOVA$"eps_p<.05"                 <- rep("", length(aovObj$ANOVA$"Effect"))
   aovObj$ANOVA$"eps_p<.05"[sphericityRows] <- aovObj$"Mauchly's Test for Sphericity"$"p<.05"
-  aovObj$ANOVA$`p<.05` <- ifelse(aovObj$ANOVA$p<.05,"*","")
+  aovObj$ANOVA$"p<.05"                     <- ifelse(aovObj$ANOVA$p <.05, "*", "")
 
   # Adjust degrees of freedom where Mauchls's test significant
   sphericityRows <- sphericityRows[aovObj$"Mauchly's Test for Sphericity"$"p" < 0.05]
@@ -476,8 +475,7 @@ aovTable <- function(aovObj,
   }
 
   if (sphericityCorrections & any(aovObj$ANOVA$DFn > 1)) {
-    hasSphericity <- aovObj$"Sphericity Corrections"
-    if (is.null(hasSphericity)) {
+    if (is.null(aovObj$"Sphericity Correction")) {
       stop("Sphericity Corrections not within aov(). Use ezANOVA().")
     }
     aovObj <- aovSphericityAdjustment(aovObj, sphericityCorrectionType, sphericityCorrectionAdjDF)
@@ -485,7 +483,7 @@ aovTable <- function(aovObj,
 
   # p-value summary *** vs. ** vs *
   aovObj$ANOVA$"p<.05" <- pValueSummary(aovObj$ANOVA$p)
-  aovObj$ANOVA <- aovObj$ANOVA[aovObj$ANOVA$Effect != "(Intercept)", ]
+  aovObj$ANOVA         <- aovObj$ANOVA[aovObj$ANOVA$Effect != "(Intercept)", ]
 
   if (roundDigits) {
     aovObj <- aovRoundDigits(aovObj, nsmall = numDigits)
@@ -556,11 +554,14 @@ effectsizeValueString <- function(aovObj, effect, effectSize = "pes"){
   if (is.null(aovObj$ANOVA)) {
     stop("aovObj does not have appropriate ANOVA table")
   }
+  if (!effectSize %in% c("pes", "ges")) {
+    stop("effectSize not recognized")
+  }
 
-  effectSizeIdx <- which(names(aovObj$ANOVA) %in% effectSize)
-  if (length(effectSizeIdx) == 0) {
+  if (!effectSize %in% names(aovObj$ANOVA)) {
     stop(paste0(effectSize, " not in ANOVA table!"))
   }
+
   if (effectSize == "pes") {
     effectSizeValue  <- aovObj$ANOVA[, "pes"][aovObj$ANOVA$Effect == effect]
     return(paste0("$\\eta_{p}^2$ = ", effectSizeValue))
@@ -568,6 +569,7 @@ effectsizeValueString <- function(aovObj, effect, effectSize = "pes"){
     effectSizeValue <- aovObj$ANOVA[, "ges"][aovObj$ANOVA$Effect == effect]
     return(paste0("$\\eta_{G}^2$ = ", effectSizeValue))
   }
+
 }
 
 
