@@ -333,7 +333,7 @@ aovRoundDigits <- function(aovObj) {
                              trimws(format(round(aovObj$ANOVA$DFd, digits = 2), nsmall = 2)))
 
   # round p-values to 3 sig. decimal places
-  aovObj$ANOVA$p <- format(aovObj$ANOVA$p, digits = 3, nsmall = 3)
+  aovObj$ANOVA$p <- format(round(aovObj$ANOVA$p, digits = 3), nsmall = 3)
 
   return(aovObj)
 
