@@ -25,8 +25,6 @@ test_that("aovTable", {
   testthat::expect_error(aovTable(aovRT, sphericityCorrections = FALSE), NA)
   testthat::expect_error(aovTable(aovRT, sphericityCorrectionType = "HF"), NA)
   testthat::expect_error(aovTable(aovRT, removeSumSquares = FALSE), NA)
-  testthat::expect_error(aovTable(aovRT, roundDigits = FALSE), NA)
-  testthat::expect_error(aovTable(aovRT, numDigits = 4), NA)
 
   aovRT <- aovTable(aovRT)
   testthat::expect_error(aovTable(aovRT))

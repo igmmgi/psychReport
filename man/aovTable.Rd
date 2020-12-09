@@ -10,9 +10,7 @@ aovTable(
   sphericityCorrections = TRUE,
   sphericityCorrectionType = "GG",
   sphericityCorrectionAdjDF = FALSE,
-  removeSumSquares = TRUE,
-  roundDigits = TRUE,
-  numDigits = 2
+  removeSumSquares = TRUE
 )
 }
 \arguments{
@@ -27,10 +25,6 @@ aovTable(
 \item{sphericityCorrectionAdjDF}{TRUE/FALSE Should DF's values be corrected?}
 
 \item{removeSumSquares}{TRUE/FALSE Remove SSn/SSd columns from the ANOVA table}
-
-\item{roundDigits}{TRUE/FALSE Round numerical values to numDigits}
-
-\item{numDigits}{The number of digits to round to if roundDigits = TRUE}
 }
 \value{
 list

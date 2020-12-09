@@ -4,12 +4,10 @@
 \alias{pValueString}
 \title{pValueString}
 \usage{
-pValueString(pVal, nsmall = 2)
+pValueString(pVal)
 }
 \arguments{
 \item{pVal}{p-value between 0 and 1}
-
-\item{nsmall}{Number of small digits to round to}
 }
 \value{
 character
@@ -17,14 +15,14 @@ character
 \description{
 Returns Latex formatted string from a p-value required for R/knitr integration.
 For example, \emph{p} = 0.11 or \emph{p} < 0.01
-Returns values to 2 sig decimal places if p-value >= 0.05.
+Returns values to 3 sig decimal places or < .001
 }
 \examples{
 # Example 1:
-pString <- pValueString(0.67)
+pString <- pValueString(0.670)
 
 # Example 2:
-pString <- pValueString(0.1234, 3)
+pString <- pValueString(0.1234)
 
 # Example 3:
 pString <- pValueString("0.03")

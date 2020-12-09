@@ -4,12 +4,10 @@
 \alias{aovRoundDigits}
 \title{aovRoundDigits}
 \usage{
-aovRoundDigits(aovObj, nsmall = 2)
+aovRoundDigits(aovObj)
 }
 \arguments{
 \item{aovObj}{Output from aov or ezANOVA}
-
-\item{nsmall}{Number of digits to round to within ANOVA table}
 }
 \value{
 dataframe
@@ -31,14 +29,14 @@ dat <- addDataDF(dat,
                            "Comp:Side_incomp:right" = c(500, 150, 150)))
 
 aovRT <- aov(RT ~ Comp*Side + Error(VP/(Comp*Side)), dat)
-aovRT <- aovRoundDigits(aovRT, 2)
+aovRT <- aovRoundDigits(aovRT)
 aovDispTable(aovRT)
 
 # or using ezANOVA
 library(ez)
 aovRT <- ezANOVA(dat, dv=.(RT), wid = .(VP), within = .(Comp, Side),
                  return_aov = TRUE, detailed = TRUE)
-aovRT <- aovRoundDigits(aovRT, 2)
+aovRT <- aovRoundDigits(aovRT)
 aovDispTable(aovRT)
 
 }

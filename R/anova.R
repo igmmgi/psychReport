@@ -18,7 +18,8 @@
 #' aovObj <- aov(RT ~ Comp + Error(VP/(Comp)), dat)
 #' aovObj <- aovTidyTable(aovObj)
 #' aovObj$ANOVA
-#' printTable(aovObj$ANOVA, digits = c(0,2,3,4,5,6))
+#' printTable(aovObj$ANOVA)
+#' printTable(aovObj$ANOVA, digits = c(0,0,0,0,2,2,2,3,0))
 #
 #' @export
 aovTidyTable <- function(aovObj) {
@@ -282,7 +283,6 @@ aovJackknifeAdjustment <- function(aovObj, numVPs) {
 #' @description Round digits to n decimal places in ezANOVA table
 #'
 #' @param aovObj Output from aov or ezANOVA
-#' @param nsmall Number of digits to round to within ANOVA table
 #'
 #' @return dataframe
 #'
@@ -300,36 +300,40 @@ aovJackknifeAdjustment <- function(aovObj, numVPs) {
 #'                            "Comp:Side_incomp:right" = c(500, 150, 150)))
 #'
 #' aovRT <- aov(RT ~ Comp*Side + Error(VP/(Comp*Side)), dat)
-#' aovRT <- aovRoundDigits(aovRT, 2)
+#' aovRT <- aovRoundDigits(aovRT)
 #' aovDispTable(aovRT)
 #'
 #' # or using ezANOVA
 #' library(ez)
 #' aovRT <- ezANOVA(dat, dv=.(RT), wid = .(VP), within = .(Comp, Side),
 #'                  return_aov = TRUE, detailed = TRUE)
-#' aovRT <- aovRoundDigits(aovRT, 2)
+#' aovRT <- aovRoundDigits(aovRT)
 #' aovDispTable(aovRT)
 #'
 #' @export
-aovRoundDigits <- function(aovObj, nsmall=2) {
+aovRoundDigits <- function(aovObj) {
 
   if (is.null(aovObj$ANOVA)) {
     aovObj <- aovTidyTable(aovObj)  # convert base aov output
   }
 
-  colNames <- c("SSn", "SSd", "F", "p", "eps", "ges", "pes")
+  # round to 2 sig. decimal places
+  colNames <- c("SSn", "SSd", "F", "eps", "ges", "pes")
   colIdx   <- which(names(aovObj$ANOVA) %in% colNames)
   colNames <- names(aovObj$ANOVA)[colIdx]
 
   aovObj$ANOVA <- aovObj$ANOVA %>%
-    mutate_at(vars(all_of(colNames)), list(~ trimws(format(round(., digits = nsmall), nsmall = 2))))
+    mutate_at(vars(all_of(colNames)), list(~ trimws(format(round(., digits = 2), nsmall = 2))))
 
   aovObj$ANOVA$DFn <- ifelse(aovObj$ANOVA$DFn == as.integer(aovObj$ANOVA$DFn),
                              trimws(as.integer(aovObj$ANOVA$DFn)),
-                             trimws(format(round(aovObj$ANOVA$DFn, digits = nsmall), nsmall = 2)))
+                             trimws(format(round(aovObj$ANOVA$DFn, digits = 2), nsmall = 2)))
   aovObj$ANOVA$DFd <- ifelse(aovObj$ANOVA$DFd == as.integer(aovObj$ANOVA$DFd),
                              trimws(as.integer(aovObj$ANOVA$DFd)),
-                             trimws(format(round(aovObj$ANOVA$DFd, digits = nsmall), nsmall = 2)))
+                             trimws(format(round(aovObj$ANOVA$DFd, digits = 2), nsmall = 2)))
+
+  # round p-values to 3 sig. decimal places
+  aovObj$ANOVA$p <- format(aovObj$ANOVA$p, digits = 3, nsmall = 3)
 
   return(aovObj)
 
@@ -419,8 +423,6 @@ aovSphericityAdjustment <- function(aovObj, type = "GG", adjDF = TRUE) {
 #' @param sphericityCorrectionType "GG" (default) vs. "HF" (ezANOVA)
 #' @param sphericityCorrectionAdjDF TRUE/FALSE Should DF's values be corrected?
 #' @param removeSumSquares TRUE/FALSE Remove SSn/SSd columns from the ANOVA table
-#' @param roundDigits TRUE/FALSE Round numerical values to numDigits
-#' @param numDigits The number of digits to round to if roundDigits = TRUE
 #'
 #' @return list
 #'
@@ -452,9 +454,7 @@ aovTable <- function(aovObj,
                      sphericityCorrections = TRUE,
                      sphericityCorrectionType = "GG",
                      sphericityCorrectionAdjDF = FALSE,
-                     removeSumSquares = TRUE,
-                     roundDigits = TRUE,
-                     numDigits = 2) {
+                     removeSumSquares = TRUE) {
 
   if (is.null(aovObj$ANOVA)) {
     aovObj <- aovTidyTable(aovObj)  # convert base aov output
@@ -485,9 +485,8 @@ aovTable <- function(aovObj,
   aovObj$ANOVA$"p<.05" <- pValueSummary(aovObj$ANOVA$p)
   aovObj$ANOVA         <- aovObj$ANOVA[aovObj$ANOVA$Effect != "(Intercept)", ]
 
-  if (roundDigits) {
-    aovObj <- aovRoundDigits(aovObj, nsmall = numDigits)
-  }
+  # round digits in table
+  aovObj <- aovRoundDigits(aovObj)
 
   if (removeSumSquares) {
     aovObj$ANOVA$SSn <- NULL

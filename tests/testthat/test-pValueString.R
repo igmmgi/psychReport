@@ -10,8 +10,8 @@ test_that("pValueString", {
   # outputs
   testthat::expect_match(pValueString("0.03"), ".03")
   testthat::expect_match(pValueString(0.03), ".03")
-  testthat::expect_match(pValueString("0.009"), "< .01")
-  testthat::expect_match(pValueString(0.009), "< .01")
+  testthat::expect_match(pValueString("0.009"), ".009")
+  testthat::expect_match(pValueString(0.009), ".009")
   testthat::expect_match(pValueString("0.0009"), "< .001")
   testthat::expect_match(pValueString(0.000), "< .001")
 
