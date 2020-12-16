@@ -42,12 +42,15 @@ dat <- createDF(nVP = 6, nTrl = 1,
 
 dat <- addDataDF(dat, RT = list("Comp_comp"   = c(500, 150, 100),
                                 "Comp_incomp" = c(520, 150, 100)))
-printTable(dat, digits = 0) # latex formatted
+printTable(dat, digits = c(0, 2)) # latex formatted
+printTable(dat, digits = 0)       # latex formatted
 
 dat$VP <- as.factor(dat$VP)
 aovRT <- ezANOVA(dat, dv=.(RT), wid = .(VP), within = .(Comp),
                  return_aov = TRUE, detailed = TRUE)
 aovRT <- aovTable(aovRT)
 printTable(aovRT$ANOVA) # latex formatted
+printTable(aovRT$ANOVA, digits = c(0,0,2,2,2)) # latex formatted
+
 
 }

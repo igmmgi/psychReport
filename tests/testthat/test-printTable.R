@@ -18,7 +18,7 @@ test_that("printTable", {
   aovRT <- aovTable(aovRT)
 
   testthat::expect_error(printTable(dat), NA)
-  testthat::expect_error(printTable(dat, caption = "Test", digits = c(0, 0, 0, 2, 2)), NA)
+  testthat::expect_error(printTable(dat, caption = "Test", digits = c(0, 2)), NA)
   testthat::expect_error(printTable(dat, caption = "Test", digits = c(0, 2, 0)))
   testthat::expect_error(printTable(aovRT$ANOVA), NA)
 

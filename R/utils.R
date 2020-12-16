@@ -22,13 +22,16 @@
 #'
 #' dat <- addDataDF(dat, RT = list("Comp_comp"   = c(500, 150, 100),
 #'                                 "Comp_incomp" = c(520, 150, 100)))
-#' printTable(dat, digits = 0) # latex formatted
+#' printTable(dat, digits = c(0, 2)) # latex formatted
+#' printTable(dat, digits = 0)       # latex formatted
 #'
 #' dat$VP <- as.factor(dat$VP)
 #' aovRT <- ezANOVA(dat, dv=.(RT), wid = .(VP), within = .(Comp),
 #'                  return_aov = TRUE, detailed = TRUE)
 #' aovRT <- aovTable(aovRT)
 #' printTable(aovRT$ANOVA) # latex formatted
+#' printTable(aovRT$ANOVA, digits = c(0,0,2,2,2)) # latex formatted
+#'
 #'
 #' @export
 printTable <- function(obj, caption = "DF", digits=3, onlyContents=FALSE,
@@ -41,6 +44,30 @@ printTable <- function(obj, caption = "DF", digits=3, onlyContents=FALSE,
     names(obj) <- sub("\\<pes\\>", "$\\\\eta_{p}^2$", names(obj))
     names(obj) <- sub("\\<ges\\>", "$\\\\eta_{G}^2$", names(obj))
     names(obj) <- sub("\\<eps\\>", "$\\\\epsilon$",   names(obj))
+  }
+
+  if (length(digits) != 1) {
+    if(length(digits) != ncol(obj)){
+      # find numeric columns
+      numeric_cols = NULL
+      defaultWarningLevel <- getOption("warn")
+      options(warn = -1) # temp turn off warnings (NAs by coercion)
+      for (col in 1:ncol(obj)) {
+        if (!is.factor(obj[1, col]) & !is.na(as.numeric(obj[1, col]))) {
+          # obj[, col]   <- as.numeric(obj[,col])
+          numeric_cols <- c(numeric_cols, col)
+        }
+      }
+      options(warn = defaultWarningLevel)
+      if(length(digits) != length(numeric_cols)){
+        stop("Number of digits does not equal number of numeric columns!")
+      } else {
+        # make digits length required by xtable command
+        tmp = rep(0, ncol(obj))
+        tmp[numeric_cols] <- digits
+        digits <- c(0, tmp)
+      }
+    }
   }
 
   tab <- xtable::xtable(obj, caption = caption, digits=digits)
