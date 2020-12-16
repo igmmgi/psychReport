@@ -30,57 +30,52 @@
 #'                  return_aov = TRUE, detailed = TRUE)
 #' aovRT <- aovTable(aovRT)
 #' printTable(aovRT$ANOVA) # latex formatted
-#' printTable(aovRT$ANOVA, digits = c(0,0,2,2,2)) # latex formatted
+#' printTable(aovRT$ANOVA, digits = c(0,2,2,2)) # latex formatted
 #'
 #'
 #' @export
 printTable <- function(obj, caption = "DF", digits=3, onlyContents=FALSE,
                        formatStatsSymbols = TRUE) {
 
-  # typical symbols in ANOVA table
-  if (formatStatsSymbols) {
-    names(obj) <- sub("\\<p\\>",   "\\\\textit{p}",   names(obj))
-    names(obj) <- sub("\\<F\\>",   "\\\\textit{F}",   names(obj))
-    names(obj) <- sub("\\<pes\\>", "$\\\\eta_{p}^2$", names(obj))
-    names(obj) <- sub("\\<ges\\>", "$\\\\eta_{G}^2$", names(obj))
-    names(obj) <- sub("\\<eps\\>", "$\\\\epsilon$",   names(obj))
-  }
-
-  if (length(digits) != 1) {
-    if(length(digits) != ncol(obj)){
-      # find numeric columns
-      numeric_cols = NULL
-      defaultWarningLevel <- getOption("warn")
-      options(warn = -1) # temp turn off warnings (NAs by coercion)
-      for (col in 1:ncol(obj)) {
-        if (!is.factor(obj[1, col]) & !is.na(as.numeric(obj[1, col]))) {
-          # obj[, col]   <- as.numeric(obj[,col])
-          numeric_cols <- c(numeric_cols, col)
-        }
-      }
-      options(warn = defaultWarningLevel)
-      if(length(digits) != length(numeric_cols)){
-        stop("Number of digits does not equal number of numeric columns!")
-      } else {
-        # make digits length required by xtable command
-        tmp = rep(0, ncol(obj))
-        tmp[numeric_cols] <- digits
-        digits <- c(0, tmp)
-      }
+    # typical symbols in ANOVA table
+    if (formatStatsSymbols) {
+        names(obj) <- sub("\\<p\\>",   "\\\\textit{p}",   names(obj))
+        names(obj) <- sub("\\<F\\>",   "\\\\textit{F}",   names(obj))
+        names(obj) <- sub("\\<pes\\>", "$\\\\eta_{p}^2$", names(obj))
+        names(obj) <- sub("\\<ges\\>", "$\\\\eta_{G}^2$", names(obj))
+        names(obj) <- sub("\\<eps\\>", "$\\\\epsilon$",   names(obj))
     }
-  }
 
-  tab <- xtable::xtable(obj, caption = caption, digits=digits)
+    if (length(digits) != 1) {
+        if(length(digits) != ncol(obj)){
+            # find numeric columns
+            numeric_cols <- as.vector(which(unlist(lapply(obj, is.numeric))))
+            if (length(numeric_cols) == 0) {
+                digits = 0
+                message("obj does not contain numeric columns! No additional formatting applied.", immediate = TRUE)
+            }
+            else if(length(digits) != length(numeric_cols)){
+                stop("Number of digits does not equal number of numeric columns!")
+            } else {
+                # make digits length required by xtable command
+                tmp = rep(0, ncol(obj))
+                tmp[numeric_cols] <- digits
+                digits <- c(0, tmp)
+            }
+        }
+    }
 
-  print(tab,
-        table.placement = "H",
-        caption.placement = "top",
-        include.rownames = FALSE,
-        floating = FALSE,
-        tabular.environment = "longtable",
-        only.contents = onlyContents,
-        hline.after = c(-1, 0),
-        sanitize.text.function = function(x){x})
+    tab <- xtable::xtable(obj, caption = caption, digits=digits)
+
+    print(tab,
+          table.placement = "H",
+          caption.placement = "top",
+          include.rownames = FALSE,
+          floating = FALSE,
+          tabular.environment = "longtable",
+          only.contents = onlyContents,
+          hline.after = c(-1, 0),
+          sanitize.text.function = function(x){x})
 
 }
 
@@ -109,14 +104,14 @@ printTable <- function(obj, caption = "DF", digits=3, onlyContents=FALSE,
 mathString <- function(str1, str2, operation = "-",
                        numDigits = 0, unit = "ms") {
 
-  extractNum <- function(x){
-    return(as.numeric(regmatches(x, gregexpr("[[:digit:]]+\\.*[[:digit:]]*", x))))
-  }
+    extractNum <- function(x){
+        return(as.numeric(regmatches(x, gregexpr("[[:digit:]]+\\.*[[:digit:]]*", x))))
+    }
 
-  nums <- lapply(list(str1, str2), extractNum)
-  result <- do.call(operation, nums)
+    nums <- lapply(list(str1, str2), extractNum)
+    result <- do.call(operation, nums)
 
-  return(numValueString(result, numDigits, unit))
+    return(numValueString(result, numDigits, unit))
 
 }
 
@@ -146,18 +141,18 @@ mathString <- function(str1, str2, operation = "-",
 #' @export
 numValueString <- function(value, numDigits = 2, unit = "") {
 
-  value <- format(round(value, numDigits), nsmall = numDigits)
-  if (unit %in% c("mv", "mV")) {
-    return(paste0(value, " $\\mu$V"))
-  } else if (unit == "ms") {
-    return(paste0(value, " ms"))
-  } else if (unit == "%") {
-    return(paste0(value, " \\%"))
-  } else if (unit == "") {
-    return(paste0(value))
-  } else {
-    stop("Unit not recognized! Unit should be \"mv\", \"mV\", \"ms\" or \"%\".")
-  }
+    value <- format(round(value, numDigits), nsmall = numDigits)
+    if (unit %in% c("mv", "mV")) {
+        return(paste0(value, " $\\mu$V"))
+    } else if (unit == "ms") {
+        return(paste0(value, " ms"))
+    } else if (unit == "%") {
+        return(paste0(value, " \\%"))
+    } else if (unit == "") {
+        return(paste0(value))
+    } else {
+        stop("Unit not recognized! Unit should be \"mv\", \"mV\", \"ms\" or \"%\".")
+    }
 
 }
 
@@ -186,21 +181,21 @@ numValueString <- function(value, numDigits = 2, unit = "") {
 #' @export
 pValueString <- function(pVal){
 
-  if (is.character(pVal)) {
-    pVal <- as.numeric(pVal)
-    if (is.na(pVal)) {
-      stop("Can't convert string to number!")
+    if (is.character(pVal)) {
+        pVal <- as.numeric(pVal)
+        if (is.na(pVal)) {
+            stop("Can't convert string to number!")
+        }
     }
-  }
 
-  if (pVal >= 0.001) {
-    string <- paste0("\\emph{p} = ", sprintf("%.3f", pVal))
-    string <- gsub("0\\.", ".", string)
-  } else if (pVal < 0.001) {
-    string <- paste0("\\emph{p}", " < .001")
-  }
+    if (pVal >= 0.001) {
+        string <- paste0("\\emph{p} = ", sprintf("%.3f", pVal))
+        string <- gsub("0\\.", ".", string)
+    } else if (pVal < 0.001) {
+        string <- paste0("\\emph{p}", " < .001")
+    }
 
-  return(string)
+    return(string)
 
 }
 
@@ -223,15 +218,15 @@ pValueString <- function(pVal){
 #' @export
 pValueSummary <- function(pVal) {
 
-  if (!is.numeric(pVal)) {
-    stop("Input contains a non-number!")
-  }
+    if (!is.numeric(pVal)) {
+        stop("Input contains a non-number!")
+    }
 
-  psum <- ifelse(pVal < 0.001, "***",
-                 ifelse(pVal < 0.01, "**",
-                        ifelse(pVal <= 0.05, "*", "")))
+    psum <- ifelse(pVal < 0.001, "***",
+                   ifelse(pVal < 0.01, "**",
+                          ifelse(pVal <= 0.05, "*", "")))
 
-  return(psum)
+    return(psum)
 
 }
 
@@ -254,22 +249,22 @@ requiredPackages <- function(packages,
                              lib = .libPaths()[1],
                              repos = "http://cran.us.r-project.org"){
 
-  isPackageInstalled <- packages %in% rownames(utils::installed.packages())
-
-  if (any(!isPackageInstalled) & installPackages) {
-    isPackageAvailable <- packages %in% rownames(utils::available.packages(repos = repos))
-    if (any(!isPackageAvailable)) {
-      stop(paste0("Package ", packages[!isPackageAvailable], " not available!"))
-    }
-    utils::install.packages(packages[!isPackageInstalled],
-                            lib = lib,
-                            repos = repos,
-                            dependencies = TRUE)
     isPackageInstalled <- packages %in% rownames(utils::installed.packages())
-  } else if (any(!isPackageInstalled)) {
-    stop(paste0("Package ", packages[!isPackageInstalled], " not installed!"))
-  }
 
-  lapply(packages[isPackageInstalled], library, character.only = TRUE)
+    if (any(!isPackageInstalled) & installPackages) {
+        isPackageAvailable <- packages %in% rownames(utils::available.packages(repos = repos))
+        if (any(!isPackageAvailable)) {
+            stop(paste0("Package ", packages[!isPackageAvailable], " not available!"))
+        }
+        utils::install.packages(packages[!isPackageInstalled],
+                                lib = lib,
+                                repos = repos,
+                                dependencies = TRUE)
+        isPackageInstalled <- packages %in% rownames(utils::installed.packages())
+    } else if (any(!isPackageInstalled)) {
+        stop(paste0("Package ", packages[!isPackageInstalled], " not installed!"))
+    }
+
+    lapply(packages[isPackageInstalled], library, character.only = TRUE)
 
 }
