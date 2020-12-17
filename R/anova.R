@@ -19,7 +19,7 @@
 #' aovObj <- aovTable(aovObj)
 #' aovObj$ANOVA
 #' printTable(aovObj$ANOVA)
-#
+#'
 #' @export
 aovTidyTable <- function(aovObj) {
 
