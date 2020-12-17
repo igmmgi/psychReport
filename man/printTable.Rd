@@ -50,7 +50,7 @@ aovRT <- ezANOVA(dat, dv=.(RT), wid = .(VP), within = .(Comp),
                  return_aov = TRUE, detailed = TRUE)
 aovRT <- aovTable(aovRT)
 printTable(aovRT$ANOVA) # latex formatted
-printTable(aovRT$ANOVA, digits = c(0,0,2,2,2)) # latex formatted
+printTable(aovRT$ANOVA, digits = c(0,2,2,2)) # latex formatted
 
 
 }
