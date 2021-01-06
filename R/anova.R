@@ -752,12 +752,18 @@ printAovMeans <- function(..., caption = "Mean", digits = 3, dv = "ms") {
 
     tab <- as.data.frame.table(aovObj[[1]]$means$tables[[i]])
     names(tab)[ncol(tab)] <- dv[1]
-    for (j in 1:length(aovObj)) {
-      tab <- cbind(tab, as.data.frame.table(aovObj[[j]]$means$tables[[i]]))
-      names(tab)[ncol(tab)] <- dv[j]
+    if (length(aovObj) > 1) {
+      for (j in 2:length(aovObj)) {
+        tab <- cbind(tab, as.data.frame.table(aovObj[[j]]$means$tables[[i]]))
+        names(tab)[ncol(tab)] <- dv[j]
+      }
     }
 
-    tab <- tab[, !duplicated(colnames(tab))]
+    # remove duplicated factor columns
+    colsToRemove <- intersect(which(duplicated(colnames(tab))), which(unlist(lapply(tab, is.factor))))
+    if (length(colsToRemove) > 0) {
+      tab <- tab[, -c(colsToRemove)]
+    }
     printTable(tab,
                caption = paste0(caption, ": ", names(aovObj[[1]]$means$tables[i])),
                digits = digits)
