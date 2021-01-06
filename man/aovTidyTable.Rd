@@ -28,4 +28,5 @@ aovObj <- aov(RT ~ Comp + Error(VP/(Comp)), dat)
 aovObj <- aovTable(aovObj)
 aovObj$ANOVA
 printTable(aovObj$ANOVA)
+
 }
