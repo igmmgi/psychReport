@@ -53,8 +53,7 @@ printTable <- function(obj, caption = "DF", digits=3, onlyContents=FALSE,
             if (length(numeric_cols) == 0) {
                 digits = 0
                 message("obj does not contain numeric columns! No additional formatting applied.", immediate = TRUE)
-            }
-            else if(length(digits) != length(numeric_cols)){
+            } else if(length(digits) != length(numeric_cols)){
                 stop("Number of digits does not equal number of numeric columns!")
             } else {
                 # make digits length required by xtable command
