@@ -18,10 +18,11 @@
 #' # Example 1:
 #' # create dataframe
 #' dat <- createDF(nVP = 6, nTrl = 1,
-#'                 design = list("Comp" = c("comp", "incomp")))
+#'                 design = list("Comp" = c("comp", "incomp", "neutral")))
 #'
-#' dat <- addDataDF(dat, RT = list("Comp_comp"   = c(500, 150, 100),
-#'                                 "Comp_incomp" = c(520, 150, 100)))
+#' dat <- addDataDF(dat, RT = list("Comp_comp"    = c(500, 150, 100),
+#'                                 "Comp_incomp"  = c(520, 150, 100),
+#'                                 "Comp_neutral" = c(510, 150, 100)))
 #' printTable(dat, digits = c(0, 2)) # latex formatted
 #' printTable(dat, digits = 0)       # latex formatted
 #'
@@ -39,11 +40,13 @@ printTable <- function(obj, caption = "DF", digits=3, onlyContents=FALSE,
 
     # typical symbols in ANOVA table
     if (formatStatsSymbols) {
-        names(obj) <- sub("\\<p\\>",   "\\\\textit{p}",   names(obj))
-        names(obj) <- sub("\\<F\\>",   "\\\\textit{F}",   names(obj))
+        names(obj) <- sub("<.05",      "$<.05$",          names(obj))
+        names(obj) <- sub("\\<p\\>",   "$\\\\textit{p}$", names(obj))
+        names(obj) <- sub("\\<F\\>",   "$\\\\textit{F}$", names(obj))
         names(obj) <- sub("\\<pes\\>", "$\\\\eta_{p}^2$", names(obj))
         names(obj) <- sub("\\<ges\\>", "$\\\\eta_{G}^2$", names(obj))
         names(obj) <- sub("\\<eps\\>", "$\\\\epsilon$",   names(obj))
+        names(obj) <- sub("eps_p",     "$\\\\epsilon \\\\textit{p}$",   names(obj))
     }
 
     if (length(digits) != 1) {

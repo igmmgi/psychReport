@@ -38,10 +38,11 @@ requiredPackages(c("dplyr", "ez"))
 # Example 1:
 # create dataframe
 dat <- createDF(nVP = 6, nTrl = 1,
-                design = list("Comp" = c("comp", "incomp")))
+                design = list("Comp" = c("comp", "incomp", "neutral")))
 
-dat <- addDataDF(dat, RT = list("Comp_comp"   = c(500, 150, 100),
-                                "Comp_incomp" = c(520, 150, 100)))
+dat <- addDataDF(dat, RT = list("Comp_comp"    = c(500, 150, 100),
+                                "Comp_incomp"  = c(520, 150, 100),
+                                "Comp_neutral" = c(510, 150, 100)))
 printTable(dat, digits = c(0, 2)) # latex formatted
 printTable(dat, digits = 0)       # latex formatted
 
