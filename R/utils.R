@@ -49,6 +49,12 @@ printTable <- function(obj, caption = "DF", digits=3, onlyContents=FALSE,
         names(obj) <- sub("eps_p",     "$\\\\epsilon \\\\textit{p}$",   names(obj))
     }
 
+    # format potential names for underscores (latex)
+    names(obj) <- gsub("_", "\\\\_", names(obj))
+    if (!is.null(obj$Effect)) {
+        obj$Effect <- lapply(obj$Effect, function(x) gsub("_", "\\\\_", x))
+    }
+
     if (length(digits) != 1) {
         if(length(digits) != ncol(obj)){
             # find numeric columns

@@ -16,16 +16,16 @@ test_that("printAovMeans", {
 
   # ezANOVA
   aovRT <- ez::ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
-                   return_aov = TRUE, detailed = TRUE)
+                       return_aov = TRUE, detailed = TRUE)
   aovRT <- aovTable(aovRT)
   testthat::expect_error(printAovMeans(aovRT), NA)
 
   aovRT <- ez::ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
-                   return_aov = FALSE, detailed = TRUE)
+                       return_aov = FALSE, detailed = TRUE)
   testthat::expect_error(printAovMeans(aovRT))
 
   aovRT <- ez::ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
-                   return_aov = TRUE, detailed = TRUE)
+                       return_aov = TRUE, detailed = TRUE)
   aovRT <- aovTable(aovRT)
   testthat::expect_error(printAovMeans(aovRT, aovRT, digits = c(2, 2)), NA)
   testthat::expect_error(printAovMeans(aovRT, digits = c(2, 2)))

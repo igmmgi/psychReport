@@ -110,7 +110,7 @@ addDataDF <- function(dat, RT=NULL, Error=NULL) {
 
     for (i in c(1:length(RT))) {
 
-      fcts_levls <- unlist(strsplit(names(RT[i]),  split = "_"))
+      fcts_levls <- unlist(strsplit(names(RT[i]), split = "_(?!.*_)", perl=TRUE))
       fcts       <- unlist(strsplit(fcts_levls[1], split = ":"))
       levls      <- unlist(strsplit(fcts_levls[2], split = ":"))
 
@@ -136,7 +136,7 @@ addDataDF <- function(dat, RT=NULL, Error=NULL) {
 
     for (i in c(1:length(Error))) {
 
-      fcts_levls <- unlist(strsplit(names(Error[i]), split = "_"))
+      fcts_levls <- unlist(strsplit(names(Error[i]), split = "_(?!.*_)", perl=TRUE))
       fcts       <- unlist(strsplit(fcts_levls[1],   split = ":"))
       levls      <- unlist(strsplit(fcts_levls[2],   split = ":"))
 
