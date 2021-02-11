@@ -39,6 +39,7 @@ printTable <- function(obj, caption = "DF", digits=3, onlyContents=FALSE,
                        formatStatsSymbols = TRUE) {
 
     # typical symbols in ANOVA table
+    # TO DO: xtable.sanitize?
     if (formatStatsSymbols) {
         names(obj) <- sub("<.05",      "$<.05$",          names(obj))
         names(obj) <- sub("\\<p\\>",   "$\\\\textit{p}$", names(obj))
@@ -50,10 +51,11 @@ printTable <- function(obj, caption = "DF", digits=3, onlyContents=FALSE,
     }
 
     # format potential names for underscores (latex)
-    names(obj) <- gsub("_", "\\\\_", names(obj))
+    # TO DO: xtable.sanitize?
     if (!is.null(obj$Effect)) {
         obj$Effect <- lapply(obj$Effect, function(x) gsub("_", "\\\\_", x))
     }
+    caption = gsub("_", "\\\\_", caption)
 
     if (length(digits) != 1) {
         if(length(digits) != ncol(obj)){
@@ -72,7 +74,6 @@ printTable <- function(obj, caption = "DF", digits=3, onlyContents=FALSE,
             }
         }
     }
-
     tab <- xtable::xtable(obj, caption = caption, digits=digits)
 
     print(tab,
