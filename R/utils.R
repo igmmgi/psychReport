@@ -52,19 +52,19 @@ printTable <- function(obj, caption = "DF", digits=3, onlyContents=FALSE,
 
     # format potential names for underscores (latex)
     # TO DO: xtable.sanitize?
-    if (!is.null(obj$Effect)) {
+    if ("Effect" %in% names(obj)) {
         obj$Effect <- lapply(obj$Effect, function(x) gsub("_", "\\\\_", x))
     }
     caption = gsub("_", "\\\\_", caption)
 
     if (length(digits) != 1) {
-        if(length(digits) != ncol(obj)){
+        if (length(digits) != ncol(obj)) {
             # find numeric columns
             numeric_cols <- as.vector(which(unlist(lapply(obj, is.numeric))))
             if (length(numeric_cols) == 0) {
                 digits = 0
                 message("obj does not contain numeric columns! No additional formatting applied.", immediate = TRUE)
-            } else if(length(digits) != length(numeric_cols)){
+            } else if (length(digits) != length(numeric_cols)) {
                 stop("Number of digits does not equal number of numeric columns!")
             } else {
                 # make digits length required by xtable command
@@ -74,7 +74,7 @@ printTable <- function(obj, caption = "DF", digits=3, onlyContents=FALSE,
             }
         }
     }
-    tab <- xtable::xtable(obj, caption = caption, digits=digits)
+    tab <- xtable::xtable(obj, caption = caption, digits = digits)
 
     print(tab,
           table.placement = "H",
