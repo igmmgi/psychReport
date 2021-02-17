@@ -29,7 +29,6 @@ x <- rtDist()
 hist(x, 100)
 
 # Example 2:
-x <- rtDist(n=20000, gaussMean=800, gaussSD=50, expRate=100)
+x <- rtDist(n = 20000, gaussMean = 800, gaussSD = 50, expRate = 100)
 hist(x, 100)
-
 }

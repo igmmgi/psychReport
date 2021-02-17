@@ -31,7 +31,8 @@ dat <- createDF()
 dat <- createDF(nVP = 50, nTrl = 50, design = list("Comp" = c("comp", "incomp")))
 
 # Example 3
-dat <- createDF(nVP = 50, nTrl = 50, design = list("Comp" = c("comp", "incomp"),
-                                                   "Side" = c("left", "right", "middle")))
-
+dat <- createDF(nVP = 50, nTrl = 50, design = list(
+  "Comp" = c("comp", "incomp"),
+  "Side" = c("left", "right", "middle")
+))
 }

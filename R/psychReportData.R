@@ -16,17 +16,16 @@
 #' dat <- createDF(nVP = 50, nTrl = 50, design = list("Comp" = c("comp", "incomp")))
 #'
 #' # Example 3
-#' dat <- createDF(nVP = 50, nTrl = 50, design = list("Comp" = c("comp", "incomp"),
-#'                                                    "Side" = c("left", "right", "middle")))
-#'
+#' dat <- createDF(nVP = 50, nTrl = 50, design = list(
+#'   "Comp" = c("comp", "incomp"),
+#'   "Side" = c("left", "right", "middle")
+#' ))
 #' @export
 createDF <- function(nVP = 20,
                      nTrl = 50,
                      design = list("A" = c("A1", "A2"), "B" = c("B1", "B2"))) {
-
-  dat <-  data.frame(expand.grid(modifyList(design, list(VP = factor(c(1:nVP)), Trial = c(1:nTrl)))))
+  dat <- data.frame(expand.grid(modifyList(design, list(VP = factor(c(1:nVP)), Trial = c(1:nTrl)))))
   return(dat[c("VP", names(design))])
-
 }
 
 
@@ -59,10 +58,15 @@ createDF <- function(nVP = 20,
 #' # Example 3: defined RT + Error parameters across conditions
 #' dat <- createDF(nVP = 50, nTrl = 50, design = list("Comp" = c("comp", "incomp")))
 #' dat <- addDataDF(dat,
-#'                  RT = list("Comp_comp"   = c(500, 80, 100),
-#'                            "Comp_incomp" = c(550, 80, 140)),
-#'                  Error = list("Comp_comp"   = 5,
-#'                               "Comp_incomp" = 10))
+#'   RT = list(
+#'     "Comp_comp" = c(500, 80, 100),
+#'     "Comp_incomp" = c(550, 80, 140)
+#'   ),
+#'   Error = list(
+#'     "Comp_comp" = 5,
+#'     "Comp_incomp" = 10
+#'   )
+#' )
 #' boxplot(dat$RT ~ dat$Comp)
 #' table(dat$Comp, dat$Error)
 #'
@@ -70,35 +74,48 @@ createDF <- function(nVP = 20,
 #' # create dataframe with defined RT + Error parameters across different conditions
 #' dat <- createDF(nVP = 50, nTrl = 50, design = list("Comp" = c("comp", "incomp", "neutral")))
 #' dat <- addDataDF(dat,
-#'                  RT = list("Comp_comp"      = c(500, 150, 100),
-#'                            "Comp_neutral"   = c(550, 150, 100),
-#'                            "Comp_incomp"    = c(600, 150, 100)),
-#'                  Error = list("Comp_comp"    =  5,
-#'                               "Comp_neutral" = 10,
-#'                               "Comp_incomp"  = 15))
+#'   RT = list(
+#'     "Comp_comp" = c(500, 150, 100),
+#'     "Comp_neutral" = c(550, 150, 100),
+#'     "Comp_incomp" = c(600, 150, 100)
+#'   ),
+#'   Error = list(
+#'     "Comp_comp" = 5,
+#'     "Comp_neutral" = 10,
+#'     "Comp_incomp" = 15
+#'   )
+#' )
 #' boxplot(dat$RT ~ dat$Comp)
 #' table(dat$Comp, dat$Error)
 #'
 #' # Example 5:
 #' # create dataframe with defined RT + Error parameters across different conditions
-#' dat <- createDF(nVP = 50, nTrl = 50,
-#'                 design = list("Hand" = c("left", "right"),
-#'                               "Side" = c("left", "right")))
+#' dat <- createDF(
+#'   nVP = 50, nTrl = 50,
+#'   design = list(
+#'     "Hand" = c("left", "right"),
+#'     "Side" = c("left", "right")
+#'   )
+#' )
 #' dat <- addDataDF(dat,
-#'                  RT = list("Hand:Side_left:left"   = c(400, 150, 100),
-#'                            "Hand:Side_left:right"  = c(500, 150, 100),
-#'                            "Hand:Side_right:left"  = c(500, 150, 100),
-#'                            "Hand:Side_right:right" = c(400, 150, 100)),
-#'                  Error = list("Hand:Side_left:left"   = c(5,4,2,2,1),
-#'                               "Hand:Side_left:right"  = c(15,4,2,2,1),
-#'                               "Hand:Side_right:left"  = c(15,7,4,2,1),
-#'                               "Hand:Side_right:right" = c(5,8,5,3,1)))
+#'   RT = list(
+#'     "Hand:Side_left:left" = c(400, 150, 100),
+#'     "Hand:Side_left:right" = c(500, 150, 100),
+#'     "Hand:Side_right:left" = c(500, 150, 100),
+#'     "Hand:Side_right:right" = c(400, 150, 100)
+#'   ),
+#'   Error = list(
+#'     "Hand:Side_left:left" = c(5, 4, 2, 2, 1),
+#'     "Hand:Side_left:right" = c(15, 4, 2, 2, 1),
+#'     "Hand:Side_right:left" = c(15, 7, 4, 2, 1),
+#'     "Hand:Side_right:right" = c(5, 8, 5, 3, 1)
+#'   )
+#' )
 #'
 #' boxplot(dat$RT ~ dat$Hand + dat$Side)
 #' table(dat$Error, dat$Hand, dat$Side)
-#'
 #' @export
-addDataDF <- function(dat, RT=NULL, Error=NULL) {
+addDataDF <- function(dat, RT = NULL, Error = NULL) {
 
   # reaction time
   dat$RT <- 0
@@ -107,38 +124,32 @@ addDataDF <- function(dat, RT=NULL, Error=NULL) {
   } else if (!is.null(RT) & is.double(RT)) {
     dat$RT <- rtDist(n = nrow(dat), RT[1], RT[2], RT[3])
   } else if (!is.null(RT) & is.list(RT)) {
-
     for (i in c(1:length(RT))) {
-
-      fcts_levls <- unlist(strsplit(names(RT[i]), split = "_(?!.*_)", perl=TRUE))
-      fcts       <- unlist(strsplit(fcts_levls[1], split = ":"))
-      levls      <- unlist(strsplit(fcts_levls[2], split = ":"))
+      fcts_levls <- unlist(strsplit(names(RT[i]), split = "_(?!.*_)", perl = TRUE))
+      fcts <- unlist(strsplit(fcts_levls[1], split = ":"))
+      levls <- unlist(strsplit(fcts_levls[2], split = ":"))
 
       idx <- NULL
       for (fct in c(1:length(fcts))) {
         idx <- cbind(idx, dat[fcts[fct]] == levls[fct])
       }
-      idx         <- apply(idx, 1, all)
+      idx <- apply(idx, 1, all)
       dat$RT[idx] <- rtDist(n = sum(idx), RT[[i]][1], RT[[i]][2], RT[[i]][3])
-
     }
-
   }
 
   # error rate
   dat$Error <- 0
-  dat$bins  <- 0
+  dat$bins <- 0
   if (is.null(Error)) {
     dat$Error <- errDist(n = nrow(dat))
   } else if (!is.null(Error) & is.double(Error)) {
     dat$Error <- errDist(n = nrow(dat), Error)
   } else if (!is.null(Error) & is.list(Error)) {
-
     for (i in c(1:length(Error))) {
-
-      fcts_levls <- unlist(strsplit(names(Error[i]), split = "_(?!.*_)", perl=TRUE))
-      fcts       <- unlist(strsplit(fcts_levls[1],   split = ":"))
-      levls      <- unlist(strsplit(fcts_levls[2],   split = ":"))
+      fcts_levls <- unlist(strsplit(names(Error[i]), split = "_(?!.*_)", perl = TRUE))
+      fcts <- unlist(strsplit(fcts_levls[1], split = ":"))
+      levls <- unlist(strsplit(fcts_levls[2], split = ":"))
 
       idx <- NULL
       for (fct in c(1:length(fcts))) {
@@ -151,16 +162,14 @@ addDataDF <- function(dat, RT=NULL, Error=NULL) {
         idx_bin <- dat$bins == bin & idx
         dat$Error[idx_bin] <- errDist(n = sum(idx_bin), Error[[i]][bin])
       }
-
     }
   }
 
   if ("bins" %in% names(dat)) {
-    dat <- dat[ , -which(names(dat) %in% c("bins"))]
+    dat <- dat[, -which(names(dat) %in% c("bins"))]
   }
 
   return(dat)
-
 }
 
 
@@ -184,16 +193,13 @@ addDataDF <- function(dat, RT=NULL, Error=NULL) {
 #' hist(x, 100)
 #'
 #' # Example 2:
-#' x <- rtDist(n=20000, gaussMean=800, gaussSD=50, expRate=100)
+#' x <- rtDist(n = 20000, gaussMean = 800, gaussSD = 50, expRate = 100)
 #' hist(x, 100)
-#'
 #' @export
-rtDist <- function(n=10000, gaussMean=600, gaussSD=50, expRate=200) {
-
-  expDist <- stats::rexp(n, 1/expRate)
+rtDist <- function(n = 10000, gaussMean = 600, gaussSD = 50, expRate = 200) {
+  expDist <- stats::rexp(n, 1 / expRate)
   gaussDist <- stats::rnorm(n, gaussMean, gaussSD)
   return(round(expDist + gaussDist - mean(expDist)))
-
 }
 
 
@@ -216,9 +222,158 @@ rtDist <- function(n=10000, gaussMean=600, gaussSD=50, expRate=200) {
 #' # Example 2: approx 20% errors
 #' x <- errDist(1000, 20)
 #' table(x)
-#'
 #' @export
-errDist <- function(n=10000, proportion = 10) {
-  return(ifelse(stats::runif(n) <= proportion/100, 1, 0))
+errDist <- function(n = 10000, proportion = 10) {
+  return(ifelse(stats::runif(n) <= proportion / 100, 1, 0))
 }
 
+
+#' @title summaryMSDSE
+#'
+#' @description Aggregate data returning the mean, standard deviation, and standard error
+#'
+#' @param data A dataframe
+#' @param factors List of factors over which to aggregate
+#' @param dvs List of numeric data columns to aggregate
+#' @param withinCorrection List of dvs which to apply within-subjects correction
+#'  to the calculation of the standard deviation and standard error. Within-subject correction
+#'  calculated according to Morey (2008)
+#'
+#' @return dataframe
+#'
+#' @examples
+#' # Example 1:
+#' library(dplyr)
+#' dat <- createDF(nVP = 50, nTrl = 50, design = list("Comp" = c("comp", "incomp")))
+#' dat <- addDataDF(dat,
+#'   RT = list(
+#'     "Comp_comp" = c(500, 80, 100),
+#'     "Comp_incomp" = c(550, 80, 140)
+#'   ),
+#'   Error = list(
+#'     "Comp_comp" = 5,
+#'     "Comp_incomp" = 10
+#'   )
+#' )
+#' datAggVP <- dat %>%
+#'   group_by(VP, Comp) %>%
+#'   summarize(
+#'     N  = n(),
+#'     RT = mean(RT[Error == 0]),
+#'     ER = (sum(Error) / N) * 100
+#'   )
+#' datAgg <- summaryMSDSE(datAggVP, "Comp", c("RT", "ER"))
+#'
+#' # Example 2:
+#' dat <- createDF(nVP = 50, nTrl = 50, design = list("Comp" = c("comp", "incomp")))
+#' dat <- addDataDF(dat,
+#'   RT = list(
+#'     "Comp_comp" = c(500, 80, 100),
+#'     "Comp_incomp" = c(550, 80, 140)
+#'   ),
+#'   Error = list(
+#'     "Comp_comp" = 5,
+#'     "Comp_incomp" = 10
+#'   )
+#' )
+#' datAggVP <- dat %>%
+#'   group_by(VP, Comp) %>%
+#'   summarize(
+#'     N = n(),
+#'     RT = mean(RT[Error == 0]),
+#'     ER = (sum(Error) / N) * 100
+#'   )
+#' datAggVP <- normData(datAggVP, "VP", c("RT", "ER"))
+#' datAgg <- summaryMSDSE(
+#'   datAggVP, "Comp", c("RT", "ER", "RT_norm", "ER_norm"),
+#'   c("RT_norm", "ER_norm")
+#' )
+#' @export
+summaryMSDSE <- function(data, factors, dvs, withinCorrection = NULL) {
+
+  # calculate N, mean, sd, and se for each group variable
+  dat <- fn1 <- fn3 <- NULL
+  for (i in 1:length(dvs)) {
+    tmp_dat <- data %>%
+      dplyr::group_by_at(factors) %>%
+      dplyr::summarize_at(dvs[i], c(length, mean, sd)) %>%
+      dplyr::mutate(se = fn3 / sqrt(fn1)) %>%
+      setNames(c(factors, "N", paste0(dvs[i], "_mean"), paste0(dvs[i], "_sd"), paste0(dvs[i], "_se")))
+    if (i > 1) {
+      tmp_dat <- tmp_dat[, (length(factors) + 2):ncol(tmp_dat)]
+    }
+    if (is.null(dat)) {
+      dat <- tmp_dat
+    } else {
+      dat <- cbind(dat, tmp_dat)
+    }
+  }
+
+  # apply within-participant correction (Morey, 2008) to sd/se for plotting errorbars
+  # adapted from Cookbook for R: http://www.cookbook-r.com/Graphs/Plotting_means_and_error_bars_(ggplot2)/
+  if (!is.null(withinCorrection)) {
+    ncells <- prod(unlist(lapply(lapply(dat[c(factors)], levels), length)))
+    message(ncells)
+    cf <- sqrt(ncells / (ncells - 1))
+    for (i in 1:length(withinCorrection)) {
+      dat <- dat %>%
+        dplyr::mutate(
+          "{withinCorrection[i]}_sd" := !!as.name(paste0(withinCorrection[i], "_sd")) * cf,
+          "{withinCorrection[i]}_se" := !!as.name(paste0(withinCorrection[i], "_se")) * cf
+        ) %>%
+        dplyr::select(-!!as.name(paste0(withinCorrection[i], "_mean")))
+    }
+  }
+
+  return(dat)
+}
+
+
+#' @title normData
+#'
+#' @description Aggregate data returning the mean, standard deviation, and standard error
+#'
+#' @param data A dataframe
+#' @param idvar Column indicating the individual participants
+#' @param dvs List of numeric data columns to normalise
+#'
+#' @return dataframe
+#'
+#' @examples
+#'
+#' # Example 1:
+#' library(dplyr)
+#' dat <- createDF(nVP = 50, nTrl = 50, design = list("Comp" = c("comp", "incomp")))
+#' dat <- addDataDF(dat,
+#'   RT = list(
+#'     "Comp_comp" = c(500, 80, 100),
+#'     "Comp_incomp" = c(550, 80, 140)
+#'   ),
+#'   Error = list(
+#'     "Comp_comp" = 5,
+#'     "Comp_incomp" = 10
+#'   )
+#' )
+#' datAggVP <- dat %>%
+#'   group_by(VP, Comp) %>%
+#'   summarize(
+#'     N = n(),
+#'     RT = mean(RT[Error == 0]),
+#'     ER = (sum(Error) / N) * 100
+#'   )
+#' datAggVP <- normData(datAggVP, "VP", c("RT", "ER"))
+#' @export
+normData <- function(data, idvar, dvs) {
+  idmean <- NULL
+  for (i in 1:length(dvs)) {
+    grand_mean <- mean(data[[dvs[i]]])
+    data <- data %>%
+      dplyr::group_by_at(idvar) %>%
+      dplyr::mutate(
+        idmean = mean(!!as.name(dvs[i])),
+        "{dvs[i]}_norm" := !!as.name(dvs[i]) - idmean + grand_mean
+      ) %>%
+      dplyr::select(-idmean)
+  }
+  return(data)
+}

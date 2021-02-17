@@ -26,5 +26,4 @@ table(x)
 # Example 2: approx 20\% errors
 x <- errDist(1000, 20)
 table(x)
-
 }
