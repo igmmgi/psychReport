@@ -237,7 +237,7 @@ errDist <- function(n = 10000, proportion = 10) {
 #' @param dvs List of numeric data columns to aggregate
 #' @param withinCorrection List of dvs which to apply within-subjects correction
 #'  to the calculation of the standard deviation and standard error. Within-subject correction
-#'  calculated according to Morey (2008)
+#'  calculated according to Morey (2008). NB Data should be normed first (see normData).
 #'
 #' @return dataframe
 #'
@@ -291,14 +291,18 @@ errDist <- function(n = 10000, proportion = 10) {
 #' @export
 summaryMSDSE <- function(data, factors, dvs, withinCorrection = NULL) {
 
+  ncells <- prod(unlist(lapply(lapply(data[c(factors)], levels), length)))
+  nvps <- nrow(data) / ncells
+
   # calculate N, mean, sd, and se for each group variable
-  dat <- fn1 <- fn3 <- NULL
+  dat <- fn1 <- fn3 <- se <- NULL # avoid CRAN note!
   for (i in 1:length(dvs)) {
     tmp_dat <- data %>%
       dplyr::group_by_at(factors) %>%
       dplyr::summarize_at(dvs[i], c(length, mean, sd)) %>%
-      dplyr::mutate(se = fn3 / sqrt(fn1)) %>%
-      setNames(c(factors, "N", paste0(dvs[i], "_mean"), paste0(dvs[i], "_sd"), paste0(dvs[i], "_se")))
+      dplyr::mutate(se = fn3 / sqrt(fn1),
+                    se_ci = se * qt(0.975, nvps - 1)) %>%
+      setNames(c(factors, "N", paste0(dvs[i], "_mean"), paste0(dvs[i], "_sd"), paste0(dvs[i], "_se"), paste0(dvs[i], "_se_ci")))
     if (i > 1) {
       tmp_dat <- tmp_dat[, (length(factors) + 2):ncol(tmp_dat)]
     }
@@ -312,20 +316,20 @@ summaryMSDSE <- function(data, factors, dvs, withinCorrection = NULL) {
   # apply within-participant correction (Morey, 2008) to sd/se for plotting errorbars
   # adapted from Cookbook for R: http://www.cookbook-r.com/Graphs/Plotting_means_and_error_bars_(ggplot2)/
   if (!is.null(withinCorrection)) {
-    ncells <- prod(unlist(lapply(lapply(dat[c(factors)], levels), length)))
-    message(ncells)
     cf <- sqrt(ncells / (ncells - 1))
     for (i in 1:length(withinCorrection)) {
       dat <- dat %>%
         dplyr::mutate(
           "{withinCorrection[i]}_sd" := !!as.name(paste0(withinCorrection[i], "_sd")) * cf,
-          "{withinCorrection[i]}_se" := !!as.name(paste0(withinCorrection[i], "_se")) * cf
+          "{withinCorrection[i]}_se" := !!as.name(paste0(withinCorrection[i], "_se")) * cf,
+          "{withinCorrection[i]}_se_ci" := !!as.name(paste0(withinCorrection[i], "_se_ci")) * cf
         ) %>%
         dplyr::select(-!!as.name(paste0(withinCorrection[i], "_mean")))
     }
   }
 
   return(dat)
+
 }
 
 
@@ -364,7 +368,7 @@ summaryMSDSE <- function(data, factors, dvs, withinCorrection = NULL) {
 #' datAggVP <- normData(datAggVP, "VP", c("RT", "ER"))
 #' @export
 normData <- function(data, idvar, dvs) {
-  idmean <- NULL
+  idmean <- NULL # avoid CRAN note!
   for (i in 1:length(dvs)) {
     grand_mean <- mean(data[[dvs[i]]])
     data <- data %>%

@@ -15,7 +15,7 @@ summaryMSDSE(data, factors, dvs, withinCorrection = NULL)
 
 \item{withinCorrection}{List of dvs which to apply within-subjects correction
 to the calculation of the standard deviation and standard error. Within-subject correction
-calculated according to Morey (2008)}
+calculated according to Morey (2008). NB Data should be normed first (see normData).}
 }
 \value{
 dataframe
