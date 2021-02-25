@@ -17,8 +17,8 @@
 #'                 nTrl = 50,
 #'                 design = list("Comp" = c("comp", "incomp")))
 #'
-#' dat <- addDataDF(dat, RT = list("Comp_comp"   = c(500, 150, 100),
-#'                                 "Comp_incomp" = c(520, 150, 100)))
+#' dat <- addDataDF(dat, RT = list("Comp comp"   = c(500, 150, 100),
+#'                                 "Comp incomp" = c(520, 150, 100)))
 #'
 #' # aggregate dat across trials
 #' datAggVP <- dat %>%
@@ -57,8 +57,8 @@ statStrT <- function(tObj) {
 #'                 nTrl = 50,
 #'                 design = list("Comp" = c("comp", "incomp")))
 #'
-#' dat <- addDataDF(dat, RT = list("Comp_comp"   = c(500, 150, 100),
-#'                                 "Comp_incomp" = c(520, 150, 100)))
+#' dat <- addDataDF(dat, RT = list("Comp comp"   = c(500, 150, 100),
+#'                                 "Comp incomp" = c(520, 150, 100)))
 #'
 #' # aggregate dat across trials
 #' datAggVP <- dat %>%
@@ -106,8 +106,8 @@ tValueString <- function(tObj) {
 #'                 nTrl = 50,
 #'                 design = list("Comp" = c("comp", "incomp")))
 #'
-#' dat <- addDataDF(dat, RT = list("Comp_comp"   = c(500, 150, 100),
-#'                                 "Comp_incomp" = c(520, 150, 100)))
+#' dat <- addDataDF(dat, RT = list("Comp comp"   = c(500, 150, 100),
+#'                                 "Comp incomp" = c(520, 150, 100)))
 #'
 #' # aggregate dat across trials
 #' datAggVP <- dat %>%
@@ -153,8 +153,8 @@ meanStrT <- function(tObj, numDigits = 0, unit = "") {
 #'                 nTrl = 50,
 #'                 design = list("Comp" = c("comp", "incomp")))
 #'
-#' dat <- addDataDF(dat, RT = list("Comp_comp"   = c(500, 150, 100),
-#'                                 "Comp_incomp" = c(520, 150, 100)))
+#' dat <- addDataDF(dat, RT = list("Comp comp"   = c(500, 150, 100),
+#'                                 "Comp incomp" = c(520, 150, 100)))
 #'
 #' # aggregate dat across trials
 #' datAggVP <- dat %>%

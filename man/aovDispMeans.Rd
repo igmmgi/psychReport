@@ -22,8 +22,8 @@ Displays marginal means from model.tables in the command window.
 dat <- createDF(nVP = 50, nTrl = 1,
                 design = list("Comp" = c("comp", "incomp")))
 
-dat <- addDataDF(dat, RT = list("Comp_comp"   = c(500, 100, 100),
-                                "Comp_incomp" = c(520, 100, 100)))
+dat <- addDataDF(dat, RT = list("Comp comp"   = c(500, 100, 100),
+                                "Comp incomp" = c(520, 100, 100)))
 
 aovRT <- aov(RT ~ Comp + Error(VP/(Comp)), dat)
 aovDispMeans(aovRT)

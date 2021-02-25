@@ -9,9 +9,9 @@ test_that("aovDispTable", {
                   design = list("Comp" = c("comp", "neutral", "incomp")))
 
   dat <- addDataDF(dat,
-                   RT = list("Comp_comp"    = c(500, 150, 150),
-                             "Comp_neutral" = c(550, 150, 150),
-                             "Comp_incomp"  = c(600, 150, 150)))
+                   RT = list("Comp  comp"    = c(500, 150, 150),
+                             "Comp  neutral" = c(550, 150, 150),
+                             "Comp  incomp"  = c(600, 150, 150)))
 
   # base R aov
   aovRT <- aov(RT ~ Comp + Error(VP/(Comp)), dat)

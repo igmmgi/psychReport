@@ -38,12 +38,12 @@ table(dat$Comp, dat$Error)
 dat <- createDF(nVP = 50, nTrl = 50, design = list("Comp" = c("comp", "incomp")))
 dat <- addDataDF(dat,
   RT = list(
-    "Comp_comp" = c(500, 80, 100),
-    "Comp_incomp" = c(550, 80, 140)
+    "Comp comp" = c(500, 80, 100),
+    "Comp incomp" = c(550, 80, 140)
   ),
   Error = list(
-    "Comp_comp" = 5,
-    "Comp_incomp" = 10
+    "Comp comp" = 5,
+    "Comp incomp" = 10
   )
 )
 boxplot(dat$RT ~ dat$Comp)
@@ -54,14 +54,14 @@ table(dat$Comp, dat$Error)
 dat <- createDF(nVP = 50, nTrl = 50, design = list("Comp" = c("comp", "incomp", "neutral")))
 dat <- addDataDF(dat,
   RT = list(
-    "Comp_comp" = c(500, 150, 100),
-    "Comp_neutral" = c(550, 150, 100),
-    "Comp_incomp" = c(600, 150, 100)
+    "Comp comp" = c(500, 150, 100),
+    "Comp neutral" = c(550, 150, 100),
+    "Comp incomp" = c(600, 150, 100)
   ),
   Error = list(
-    "Comp_comp" = 5,
-    "Comp_neutral" = 10,
-    "Comp_incomp" = 15
+    "Comp comp" = 5,
+    "Comp neutral" = 10,
+    "Comp incomp" = 15
   )
 )
 boxplot(dat$RT ~ dat$Comp)
@@ -72,22 +72,22 @@ table(dat$Comp, dat$Error)
 dat <- createDF(
   nVP = 50, nTrl = 50,
   design = list(
-    "Hand" = c("left", "right"),
-    "Side" = c("left", "right")
+    "Hand" = c("left_a", "right_a"),
+    "Side" = c("left_a", "right_a")
   )
 )
 dat <- addDataDF(dat,
   RT = list(
-    "Hand:Side_left:left" = c(400, 150, 100),
-    "Hand:Side_left:right" = c(500, 150, 100),
-    "Hand:Side_right:left" = c(500, 150, 100),
-    "Hand:Side_right:right" = c(400, 150, 100)
+    "Hand:Side left_a:left_a" = c(400, 150, 100),
+    "Hand:Side left_a:right_a" = c(500, 150, 100),
+    "Hand:Side right_a:left_a" = c(500, 150, 100),
+    "Hand:Side right_a:right_a" = c(400, 150, 100)
   ),
   Error = list(
-    "Hand:Side_left:left" = c(5, 4, 2, 2, 1),
-    "Hand:Side_left:right" = c(15, 4, 2, 2, 1),
-    "Hand:Side_right:left" = c(15, 7, 4, 2, 1),
-    "Hand:Side_right:right" = c(5, 8, 5, 3, 1)
+    "Hand:Side left_a:left_a" = c(5, 4, 2, 2, 1),
+    "Hand:Side left_a:right_a" = c(15, 4, 2, 2, 1),
+    "Hand:Side right_a:left_a" = c(15, 7, 4, 2, 1),
+    "Hand:Side right_a:right_a" = c(5, 8, 5, 3, 1)
   )
 )
 

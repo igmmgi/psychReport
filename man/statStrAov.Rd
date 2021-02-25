@@ -23,10 +23,10 @@ dat <- createDF(nVP = 20, nTrl = 1,
                 design = list("Comp" = c("comp", "incomp"),
                               "Side" = c("left", "right")))
 
-dat <- addDataDF(dat, RT = list("Comp:Side_comp:left"    = c(500, 150, 100),
-                                "Comp:Side_comp:right"   = c(500, 150, 100),
-                                "Comp:Side_incomp:left"  = c(520, 150, 100),
-                                "Comp:Side_incomp:right" = c(520, 150, 100)))
+dat <- addDataDF(dat, RT = list("Comp:Side comp:left"    = c(500, 150, 100),
+                                "Comp:Side comp:right"   = c(500, 150, 100),
+                                "Comp:Side incomp:left"  = c(520, 150, 100),
+                                "Comp:Side incomp:right" = c(520, 150, 100)))
 
 aovRT <- aov(RT ~ Comp*Side + Error(VP/(Comp*Side)), dat)
 aovRT <- aovTable(aovRT)

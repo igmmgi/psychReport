@@ -26,10 +26,10 @@ dat <- createDF(nVP = 20, nTrl = 1,
                               "Side" = c("left", "right")))
 
 dat <- addDataDF(dat,
-                 RT = list("Comp:Side_comp:left"    = c(500, 150, 150),
-                           "Comp:Side_comp:right"   = c(500, 150, 150),
-                           "Comp:Side_incomp:left"  = c(500, 150, 150),
-                           "Comp:Side_incomp:right" = c(500, 150, 150)))
+                 RT = list("Comp:Side comp:left"    = c(500, 150, 150),
+                           "Comp:Side comp:right"   = c(500, 150, 150),
+                           "Comp:Side incomp:left"  = c(500, 150, 150),
+                           "Comp:Side incomp:right" = c(500, 150, 150)))
 
 aovRT <- aov(RT ~ Comp*Side + Error(VP/(Comp*Side)), dat)
 aovRT <- aovJackknifeAdjustment(aovRT, length(unique(dat$VP)))

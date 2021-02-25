@@ -9,8 +9,8 @@ test_that("aovJackknifeAdjustment", {
                   design = list("Comp" = c("comp", "incomp")))
 
   dat <- addDataDF(dat,
-                   RT = list("Comp_comp"   = c(500, 30, 50),
-                             "Comp_incomp" = c(800, 30, 50)))
+                   RT = list("Comp comp"   = c(500, 30, 50),
+                             "Comp incomp" = c(800, 30, 50)))
 
   # base R aov
   aovRT      <- aov(RT ~ Comp + Error(VP/(Comp)), dat)

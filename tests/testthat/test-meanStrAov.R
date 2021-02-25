@@ -7,8 +7,8 @@ test_that("meanStrAov", {
   # simulated data for ANOVA
   dat <- createDF(nVP = 50, nTrl = 1,
                   design = list("Comp" = c("comp", "incomp")))
-  dat <- addDataDF(dat, RT = list("Comp_comp"   = c(500, 150, 100),
-                                  "Comp_incomp" = c(500, 150, 100)))
+  dat <- addDataDF(dat, RT = list("Comp comp"   = c(500, 150, 100),
+                                  "Comp incomp" = c(500, 150, 100)))
 
   # base R aov
   aovRT <- aov(RT ~ Comp + Error(VP/(Comp)), dat)

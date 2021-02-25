@@ -8,7 +8,6 @@
 #' @param digits Number of digits to round to NB. length can be 1, or vector with
 #'  length equal to the number of numeric columns
 #' @param onlyContents TRUE/FALSE
-#' @param formatStatsSymbols TRUE/FALSE
 #'
 #' @return character
 #'
@@ -20,9 +19,9 @@
 #' dat <- createDF(nVP = 6, nTrl = 1,
 #'                 design = list("Comp" = c("comp", "incomp", "neutral")))
 #'
-#' dat <- addDataDF(dat, RT = list("Comp_comp"    = c(500, 150, 100),
-#'                                 "Comp_incomp"  = c(520, 150, 100),
-#'                                 "Comp_neutral" = c(510, 150, 100)))
+#' dat <- addDataDF(dat, RT = list("Comp comp"    = c(500, 150, 100),
+#'                                 "Comp incomp"  = c(520, 150, 100),
+#'                                 "Comp neutral" = c(510, 150, 100)))
 #' printTable(dat, digits = c(0, 2)) # latex formatted
 #' printTable(dat, digits = 0)       # latex formatted
 #'
@@ -35,27 +34,23 @@
 #'
 #'
 #' @export
-printTable <- function(obj, caption = "DF", digits=3, onlyContents=FALSE,
-                       formatStatsSymbols = TRUE) {
+printTable <- function(obj, caption = "DF", digits=3, onlyContents=FALSE) {
 
-    # typical symbols in ANOVA table
     # TO DO: xtable.sanitize?
-    if (formatStatsSymbols) {
-        names(obj) <- sub("<.05",      "$<.05$",          names(obj))
-        names(obj) <- sub("\\<p\\>",   "$\\\\textit{p}$", names(obj))
-        names(obj) <- sub("\\<F\\>",   "$\\\\textit{F}$", names(obj))
-        names(obj) <- sub("\\<pes\\>", "$\\\\eta_{p}^2$", names(obj))
-        names(obj) <- sub("\\<ges\\>", "$\\\\eta_{G}^2$", names(obj))
-        names(obj) <- sub("\\<eps\\>", "$\\\\epsilon$",   names(obj))
-        names(obj) <- sub("eps_p",     "$\\\\epsilon \\\\textit{p}$",   names(obj))
-    }
-
-    # format potential names for underscores (latex)
-    # TO DO: xtable.sanitize?
+    names(obj) <- lapply(names(obj), function(x) gsub("_", "\\\\_", x))
     if ("Effect" %in% names(obj)) {
         obj$Effect <- lapply(obj$Effect, function(x) gsub("_", "\\\\_", x))
     }
     caption = gsub("_", "\\\\_", caption)
+
+    # typical symbols in ANOVA table
+    names(obj) <- gsub("<.05",     "$<.05$",           names(obj))
+    names(obj) <- sub("\\<p\\>",   "$\\\\textit{p}$",  names(obj))
+    names(obj) <- sub("\\<F\\>",   "$\\\\textit{F}$",  names(obj))
+    names(obj) <- sub("\\<pes\\>", "$\\\\eta_{p}^2$",  names(obj))
+    names(obj) <- sub("\\<ges\\>", "$\\\\eta_{G}^2$",  names(obj))
+    names(obj) <- sub("\\<eps\\>", "$\\\\epsilon$",    names(obj))
+    names(obj) <- sub("\\\\_p",    " $\\\\textit{p}$", names(obj))
 
     if (length(digits) != 1) {
         if (length(digits) != ncol(obj)) {

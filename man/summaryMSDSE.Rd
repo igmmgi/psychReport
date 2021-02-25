@@ -29,12 +29,12 @@ library(dplyr)
 dat <- createDF(nVP = 50, nTrl = 50, design = list("Comp" = c("comp", "incomp")))
 dat <- addDataDF(dat,
   RT = list(
-    "Comp_comp" = c(500, 80, 100),
-    "Comp_incomp" = c(550, 80, 140)
+    "Comp comp" = c(500, 80, 100),
+    "Comp incomp" = c(550, 80, 140)
   ),
   Error = list(
-    "Comp_comp" = 5,
-    "Comp_incomp" = 10
+    "Comp comp" = 5,
+    "Comp incomp" = 10
   )
 )
 datAggVP <- dat \%>\%
@@ -50,12 +50,12 @@ datAgg <- summaryMSDSE(datAggVP, "Comp", c("RT", "ER"))
 dat <- createDF(nVP = 50, nTrl = 50, design = list("Comp" = c("comp", "incomp")))
 dat <- addDataDF(dat,
   RT = list(
-    "Comp_comp" = c(500, 80, 100),
-    "Comp_incomp" = c(550, 80, 140)
+    "Comp comp" = c(500, 80, 100),
+    "Comp incomp" = c(550, 80, 140)
   ),
   Error = list(
-    "Comp_comp" = 5,
-    "Comp_incomp" = 10
+    "Comp comp" = 5,
+    "Comp incomp" = 10
   )
 )
 datAggVP <- dat \%>\%

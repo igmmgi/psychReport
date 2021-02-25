@@ -22,10 +22,10 @@ test_that("addDataDF", {
 
   # 1 factor with 2 levels + defined rt and error rates
   dat <- createDF(nVP = 20, nTrl = 50, design = list("Comp" = c("comp", "incomp")))
-  dat <- addDataDF(dat, RT = list("Comp_comp"   = c(500, 150, 150),
-                                  "Comp_incomp" = c(550, 150, 150)),
-                   Error = list("Comp_comp"   = c(10, 8, 6, 4),
-                                "Comp_incomp" = c(15, 10, 7, 5)))
+  dat <- addDataDF(dat, RT = list("Comp comp"   = c(500, 150, 150),
+                                  "Comp incomp" = c(550, 150, 150)),
+                   Error = list("Comp comp"   = c(10, 8, 6, 4),
+                                "Comp incomp" = c(15, 10, 7, 5)))
 
   testthat::expect_equal(nrow(dat), 20*50*2)
   testthat::expect_equal(ncol(dat), 4)

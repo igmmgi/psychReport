@@ -27,9 +27,9 @@ dat <- createDF(nVP = 20, nTrl = 1,
                 design = list("Comp" = c("neutral", "comp", "incomp")))
 
 dat <- addDataDF(dat,
-                 RT = list("Comp_neutral" = c(510, 150, 100),
-                           "Comp_comp"    = c(500, 150, 100),
-                           "Comp_incomp"  = c(520, 150, 100)))
+                 RT = list("Comp neutral" = c(510, 150, 100),
+                           "Comp comp"    = c(500, 150, 100),
+                           "Comp incomp"  = c(520, 150, 100)))
 
 # using ezANOVA
 library(ez)

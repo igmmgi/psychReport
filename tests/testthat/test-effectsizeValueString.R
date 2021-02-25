@@ -7,8 +7,8 @@ test_that("statStrT", {
   dat <- createDF(nVP = 20, nTrl = 1,
                   design = list("Comp" = c("comp", "incomp")))
 
-  dat <- addDataDF(dat, RT = list("Comp_comp"   = c(500, 150, 100),
-                                  "Comp_incomp" = c(550, 150, 100)))
+  dat <- addDataDF(dat, RT = list("Comp comp"   = c(500, 150, 100),
+                                  "Comp incomp" = c(550, 150, 100)))
 
   dat$VP <- as.factor(dat$VP)
 

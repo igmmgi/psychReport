@@ -20,8 +20,8 @@ Display formatted ANOVA table in command window.
 dat <- createDF(nVP = 6, nTrl = 1,
                 design = list("Comp" = c("comp", "incomp")))
 
-dat <- addDataDF(dat, RT = list("Comp_comp"   = c(500, 150, 100),
-                                "Comp_incomp" = c(520, 150, 100)))
+dat <- addDataDF(dat, RT = list("Comp comp"   = c(500, 150, 100),
+                                "Comp incomp" = c(520, 150, 100)))
 
 aovObj <- aov(RT ~ Comp + Error(VP/(Comp)), dat)
 aovDispTable(aovObj)
