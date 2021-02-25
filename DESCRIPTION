@@ -3,7 +3,7 @@ Type: Package
 Title: Reproducible Reports in Psychology
 Version: 3.0.0
 Authors@R: c(
-    person(given = "Ian G.", family = "Mackenzie", email="ian.mackenzie@uni-tuebingen.de", role = c("cre", "aut")),
+    person(given = "Ian G", family = "Mackenzie", email="ian.mackenzie@uni-tuebingen.de", role = c("cre", "aut")),
     person(given = "Carolin", family = "Dudschig", email="carolin.dudschig@uni-tuebingen.de", role = c("aut"))
     )
 Maintainer: Ian G Mackenzie <ian.mackenzie@uni-tuebingen.de>
