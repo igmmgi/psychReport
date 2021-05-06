@@ -116,7 +116,7 @@ mathString <- function(str1, str2, operation = "-",
                        numDigits = 0, unit = "ms") {
 
     extractNum <- function(x){
-        return(as.numeric(regmatches(x, gregexpr("[[:digit:]]+\\.*[[:digit:]]*", x))))
+        return(as.numeric(gsub("[[:alpha:]]", "", x)))
     }
 
     nums <- lapply(list(str1, str2), extractNum)
