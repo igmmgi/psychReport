@@ -10,11 +10,13 @@ test_that("printTable", {
 
   # base R aov
   aovRT <- aov(RT ~ Comp + Error(VP/Comp), dat)
-  testthat::expect_error(printTable(aovRT), NA)
+  aovRT <- aovTable(aovRT)
+
+  testthat::expect_error(printTable(aovRT$ANOVA), NA)
 
   # ezANOVA
   aovRT <- ez::ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
-                   return_aov = TRUE, detailed = TRUE)
+                       return_aov = TRUE, detailed = TRUE)
   aovRT <- aovTable(aovRT)
 
   testthat::expect_error(printTable(dat), NA)

@@ -37,20 +37,27 @@
 printTable <- function(obj, caption = "DF", digits=3, onlyContents=FALSE) {
 
     # TO DO: xtable.sanitize?
+    caption    <- gsub("_", "\\\\_", caption)
     names(obj) <- lapply(names(obj), function(x) gsub("_", "\\\\_", x))
-    if ("Effect" %in% names(obj)) {
-        obj$Effect <- lapply(obj$Effect, function(x) gsub("_", "\\\\_", x))
+
+    # rows
+    nncs <- which(!unlist(lapply(obj, is.numeric)))
+    obj[, nncs] <- sapply(obj[, nncs], function(x) gsub("_", "\\\\_", x))
+
+    # remove leading 0 in p column
+    pcol <- which(names(obj) == "p")
+    if (length(pcol) == 1) {
+        obj[, pcol] <- sub("^0.", ".", obj[, pcol])
     }
-    caption = gsub("_", "\\\\_", caption)
 
     # typical symbols in ANOVA table
-    names(obj) <- gsub("<.05",     "$<.05$",           names(obj))
-    names(obj) <- sub("\\<p\\>",   "$\\\\textit{p}$",  names(obj))
-    names(obj) <- sub("\\<F\\>",   "$\\\\textit{F}$",  names(obj))
-    names(obj) <- sub("\\<pes\\>", "$\\\\eta_{p}^2$",  names(obj))
-    names(obj) <- sub("\\<ges\\>", "$\\\\eta_{G}^2$",  names(obj))
-    names(obj) <- sub("\\<eps\\>", "$\\\\epsilon$",    names(obj))
-    names(obj) <- sub("\\\\_p",    " $\\\\textit{p}$", names(obj))
+    names(obj) <- gsub("<.05",     "$<.05$",          names(obj))
+    names(obj) <- sub("\\<p\\>",   "$\\\\textit{p}$", names(obj))
+    names(obj) <- sub("\\<F\\>",   "$\\\\textit{F}$", names(obj))
+    names(obj) <- sub("\\<pes\\>", "$\\\\eta_{p}^2$", names(obj))
+    names(obj) <- sub("\\<ges\\>", "$\\\\eta_{G}^2$", names(obj))
+    names(obj) <- sub("\\<eps\\>", "$\\\\epsilon$",   names(obj))
+    names(obj) <- sub("\\\\_p",    "$\\\\textit{p}$", names(obj))
 
     if (length(digits) != 1) {
         if (length(digits) != ncol(obj)) {
@@ -63,7 +70,7 @@ printTable <- function(obj, caption = "DF", digits=3, onlyContents=FALSE) {
                 stop("Number of digits does not equal number of numeric columns!")
             } else {
                 # make digits length required by xtable command
-                tmp = rep(0, ncol(obj))
+                tmp <- rep(0, ncol(obj))
                 tmp[numeric_cols] <- digits
                 digits <- c(0, tmp)
             }

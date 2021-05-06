@@ -765,11 +765,6 @@ printAovMeans <- function(..., caption = "Mean", digits = 3, dv = "ms") {
       tab <- tab[, -c(colsToRemove)]
     }
 
-    # TO DO: xtable.sanitize?
-    names(tab) <- gsub("_", "\\\\_", names(tab))
-    nncs <- which(!unlist(lapply(tab, is.numeric)))
-    tab[,nncs] <- sapply(tab[, nncs], function(x) gsub("_", "\\\\_", x))
-
     printTable(tab,
                caption = paste0(caption, ": ", names(aovObj[[1]]$means$tables[i])),
                digits = digits)

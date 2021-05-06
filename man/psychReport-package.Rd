@@ -9,7 +9,7 @@
 Helper functions for producing reports in Psychology (Reproducible Research). Provides required formatted strings (APA style) for use in 'Knitr'/'Latex' integration within *.Rnw files.
 }
 \author{
-\strong{Maintainer}: Ian G. Mackenzie \email{ian.mackenzie@uni-tuebingen.de}
+\strong{Maintainer}: Ian G Mackenzie \email{ian.mackenzie@uni-tuebingen.de}
 
 Authors:
 \itemize{
