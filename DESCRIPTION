@@ -1,7 +1,7 @@
 Package: psychReport
 Type: Package
 Title: Reproducible Reports in Psychology
-Version: 3.0.1
+Version: 3.0.2
 Authors@R: c(
     person(given = "Ian G", family = "Mackenzie", email="ian.mackenzie@uni-tuebingen.de", role = c("cre", "aut")),
     person(given = "Carolin", family = "Dudschig", email="carolin.dudschig@uni-tuebingen.de", role = c("aut"))
@@ -10,8 +10,7 @@ Maintainer: Ian G Mackenzie <ian.mackenzie@uni-tuebingen.de>
 Description: Helper functions for producing reports in Psychology (Reproducible Research). Provides required formatted strings (APA style) for use in 'Knitr'/'Latex' integration within *.Rnw files.
 License: MIT + file LICENSE
 Encoding: UTF-8
-LazyData: true
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.0
 Imports:
   broom,
   cli,
