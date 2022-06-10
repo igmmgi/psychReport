@@ -98,7 +98,6 @@ tValueString <- function(tObj) {
 #' @return character
 #'
 #' @examples
-#' library(psychReport)
 #' requiredPackages(c("dplyr"))
 #' # Example 1:
 #' # create dataframe and add data
@@ -144,13 +143,12 @@ meanStrT <- function(tObj, numDigits = 0, unit = "") {
 #' @return character
 #'
 #' @examples
-#' library(psychReport)
 #' requiredPackages(c("dplyr"))
 #'
 #' # Example 1:
 #' # create dataframe and add data with 2(Comp: comp vs. incomp) levels
-#' dat <- createDF(nVP = 20,
-#'                 nTrl = 50,
+#' dat <- createDF(nVP = 10,
+#'                 nTrl = 25,
 #'                 design = list("Comp" = c("comp", "incomp")))
 #'
 #' dat <- addDataDF(dat, RT = list("Comp comp"   = c(500, 150, 100),

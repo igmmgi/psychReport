@@ -20,7 +20,6 @@ character
 Returns a string with the mean value from a t.test in Latex format.
 }
 \examples{
-library(psychReport)
 requiredPackages(c("dplyr"))
 # Example 1:
 # create dataframe and add data

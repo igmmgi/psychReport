@@ -20,13 +20,12 @@ character
 Returns a string with the 95\% CI from a t.test in Latex format.
 }
 \examples{
-library(psychReport)
 requiredPackages(c("dplyr"))
 
 # Example 1:
 # create dataframe and add data with 2(Comp: comp vs. incomp) levels
-dat <- createDF(nVP = 20,
-                nTrl = 50,
+dat <- createDF(nVP = 10,
+                nTrl = 25,
                 design = list("Comp" = c("comp", "incomp")))
 
 dat <- addDataDF(dat, RT = list("Comp comp"   = c(500, 150, 100),
