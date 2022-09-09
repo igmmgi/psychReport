@@ -10,7 +10,7 @@ Maintainer: Ian G Mackenzie <ian.mackenzie@uni-tuebingen.de>
 Description: Helper functions for producing reports in Psychology (Reproducible Research). Provides required formatted strings (APA style) for use in 'Knitr'/'Latex' integration within *.Rnw files.
 License: MIT + file LICENSE
 Encoding: UTF-8
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.1
 Imports:
   broom,
   cli,

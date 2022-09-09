@@ -12,9 +12,8 @@
 #' @return character
 #'
 #' @examples
-#' requiredPackages(c("dplyr", "ez"))
-#'
 #' # Example 1:
+#' library(ez)
 #' # create dataframe
 #' dat <- createDF(nVP = 6, nTrl = 1,
 #'                 design = list("Comp" = c("comp", "incomp", "neutral")))

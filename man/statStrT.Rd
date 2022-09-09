@@ -18,25 +18,17 @@ For example, \emph{t}(11) = 3.45, \emph{p} < 0.05.
 Returns values to 2 sig decimal places and < 0.01, < 0.001 for p values.
 }
 \examples{
-requiredPackages(c("dplyr"))
-
 # Example 1:
 # create dataframe and add data with 2(Comp: comp vs. incomp) levels
-dat <- createDF(nVP = 20,
-                nTrl = 50,
+dat <- createDF(nVP = 50,
+                nTrl = 1,
                 design = list("Comp" = c("comp", "incomp")))
 
-dat <- addDataDF(dat, RT = list("Comp comp"   = c(500, 150, 100),
-                                "Comp incomp" = c(520, 150, 100)))
+dat <- addDataDF(dat, RT = list("Comp comp"   = c(500, 100, 100),
+                                "Comp incomp" = c(600, 100, 100)))
 
-# aggregate dat across trials
-datAggVP <- dat \%>\%
-    group_by(VP, Comp) \%>\%
-    summarize(N  = n(),
-              rt = mean(RT))
-
-tObj <- t.test(datAggVP$rt[datAggVP$Comp == "comp"],
-               datAggVP$rt[datAggVP$Comp == "incomp"],
+tObj <- t.test(dat$RT[dat$Comp == "incomp"],
+               dat$RT[dat$Comp == "comp"],
                paired = TRUE)
 
 statStrT <- statStrT(tObj)
