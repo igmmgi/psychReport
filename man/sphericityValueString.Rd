@@ -7,7 +7,7 @@
 sphericityValueString(aovObj, effect)
 }
 \arguments{
-\item{aovObj}{The returned object from a call to ezANOVA}
+\item{aovObj}{The returned ANOVA object}
 
 \item{effect}{The effect within the ANOVA table to return}
 }
@@ -28,13 +28,8 @@ dat <- createDF(nVP = 20, nTrl = 1,
 dat <- addDataDF(dat, RT = list("Comp neutral" = c(510, 150, 100),
                                 "Comp comp"    = c(500, 150, 100),
                                 "Comp incomp"  = c(520, 150, 100)))
-
-# repeated measures ANOVA using ezANOVA
-library(ez)
-aovRT <- ezANOVA(dat, dv=.(RT), wid = .(VP), within = .(Comp),
-                 return_aov = TRUE, detailed = TRUE)
+aovRT <- aov(RT ~ Comp + Error(VP/(Comp)), dat)
 aovRT <- aovTable(aovRT)
-
-sphericityValue <- sphericityValueString(aovRT, "Comp")
+sphericityValueString(aovRT, "Comp")
 
 }

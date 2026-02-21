@@ -17,6 +17,9 @@ mathString(str1, str2, operation = "-", numDigits = 0, unit = "ms")
 
 \item{unit}{"ms" , "mV" , "mv", or "\%"}
 }
+\value{
+character
+}
 \description{
 Returns formatted string following addition/subtraction.
 }

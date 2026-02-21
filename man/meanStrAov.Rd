@@ -7,7 +7,7 @@
 meanStrAov(aovObj, effect, level, unit = "ms", numDigits = 0)
 }
 \arguments{
-\item{aovObj}{Output from aov or ezANOVA (NB. ezANOVA must be called with detailed = TRUE)}
+\item{aovObj}{Output from aov}
 
 \item{effect}{Effect to return}
 
@@ -15,14 +15,13 @@ meanStrAov(aovObj, effect, level, unit = "ms", numDigits = 0)
 
 \item{unit}{"ms" vs. "mv" vs. "\%"}
 
-\item{numDigits}{"ms" vs. "mv" vs. "\%"}
+\item{numDigits}{Number of decimal places (default 0)}
 }
 \value{
 character
 }
 \description{
-Returns marginal means from ezANOVA object for requested effect in Latex format.
-Assumes means added to aovObj (e.g., aovObj$means <- model.tables(aovObj$aov, type = "mean").
+Returns marginal means from ANOVA object for requested effect in Latex format.
 }
 \examples{
 # Example 1:
@@ -37,15 +36,6 @@ dat <- addDataDF(dat, RT = list("Comp:Side comp:left"    = c(500, 150, 100),
                                 "Comp:Side incomp:right" = c(520, 150, 100)))
 
 aovRT <- aov(RT ~ Comp*Side + Error(VP/(Comp*Side)), dat)
-aovRT <- aovTable(aovRT)
-
-meanString <- meanStrAov(aovRT, "Comp", "comp")
-meanString <- meanStrAov(aovRT, "Comp:Side", "incomp:left")
-
-# or using ezANOVA
-library(ez)
-aovRT <- ezANOVA(dat, dv=.(RT), wid = .(VP), within = .(Comp, Side),
-                 return_aov = TRUE, detailed = TRUE)
 aovRT <- aovTable(aovRT)
 
 meanString <- meanStrAov(aovRT, "Comp", "comp")

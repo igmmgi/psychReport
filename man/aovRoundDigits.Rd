@@ -7,13 +7,13 @@
 aovRoundDigits(aovObj)
 }
 \arguments{
-\item{aovObj}{Output from aov or ezANOVA}
+\item{aovObj}{Output from aov}
 }
 \value{
 dataframe
 }
 \description{
-Round digits to n decimal places in ezANOVA table
+Round digits to n decimal places in ANOVA table
 }
 \examples{
 # Example 1:
@@ -29,13 +29,6 @@ dat <- addDataDF(dat,
                            "Comp:Side incomp:right" = c(500, 150, 150)))
 
 aovRT <- aov(RT ~ Comp*Side + Error(VP/(Comp*Side)), dat)
-aovRT <- aovRoundDigits(aovRT)
-aovDispTable(aovRT)
-
-# or using ezANOVA
-library(ez)
-aovRT <- ezANOVA(dat, dv=.(RT), wid = .(VP), within = .(Comp, Side),
-                 return_aov = TRUE, detailed = TRUE)
 aovRT <- aovRoundDigits(aovRT)
 aovDispTable(aovRT)
 

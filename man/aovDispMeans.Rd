@@ -7,11 +7,14 @@
 aovDispMeans(aovObj, value = "value", caption = sys.call())
 }
 \arguments{
-\item{aovObj}{Output from aov or ezANOVA  (NB. ezANOVA must be called with \"return_aov = TRUE\"")}
+\item{aovObj}{Output from aov}
 
 \item{value}{String for column name}
 
 \item{caption}{Required for heading}
+}
+\value{
+NULL (prints means to console)
 }
 \description{
 Displays marginal means from model.tables in the command window.
@@ -26,13 +29,6 @@ dat <- addDataDF(dat, RT = list("Comp comp"   = c(500, 100, 100),
                                 "Comp incomp" = c(520, 100, 100)))
 
 aovRT <- aov(RT ~ Comp + Error(VP/(Comp)), dat)
-aovDispMeans(aovRT)
-
-# or with ezANOVA
-library(ez)
-aovRT <- ezANOVA(dat, dv=.(RT), wid = .(VP), within = .(Comp),
-                 return_aov = TRUE, detailed = TRUE)
-aovRT <- aovTable(aovRT)
 aovDispMeans(aovRT)
 
 }

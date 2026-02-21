@@ -4,7 +4,7 @@ test_that("aovTable", {
 
   set.seed(1)
 
-  # create dataframe
+  # create dataframe with 3 levels
   dat <- createDF(nVP = 50, nTrl = 1,
                   design = list("Comp" = c("comp", "neutral", "incomp")))
 
@@ -13,28 +13,25 @@ test_that("aovTable", {
                              "Comp neutral" = c(550, 150, 150),
                              "Comp incomp"  = c(600, 150, 150)))
 
-  # base R aov
+  # base R aov with sphericity corrections (default)
+  aovRT <- aov(RT ~ Comp + Error(VP/(Comp)), dat)
+  testthat::expect_error(aovTable(aovRT), NA)
+
+  # without sphericity corrections
   aovRT <- aov(RT ~ Comp + Error(VP/(Comp)), dat)
   testthat::expect_error(aovTable(aovRT, sphericityCorrections = FALSE), NA)
 
-  # ezANOVA
-  aovRT <- ez::ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
-                       return_aov = TRUE, detailed = TRUE)
-
-  testthat::expect_error(aovTable(aovRT), NA)
-  testthat::expect_error(aovTable(aovRT, sphericityCorrections = FALSE), NA)
+  # HF correction
+  aovRT <- aov(RT ~ Comp + Error(VP/(Comp)), dat)
   testthat::expect_error(aovTable(aovRT, sphericityCorrectionType = "HF"), NA)
+
+  # keep sum of squares
+  aovRT <- aov(RT ~ Comp + Error(VP/(Comp)), dat)
   testthat::expect_error(aovTable(aovRT, removeSumSquares = FALSE), NA)
 
+  # calling aovTable twice should error (already processed)
+  aovRT <- aov(RT ~ Comp + Error(VP/(Comp)), dat)
   aovRT <- aovTable(aovRT)
-  testthat::expect_error(aovTable(aovRT))
-
-  aovRT <- ez::ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
-                       return_aov = TRUE, detailed = FALSE)
-  testthat::expect_error(aovTable(aovRT))
-
-  aovRT <- ez::ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
-                       return_aov = FALSE, detailed = TRUE)
   testthat::expect_error(aovTable(aovRT))
 
 })

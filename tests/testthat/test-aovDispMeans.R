@@ -15,12 +15,8 @@ test_that("aovDispMeans", {
   aovRT <- aov(RT ~ Comp + Error(VP/(Comp)), dat)
   testthat::expect_error(aovDispMeans(aovRT), NA)
 
-  # ezANOVA
-  aovRT <- ez::ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
-                       return_aov = TRUE, detailed = TRUE)
-  testthat::expect_error(aovDispMeans(aovRT))
-
-  aovRT <- aovTable(aovRT)
+  aovRT <- aov(RT ~ Comp + Error(VP/(Comp)), dat)
+  aovRT <- aovTable(aovRT, sphericityCorrections = FALSE)
   testthat::expect_error(aovDispMeans(aovRT), NA)
 
 })

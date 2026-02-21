@@ -16,11 +16,5 @@ test_that("aovEffectSize", {
   testthat::expect_error(aovEffectSize(aovRT, effectSize = "pes"), NA)
   testthat::expect_error(aovEffectSize(aovRT, effectSize = "ges"), NA)
 
-  # ezANOVA
-  aovRT <- ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp),
-                   return_aov = TRUE, detailed = TRUE)
-
-  testthat::expect_error(aovEffectSize(aovRT, effectSize = "pes"), NA)
-  testthat::expect_error(aovEffectSize(aovRT, effectSize = "ges"), NA)
-
 })
+

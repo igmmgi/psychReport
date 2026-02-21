@@ -7,7 +7,7 @@
 statStrAov(aovObj, effect)
 }
 \arguments{
-\item{aovObj}{Output from aov or ezANOVA (NB. ezANOVA must be called with detailed = TRUE)}
+\item{aovObj}{Output from aov}
 
 \item{effect}{The effect required from the anova table}
 }
@@ -34,14 +34,5 @@ aovRT <- aovTable(aovRT)
 aovString <- statStrAov(aovRT, "Comp")
 aovString <- statStrAov(aovRT, "Comp:Side")
 
-
-# or using ezANOVA
-library(ez)
-aovRT <- ezANOVA(dat, dv=.(RT), wid = .(VP), within = .(Comp, Side),
-                 return_aov = TRUE, detailed = TRUE)
-aovRT <- aovTable(aovRT)
-
-aovString <- statStrAov(aovRT, "Comp")
-aovString <- statStrAov(aovRT, "Comp:Side")
 
 }

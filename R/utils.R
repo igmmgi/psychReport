@@ -1,9 +1,9 @@
 #' @title printTable
 #'
-#' @description Returns Latex formatted table from dataframe or ezANOVA ANOVA table.
+#' @description Returns Latex formatted table from dataframe or ANOVA table.
 #' Uses xtable latex package with some basic defaults.
 #' For more examples, see R package xtable
-#' @param obj Dataframe/ezANOVA object to print
+#' @param obj Dataframe or ANOVA table to print
 #' @param caption Title of the dataframe
 #' @param digits Number of digits to round to NB. length can be 1, or vector with
 #'  length equal to the number of numeric columns
@@ -13,7 +13,6 @@
 #'
 #' @examples
 #' # Example 1:
-#' library(ez)
 #' # create dataframe
 #' dat <- createDF(nVP = 6, nTrl = 1,
 #'                 design = list("Comp" = c("comp", "incomp", "neutral")))
@@ -24,9 +23,7 @@
 #' printTable(dat, digits = c(0, 2)) # latex formatted
 #' printTable(dat, digits = 0)       # latex formatted
 #'
-#' dat$VP <- as.factor(dat$VP)
-#' aovRT <- ezANOVA(dat, dv=.(RT), wid = .(VP), within = .(Comp),
-#'                  return_aov = TRUE, detailed = TRUE)
+#' aovRT <- aov(RT ~ Comp + Error(VP/(Comp)), dat)
 #' aovRT <- aovTable(aovRT)
 #' printTable(aovRT$ANOVA) # latex formatted
 #' printTable(aovRT$ANOVA, digits = c(0,2,2,2)) # latex formatted
@@ -46,7 +43,7 @@ printTable <- function(obj, caption = "DF", digits=3, onlyContents=FALSE) {
     # remove leading 0 in p column
     pcol <- which(names(obj) == "p")
     if (length(pcol) == 1) {
-        obj[, pcol] <- sub("^0.", ".", obj[, pcol])
+        obj[, pcol] <- sub("^0\\.", ".", obj[, pcol])
     }
 
     # typical symbols in ANOVA table
@@ -101,7 +98,7 @@ printTable <- function(obj, caption = "DF", digits=3, onlyContents=FALSE) {
 #' @param numDigits number 0 (default)
 #' @param unit "ms" , "mV" , "mv", or "\%"
 #'
-#' @return NULL
+#' @return character
 #'
 #' @examples
 #' # Example 1:

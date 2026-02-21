@@ -24,14 +24,5 @@ test_that("fValueString", {
   testthat::expect_equal(fValueString(aovRT, "Side"), "\\emph{F}(1, 49) = 0.32")
   testthat::expect_equal(fValueString(aovRT, "Comp:Side"), "\\emph{F}(1, 49) = 0.49")
 
-
-  # repeated measures ANOVA using ezANOVA
-  aovRT <- ez::ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp, Side),
-                   return_aov = TRUE, detailed = TRUE)
-  aovRT <- aovTable(aovRT)
-
-  testthat::expect_equal(fValueString(aovRT, "Comp"), "\\emph{F}(1, 49) = 4.39")
-  testthat::expect_equal(fValueString(aovRT, "Side"), "\\emph{F}(1, 49) = 0.32")
-  testthat::expect_equal(fValueString(aovRT, "Comp:Side"), "\\emph{F}(1, 49) = 0.49")
-
 })
+

@@ -4,7 +4,7 @@ test_that("aovJackknifeAdjustment", {
 
   set.seed(1)
 
-  # create dataframe with 2(Comp: comp vs. incomp) and 2(Side: left vs. right) factors/levels
+  # create dataframe with 2(Comp: comp vs. incomp) factors/levels
   dat <- createDF(nVP = 50, nTrl = 1,
                   design = list("Comp" = c("comp", "incomp")))
 
@@ -20,12 +20,5 @@ test_that("aovJackknifeAdjustment", {
 
   testthat::expect_equal(round(as.numeric(aovRT_pre$ANOVA$F)/(49*49), 2), as.numeric(aovRT_post$ANOVA$F))
 
-  # ezANOVA
-  aovRT      <- ez::ezANOVA(dat, dv = .(RT), wid = .(VP), within = .(Comp), return_aov = TRUE, detailed = TRUE)
-  aovRT_pre  <- aovTable(aovRT)
-  aovRT      <- aovJackknifeAdjustment(aovRT, length(unique(dat$VP)))
-  aovRT_post <- aovTable(aovRT)
-
-  testthat::expect_equal(round(as.numeric(aovRT_pre$ANOVA$F)/(49*49), 2), as.numeric(aovRT_post$ANOVA$F))
-
 })
+

@@ -4,17 +4,20 @@
 \alias{aovTidyTable}
 \title{aovTidyTable}
 \usage{
-aovTidyTable(aovObj)
+aovTidyTable(aovObj, data = NULL)
 }
 \arguments{
 \item{aovObj}{Output from aov function}
+
+\item{data}{Optional. The original data frame used in the aov call.
+When provided, sphericity corrections (Mauchly's test, GG/HF epsilon) are computed.}
 }
 \value{
 list
 }
 \description{
-Take output from base aov function and produce a "tidy" ANOVA table
-similar to the output of ezANOVA. The output also contains the marginal means.
+Take output from base aov function and produce a "tidy" ANOVA table.
+The output also contains the marginal means.
 }
 \examples{
 # create dataframe

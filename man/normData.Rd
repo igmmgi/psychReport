@@ -17,7 +17,8 @@ normData(data, idvar, dvs)
 dataframe
 }
 \description{
-Aggregate data returning the mean, standard deviation, and standard error
+Normalise within-subjects data by removing between-subjects
+variability. Each participant's scores are centered on the grand mean.
 }
 \examples{
 

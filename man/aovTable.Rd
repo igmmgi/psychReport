@@ -14,15 +14,15 @@ aovTable(
 )
 }
 \arguments{
-\item{aovObj}{Output from aov or ezANOVA (NB. ezANOVA must be called with detailed = TRUE)}
+\item{aovObj}{Output from aov}
 
 \item{effectSize}{Effect size (pes vs. ges)}
 
-\item{sphericityCorrections}{TRUE/FALSE (ezANOVA)}
+\item{sphericityCorrections}{TRUE/FALSE}
 
-\item{sphericityCorrectionType}{"GG" (default) vs. "HF" (ezANOVA)}
+\item{sphericityCorrectionType}{"GG" (default) vs. "HF"}
 
-\item{sphericityCorrectionAdjDF}{TRUE/FALSE Should DF's values be corrected?}
+\item{sphericityCorrectionAdjDF}{TRUE/FALSE Should DFs be corrected?}
 
 \item{removeSumSquares}{TRUE/FALSE Remove SSn/SSd columns from the ANOVA table}
 }
@@ -30,9 +30,9 @@ aovTable(
 list
 }
 \description{
-Adjust ezANOVA table output. Options include calculation of alternative
+Adjust ANOVA table output. Options include calculation of alternative
 effect sizes (eta squared, partial eta squared), the calculation of marginal
-means and formatting options for the ANOVA table (e.g., detailed, rounding).
+means and formatting options for the ANOVA table (e.g., rounding).
 }
 \examples{
 # Example 1:
@@ -48,12 +48,6 @@ dat <- addDataDF(dat,
                            "Comp:Side incomp:right" = c(500, 150, 150)))
 
 aovRT <- aov(RT ~ Comp*Side + Error(VP/(Comp*Side)), dat)
-aovRT <- aovTable(aovRT)
-
-# or using ezANOVA
-library(ez)
-aovRT <- ezANOVA(dat, dv=.(RT), wid = .(VP), within = .(Comp, Side),
-                 return_aov = TRUE, detailed = TRUE)
 aovRT <- aovTable(aovRT)
 
 }

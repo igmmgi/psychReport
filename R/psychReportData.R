@@ -299,8 +299,8 @@ summaryMSDSE <- function(data, factors, dvs, withinCorrection = NULL) {
   dat <- fn1 <- fn3 <- se <- NULL # avoid CRAN note!
   for (i in 1:length(dvs)) {
     tmp_dat <- data %>%
-      dplyr::group_by_at(factors) %>%
-      dplyr::summarize_at(dvs[i], c(length, mean, sd)) %>%
+      dplyr::group_by(dplyr::across(dplyr::all_of(factors))) %>%
+      dplyr::summarize(dplyr::across(dplyr::all_of(dvs[i]), list(fn1 = length, fn2 = mean, fn3 = sd), .names = "{.fn}"), .groups = "drop") %>%
       dplyr::mutate(se = fn3 / sqrt(fn1),
                     se_ci = se * qt(0.975, nvps - 1)) %>%
       setNames(c(factors, "N", paste0(dvs[i], "_mean"), paste0(dvs[i], "_sd"), paste0(dvs[i], "_se"), paste0(dvs[i], "_se_ci")))
@@ -336,7 +336,8 @@ summaryMSDSE <- function(data, factors, dvs, withinCorrection = NULL) {
 
 #' @title normData
 #'
-#' @description Aggregate data returning the mean, standard deviation, and standard error
+#' @description Normalise within-subjects data by removing between-subjects
+#' variability. Each participant's scores are centered on the grand mean.
 #'
 #' @param data A dataframe
 #' @param idvar Column indicating the individual participants
@@ -373,7 +374,7 @@ normData <- function(data, idvar, dvs) {
   for (i in 1:length(dvs)) {
     grand_mean <- mean(data[[dvs[i]]])
     data <- data %>%
-      dplyr::group_by_at(idvar) %>%
+      dplyr::group_by(dplyr::across(dplyr::all_of(idvar))) %>%
       dplyr::mutate(
         idmean = mean(!!as.name(dvs[i])),
         "{dvs[i]}_norm" := !!as.name(dvs[i]) - idmean + grand_mean

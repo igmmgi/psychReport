@@ -7,7 +7,7 @@
 printTable(obj, caption = "DF", digits = 3, onlyContents = FALSE)
 }
 \arguments{
-\item{obj}{Dataframe/ezANOVA object to print}
+\item{obj}{Dataframe or ANOVA table to print}
 
 \item{caption}{Title of the dataframe}
 
@@ -20,13 +20,12 @@ length equal to the number of numeric columns}
 character
 }
 \description{
-Returns Latex formatted table from dataframe or ezANOVA ANOVA table.
+Returns Latex formatted table from dataframe or ANOVA table.
 Uses xtable latex package with some basic defaults.
 For more examples, see R package xtable
 }
 \examples{
 # Example 1:
-library(ez)
 # create dataframe
 dat <- createDF(nVP = 6, nTrl = 1,
                 design = list("Comp" = c("comp", "incomp", "neutral")))
@@ -37,9 +36,7 @@ dat <- addDataDF(dat, RT = list("Comp comp"    = c(500, 150, 100),
 printTable(dat, digits = c(0, 2)) # latex formatted
 printTable(dat, digits = 0)       # latex formatted
 
-dat$VP <- as.factor(dat$VP)
-aovRT <- ezANOVA(dat, dv=.(RT), wid = .(VP), within = .(Comp),
-                 return_aov = TRUE, detailed = TRUE)
+aovRT <- aov(RT ~ Comp + Error(VP/(Comp)), dat)
 aovRT <- aovTable(aovRT)
 printTable(aovRT$ANOVA) # latex formatted
 printTable(aovRT$ANOVA, digits = c(0,2,2,2)) # latex formatted

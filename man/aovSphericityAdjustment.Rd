@@ -7,18 +7,19 @@
 aovSphericityAdjustment(aovObj, type = "GG", adjDF = TRUE)
 }
 \arguments{
-\item{aovObj}{The returned object from a call to ezANOVA}
+\item{aovObj}{The returned ANOVA object}
 
 \item{type}{"GG" (Greenhouse-Geisser) or "HF" (Huynh-Feldt)}
 
-\item{adjDF}{TRUE/FALSE Should DF's be adjusted?}
+\item{adjDF}{TRUE/FALSE Should DFs be adjusted?}
 }
 \value{
 list
 }
 \description{
-Adjust ezANOVA table with corrections for sphericity (Greenhouse-Geisser or
-Huynh-Feldt). Called by default within aovTable
+Adjust ANOVA table with corrections for sphericity (Greenhouse-Geisser or
+Huynh-Feldt). Called by default within aovTable.
+Note: sphericity corrections require an object with a "Sphericity Corrections" component.
 }
 \examples{
 # Example 1:
@@ -30,13 +31,6 @@ dat <- addDataDF(dat,
                  RT = list("Comp neutral" = c(510, 150, 100),
                            "Comp comp"    = c(500, 150, 100),
                            "Comp incomp"  = c(520, 150, 100)))
-
-# using ezANOVA
-library(ez)
-aovRT <- ezANOVA(dat, dv=.(RT), wid = .(VP), within = .(Comp),
-                 return_aov = TRUE, detailed = TRUE)
-aovDispTable(aovRT)
-aovRT <- aovSphericityAdjustment(aovRT)
-aovDispTable(aovRT)
-
+aovRT <- aov(RT ~ Comp + Error(VP/(Comp)), dat)
+aovRT <- aovTable(aovRT)
 }

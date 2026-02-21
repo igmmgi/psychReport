@@ -7,7 +7,7 @@
 fValueString(aovObj, effect)
 }
 \arguments{
-\item{aovObj}{Output from aov or ezANOVA (NB. ezANOVA must be called with detailed = TRUE)}
+\item{aovObj}{Output from aov}
 
 \item{effect}{The effect within the ANOVA table to return}
 }
@@ -31,10 +31,7 @@ dat <- addDataDF(dat, RT = list("Comp:Side comp:left"    = c(500, 150, 100),
                                 "Comp:Side incomp:left"  = c(520, 150, 100),
                                 "Comp:Side incomp:right" = c(520, 150, 100)))
 
-# or using ezANOVA
-library(ez)
-aovRT <- ezANOVA(dat, dv=.(RT), wid = .(VP), within = .(Comp, Side),
-                 return_aov = TRUE, detailed = TRUE)
+aovRT <- aov(RT ~ Comp*Side + Error(VP/(Comp*Side)), dat)
 aovRT <- aovTable(aovRT)
 
 fString <- fValueString(aovRT, "Comp")

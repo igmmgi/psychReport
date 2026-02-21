@@ -7,7 +7,7 @@
 printAovMeans(..., caption = "Mean", digits = 3, dv = "ms")
 }
 \arguments{
-\item{...}{Output from aov or ezANOVA (NB. ezANOVA must be called with detailed = TRUE)}
+\item{...}{Output from aov}
 
 \item{caption}{Title for the table}
 
@@ -35,11 +35,5 @@ dat <- addDataDF(dat, RT = list("Comp comp"   = c(500, 150, 100),
 aovRT <- aov(RT ~ Comp + Error(VP/(Comp)), dat)
 aovRT <- aovTable(aovRT)
 printAovMeans(aovRT, digits = 3, dv = "ms")  # latex formatted
-
-# or using ezANOVA
-library(ez)
-aovRT <- ezANOVA(dat, dv=.(RT), wid = .(VP), within = .(Comp), return_aov = TRUE, detailed = TRUE)
-aovRT <- aovTable(aovRT)
-printAovMeans(aovRT, digits = 0, dv = "ms")  # latex formatted
 
 }

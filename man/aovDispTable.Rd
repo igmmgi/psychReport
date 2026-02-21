@@ -7,9 +7,12 @@
 aovDispTable(aovObj, caption = sys.call())
 }
 \arguments{
-\item{aovObj}{Output from aov or ezANOVA}
+\item{aovObj}{Output from aov}
 
 \item{caption}{Required for heading}
+}
+\value{
+NULL (prints table to console)
 }
 \description{
 Display formatted ANOVA table in command window.
@@ -25,10 +28,5 @@ dat <- addDataDF(dat, RT = list("Comp comp"   = c(500, 150, 100),
 
 aovObj <- aov(RT ~ Comp + Error(VP/(Comp)), dat)
 aovDispTable(aovObj)
-
-# or with ezANOVA
-library(ez)
-aovRT <- ezANOVA(dat, dv=.(RT), wid = .(VP), within = .(Comp), return_aov = TRUE, detailed = TRUE)
-aovDispTable(aovRT)
 
 }

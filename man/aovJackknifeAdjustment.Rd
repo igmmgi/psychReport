@@ -2,12 +2,12 @@
 % Please edit documentation in R/anova.R
 \name{aovJackknifeAdjustment}
 \alias{aovJackknifeAdjustment}
-\title{adjustJackknifeAdjustment}
+\title{aovJackknifeAdjustment}
 \usage{
 aovJackknifeAdjustment(aovObj, numVPs)
 }
 \arguments{
-\item{aovObj}{Output from aov or ezANOVA}
+\item{aovObj}{Output from aov}
 
 \item{numVPs}{The number of participants}
 }
@@ -15,7 +15,7 @@ aovJackknifeAdjustment(aovObj, numVPs)
 list
 }
 \description{
-Adjust ezANOVA table with corrected F (Fc = F/(n-1)^2) and p values for jackkniffed data (see Ulrich and Miller, 2001.
+Adjust ANOVA table with corrected F (Fc = F/(n-1)^2) and p values for jackkniffed data (see Ulrich and Miller, 2001.
 Using the jackknife-based scoring method for measuring LRP onset effects in factorial designs. Psychophysiology, 38, 816-827.)
 }
 \examples{
@@ -32,13 +32,6 @@ dat <- addDataDF(dat,
                            "Comp:Side incomp:right" = c(500, 150, 150)))
 
 aovRT <- aov(RT ~ Comp*Side + Error(VP/(Comp*Side)), dat)
-aovRT <- aovJackknifeAdjustment(aovRT, length(unique(dat$VP)))
-aovDispTable(aovRT)
-
-# or with ezANOVA
-library(ez)
-aovRT <- ezANOVA(dat, dv=.(RT), wid = .(VP), within = .(Comp, Side),
-                 return_aov = TRUE, detailed = TRUE)
 aovRT <- aovJackknifeAdjustment(aovRT, length(unique(dat$VP)))
 aovDispTable(aovRT)
 
